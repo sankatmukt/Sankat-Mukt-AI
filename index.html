@@ -1293,29 +1293,169 @@ async function sendBossQuery() {
         }
     } catch (e) {}
 
+async function sendBossQuery() {
+    const inp = document.getElementById('bossQueryTxt');
+    const v = inp.value.trim();
+    if (!v) return;
+
+    const box = document.getElementById('bossChatOutput');
+    box.innerHTML += `<div style="color: #ffd700; margin-top: 4px;"><strong>सवाल:</strong> ${v}</div>`;
+    inp.value = "";
+    box.scrollTop = box.scrollHeight;
+
+    const loadId = "load_" + Date.now();
+    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) लाइव जानकारी ला रहा है...</em></div>`;
+    box.scrollTop = box.scrollHeight;
+
+    // ============ HELPER: Timeout वाला fetch ============
+    async function fetchWithTimeout(url, options = {}, ms = 8000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
+        try {
+            const res = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(timer);
+            return res;
+        } catch (e) {
+            clearTimeout(timer);
+            return null;
+        }
+    }
+
+    // ============ STEP 1: LIVE INTERNET SEARCH ============
+    let liveContext = "";
+
+    // 1A. Wikipedia (हिंदी)
+    try {
+        const wikiRes = await fetchWithTimeout(
+            `https://hi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`, {}, 5000
+        );
+        if (wikiRes && wikiRes.ok) {
+            const d = await wikiRes.json();
+            if (d.extract) liveContext += `[Wikipedia]: ${d.extract}\n\n`;
+        }
+    } catch (e) {}
+
+    // 1B. Wikipedia (English fallback)
+    if (!liveContext) {
+        try {
+            const wEn = await fetchWithTimeout(
+                `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`, {}, 5000
+            );
+            if (wEn && wEn.ok) {
+                const d = await wEn.json();
+                if (d.extract) liveContext += `[Wikipedia EN]: ${d.extract}\n\n`;
+            }
+        } catch (e) {}
+    }
+
+    // 1C. Google News RSS (ताज़ा खबरें)
+    try {
+        const newsRes = await fetchWithTimeout(
+            `https://news.google.com/rss/search?q=${encodeURIComponent(v)}&hl=hi&gl=IN&ceid=IN:hi`, {}, 6000
+        );
+        if (newsRes && newsRes.ok) {
+            const t = await newsRes.text();
+            const titles = [...t.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)]
+                .map(m => m[1]).slice(1, 4);
+            if (titles.length) liveContext += `[ताज़ा खबरें]: ${titles.join(" | ")}\n\n`;
+        }
+    } catch (e) {}
+
+    // ============ STEP 2: PROMPT ============
+    const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) के आधार पर सटीक, व्यावहारिक उत्तर हिंदी में दें। नीचे दी लाइव जानकारी का उपयोग करें।";
+
+    const userMsg = liveContext
+        ? `लाइव इंटरनेट जानकारी:\n${liveContext}\n\nसवाल: ${v}`
+        : v;
+
+    // ============ STEP 3: MULTI-ENDPOINT AI CALL ============
+    let reply = "";
+
+    // 🔹 Method A: POST to Pollinations OpenAI endpoint (सबसे reliable)
     if (!reply) {
         try {
-            const resPost = await fetch("https://text.pollinations.ai/", {
+            const r = await fetchWithTimeout("https://text.pollinations.ai/openai", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: "openai",
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: userMsg }
+                    ],
+                    seed: Math.floor(Math.random() * 999999)
+                })
+            }, 20000);
+            if (r && r.ok) {
+                const data = await r.json();
+                const txt = data?.choices?.[0]?.message?.content;
+                if (txt && txt.trim()) reply = txt;
+            }
+        } catch (e) { console.warn("Method A failed:", e); }
+    }
+
+    // 🔹 Method B: GET endpoint (fallback 1)
+    if (!reply) {
+        try {
+            const r = await fetchWithTimeout(
+                `https://text.pollinations.ai/${encodeURIComponent(systemPrompt + "\n\n" + userMsg)}?seed=${Date.now()}`,
+                {}, 20000
+            );
+            if (r && r.ok) {
+                const txt = await r.text();
+                if (txt && !txt.startsWith('{"error"') && txt.trim().length > 5) reply = txt;
+            }
+        } catch (e) { console.warn("Method B failed:", e); }
+    }
+
+    // 🔹 Method C: POST simple endpoint (fallback 2)
+    if (!reply) {
+        try {
+            const r = await fetchWithTimeout("https://text.pollinations.ai/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     messages: [
                         { role: "system", content: systemPrompt },
-                        { role: "user", content: liveContext ? `लाइव जानकारी:\n${liveContext}\n\nसवाल: ${v}` : v }
+                        { role: "user", content: userMsg }
                     ],
-                    model: "openai",
                     seed: Date.now()
                 })
-            });
-            if (resPost.ok) {
-                const txtPost = await resPost.text();
-                if (txtPost && !txtPost.startsWith('{"error"')) {
-                    reply = txtPost;
-                }
+            }, 20000);
+            if (r && r.ok) {
+                const txt = await r.text();
+                if (txt && !txt.startsWith('{"error"') && txt.trim().length > 5) reply = txt;
             }
-        } catch (e) {}
+        } catch (e) { console.warn("Method C failed:", e); }
     }
 
+    // 🔹 Method D: Backup AI — DuckDuckGo AI chat
+    if (!reply) {
+        try {
+            const r = await fetchWithTimeout("https://duckduckgo.com/duckchat/v1/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-vqd-4": "1"
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o-mini",
+                    messages: [{ role: "user", content: userMsg }]
+                })
+            }, 15000);
+            if (r && r.ok) {
+                const txt = await r.text();
+                // DuckDuckGo streams, सिर्फ text निकालें
+                const clean = txt.replace(/data: /g, "").split("\n")
+                    .filter(l => l.trim())
+                    .map(l => { try { return JSON.parse(l).message || ""; } catch { return ""; } })
+                    .join("");
+                if (clean.trim()) reply = clean;
+            }
+        } catch (e) { console.warn("Method D failed:", e); }
+    }
+
+    // ============ STEP 4: DISPLAY ============
     const loadElem = document.getElementById(loadId);
     if (loadElem) loadElem.remove();
 
@@ -1325,12 +1465,15 @@ async function sendBossQuery() {
             : "";
         box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI:\n</strong>${reply}${srcBadge}</div>`;
     } else {
-        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सर्वर से संपर्क नहीं हो पाया। कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
+        // 🔹 Fallback: अगर सब fail हो जाए, तो liveContext तो दिखा दो
+        if (liveContext) {
+            box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid #ffa500; padding-left: 8px;"><strong>📡 लाइव जानकारी (AI उपलब्ध नहीं):\n</strong>${liveContext}</div>`;
+        } else {
+            box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सभी सर्वर व्यस्त हैं। कृपया 5 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
+        }
     }
     box.scrollTop = box.scrollHeight;
 }
-
-
            function runStage(stage) {
             const notice = document.getElementById('stageStatusNotice');
             const table = document.getElementById('sandboxTable');
