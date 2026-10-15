@@ -1205,36 +1205,28 @@ async function sendBossQuery() {
     box.scrollTop = box.scrollHeight;
 
     const loadId = "load_" + Date.now();
-    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) गहन विश्लेषण कर रहा है...</em></div>`;
+    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) विश्लेषण कर रहा है...</em></div>`;
     box.scrollTop = box.scrollHeight;
 
-    // अर्जुन प्रोजेक्ट 'संकट मुक्त AI' का स्थायी माइंडसेट व 2026 टाइमलाइन
-    const systemPrompt = `आप 'संकट मुक्त AI' (Arjun Project) के सर्वोच्च विधिक, वित्तीय, प्रशासनिक व रणनीतिक सलाहकार हैं।
-वर्तमान समय वर्ष 2026 है। 
-ताज़ा वास्तविक संदर्भ:
-- अमेरिका के 47वें राष्ट्रपति: डोनाल्ड ट्रंप (Donald Trump)
-- रूस के राष्ट्रपति: व्लादिमीर पुतिन (Vladimir Putin)
-- भारत की राष्ट्रपति: श्रीमती द्रौपदी मुर्मू
-- भारत में लागू नवीन कानून: भारतीय न्याय संहिता (BNS)
-उपयोगकर्ता दुनिया के किसी भी क्षेत्र (राजनीति, व्यापार, संकट, कानून या सामान्य ज्ञान) से सवाल पूछे, आपको बिना किसी बहाने के 100% अद्यतन, सटीक, तार्किक और प्रभावशाली हिंदी में उत्तर देना है।`;
-
+    // अर्जुन प्रोजेक्ट का स्थायी कानूनी व रणनीतिक निर्देश
+    const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) और अद्यतन व्यवस्था के आधार पर उपयोगकर्ता के हर सवाल का सटीक, व्यावहारिक और प्रभावशाली हिंदी में उत्तर दें।";
     const fullPrompt = `${systemPrompt}\n\nयूज़र का प्रश्न: ${v}`;
 
-    // जाँचा-परखा मल्टी-चैनल रनर (यह कभी 404 एरर नहीं देगा)
-    async function getVerifiedAnswer() {
-        // पहला प्रयास: सुपरफास्ट ओपन एंडपॉइंट (एंटी-कैशे टाइमस्टैम्प के साथ)
-        try {
-            const url = `https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}?seed=${Date.now()}`;
-            const res = await fetch(url);
-            if (res.ok) {
-                const txt = await res.text();
-                if (txt && txt.trim().length > 0 && !txt.startsWith('{"error"')) {
-                    return txt;
-                }
-            }
-        } catch (e) {}
+    let reply = "";
 
-        // दूसरा प्रयास: सुरक्षित POST चैनल (यदि पहला नेटवर्क धीमा हो)
+    // 1. प्राथमिक सुरक्षित चैनल (एंटी-कैशे टाइमस्टैम्प के साथ)
+    try {
+        const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}?seed=${Date.now()}`);
+        if (res.ok) {
+            const txt = await res.text();
+            if (txt && !txt.startsWith('{"error"') && !txt.includes('"status":404')) {
+                reply = txt;
+            }
+        }
+    } catch (e) {}
+
+    // 2. बैकअप सुरक्षित चैनल (यदि पहला नेटवर्क धीमा हो)
+    if (!reply) {
         try {
             const resPost = await fetch("https://text.pollinations.ai/", {
                 method: "POST",
@@ -1243,35 +1235,29 @@ async function sendBossQuery() {
                     messages: [
                         { role: "system", content: systemPrompt },
                         { role: "user", content: v }
-                    ]
+                    ],
+                    seed: Date.now()
                 })
             });
             if (resPost.ok) {
                 const txtPost = await resPost.text();
-                if (txtPost && txtPost.trim().length > 0 && !txtPost.startsWith('{"error"')) {
-                    return txtPost;
+                if (txtPost && !txtPost.startsWith('{"error"')) {
+                    reply = txtPost;
                 }
             }
         } catch (e) {}
-
-        throw new Error("सर्वर से संपर्क नहीं हो सका");
     }
 
-    try {
-        const reply = await getVerifiedAnswer();
-        const loadElem = document.getElementById(loadId);
-        if (loadElem) loadElem.remove();
+    const loadElem = document.getElementById(loadId);
+    if (loadElem) loadElem.remove();
 
-        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI (सटीक रिपोर्ट):\n</strong>${reply}</div>`;
-        box.scrollTop = box.scrollHeight;
-    } catch (err) {
-        const loadElem = document.getElementById(loadId);
-        if (loadElem) loadElem.remove();
-        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सर्वर क्षणिक व्यस्त है। कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
-        box.scrollTop = box.scrollHeight;
+    if (reply && reply.trim().length > 0) {
+        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI:\n</strong>${reply}</div>`;
+    } else {
+        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सर्वर से संपर्क नहीं हो पाया। कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
     }
+    box.scrollTop = box.scrollHeight;
 }
-
 
         function runStage(stage) {
             const notice = document.getElementById('stageStatusNotice');
