@@ -1205,23 +1205,18 @@ async function sendBossQuery() {
     box.scrollTop = box.scrollHeight;
 
     const loadId = "load_" + Date.now();
-    box.innerHTML += `<div id="${loadId}" style="color: #e3b341;"><em>⏳ AI तीव्र विश्लेषण कर रहा है...</em></div>`;
+    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ इंटरनेट से लाइव ताज़ा जानकारी खोजी जा रही है...</em></div>`;
     box.scrollTop = box.scrollHeight;
 
     try {
-        const systemPrompt = "आप 'संकट मुक्त AI' के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। स्पष्ट, सटीक और प्रभावशाली हिंदी में उत्तर दें।";
-        const queryText = encodeURIComponent(`${systemPrompt}\n\nयूज़र का सवाल: ${v}`);
-
-        // सीधा सुपरफास्ट AI इंजन - कोई लॉगिन नहीं, कोई Key नहीं, कोई सीमा नहीं
-        const response = await fetch(`https://text.pollinations.ai/${queryText}`);
-        const reply = await response.text();
+        const promptText = encodeURIComponent(`आप 'संकट मुक्त AI' के मुख्य सलाहकार हैं। इंटरनेट की नवीनतम व सटीक जानकारी के आधार पर स्पष्ट हिंदी में उत्तर दें: ${v}`);
+        
+        // model=searchgpt लगाने से यह सीधे इंटरनेट पर लाइव सर्च करके ताज़ा जवाब देता है
+        const res = await fetch(`https://text.pollinations.ai/${promptText}?model=searchgpt`);
+        const reply = await res.text();
 
         const loadElem = document.getElementById(loadId);
         if (loadElem) loadElem.remove();
-
-        if (!reply || reply.trim().length === 0) {
-            throw new Error("खाली उत्तर प्राप्त हुआ");
-        }
 
         box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 6px;"><strong>AI:</strong>\n${reply}</div>`;
         box.scrollTop = box.scrollHeight;
@@ -1229,7 +1224,7 @@ async function sendBossQuery() {
     } catch (err) {
         const loadElem = document.getElementById(loadId);
         if (loadElem) loadElem.remove();
-        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सर्वर व्यस्त: कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
+        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ नेटवर्क समस्या: कृपया पुनः प्रयास करें।</div>`;
         box.scrollTop = box.scrollHeight;
     }
 }
