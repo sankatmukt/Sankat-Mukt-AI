@@ -1205,41 +1205,46 @@ async function sendBossQuery() {
     box.scrollTop = box.scrollHeight;
 
     const loadId = "load_" + Date.now();
-    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>🌐 लाइव इंटरनेट स्रोतों से रिसर्च जारी है...</em></div>`;
+    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>🌐 लाइव वेब सर्च व AI विश्लेषण जारी है...</em></div>`;
     box.scrollTop = box.scrollHeight;
 
-    try {
-        // बिना किसी हार्डकोडेड डेटा के, सीधे लाइव वेब सर्च इंजन से कनेक्शन
-        // seed और cache=false से यह कभी पुराना कैशे नहीं उठाएगा, हर बार फ्रेश इंटरनेट सर्च करेगा
-        const timestamp = Date.now();
-        const searchPrompt = encodeURIComponent(`${v}\n(कृपया इंटरनेट के नवीनतम लाइव स्रोतों के आधार पर वर्तमान स्थिति की पूरी तरह सटीक और विस्तृत जानकारी हिंदी में दें)`);
-        
-        const response = await fetch(`https://text.pollinations.ai/${searchPrompt}?model=searchgpt&seed=${timestamp}&cache=false`);
-        
-        if (!response.ok) {
-            throw new Error("सर्च सर्वर से संपर्क नहीं हुआ");
+    // 1. gemini-search (लाइव Google सर्च इंजन)
+    // 2. deepseek व openai (बैकअप इंजन)
+    const searchEngines = ["gemini-search", "deepseek", "openai"];
+    let finalAnswer = "";
+
+    const cleanPrompt = `निर्देश: आप 'संकट मुक्त AI' (Arjun Project) के मुख्य सलाहकार हैं। वर्तमान समय (वर्ष 2026) के नवीनतम लाइव इंटरनेट डेटा और वास्तविकताओं के आधार पर किसी भी क्षेत्र का 100% सटीक, अद्यतन व पेशेवर उत्तर हिंदी में दें।\n\nयूज़र का प्रश्न: ${v}`;
+
+    for (const engine of searchEngines) {
+        try {
+            const url = `https://text.pollinations.ai/${encodeURIComponent(cleanPrompt)}?model=${engine}&seed=${Date.now()}`;
+            const res = await fetch(url);
+            if (!res.ok) continue;
+
+            const text = await res.text();
+            if (!text || text.trim().length === 0) continue;
+
+            // सुरक्षा कवच: यदि सर्वर कोई एरर JSON भेजे तो स्क्रीन पर न दिखाकर अगले मॉडल पर जाए
+            if (text.startsWith("{") && text.includes('"error"')) {
+                continue;
+            }
+
+            finalAnswer = text;
+            break; // सटीक उत्तर मिलते ही लूप पूरा
+        } catch (e) {
+            continue; // नेटवर्क बाधा आने पर तुरंत अगला मॉडल ट्राई करेगा
         }
-
-        let reply = await response.text();
-
-        // बैकअप: यदि किसी क्षण सर्च इंजन रिस्पॉन्स न दे
-        if (!reply || reply.trim().length === 0) {
-            const fallbackRes = await fetch(`https://text.pollinations.ai/${encodeURIComponent(v)}?seed=${timestamp}`);
-            reply = await fallbackRes.text();
-        }
-
-        const loadElem = document.getElementById(loadId);
-        if (loadElem) loadElem.remove();
-
-        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI (लाइव रिसर्च रिपोर्ट):\n</strong>${reply}</div>`;
-        box.scrollTop = box.scrollHeight;
-
-    } catch (err) {
-        const loadElem = document.getElementById(loadId);
-        if (loadElem) loadElem.remove();
-        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ लाइव रिसर्च में समस्या: कृपया 2 सेकंड बाद पुनः आदेश दें।</div>`;
-        box.scrollTop = box.scrollHeight;
     }
+
+    const loadElem = document.getElementById(loadId);
+    if (loadElem) loadElem.remove();
+
+    if (finalAnswer) {
+        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI (लाइव रिसर्च रिपोर्ट):\n</strong>${finalAnswer}</div>`;
+    } else {
+        box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सभी सर्च इंजन व्यस्त हैं। कृपया 3 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
+    }
+    box.scrollTop = box.scrollHeight;
 }
 
 
