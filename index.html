@@ -1193,7 +1193,6 @@ FEMA 1999 / RBI Inward Remittance Compliant।`);
             • धारा 65B डिजिटल साक्ष्य प्रमाणपत्र संलग्न। प्रथम सुनवाई में मामला खारिज होने योग्य।
             `;
         }
-
 async function sendBossQuery() {
     const inp = document.getElementById('bossQueryTxt');
     const v = inp.value.trim();
@@ -1205,18 +1204,87 @@ async function sendBossQuery() {
     box.scrollTop = box.scrollHeight;
 
     const loadId = "load_" + Date.now();
-    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) विश्लेषण कर रहा है...</em></div>`;
+    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) लाइव इंटरनेट से जानकारी ला रहा है...</em></div>`;
     box.scrollTop = box.scrollHeight;
 
-    // अर्जुन प्रोजेक्ट का स्थायी कानूनी व रणनीतिक निर्देश
-    const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) और अद्यतन व्यवस्था के आधार पर उपयोगकर्ता के हर सवाल का सटीक, व्यावहारिक और प्रभावशाली हिंदी में उत्तर दें।";
-    const fullPrompt = `${systemPrompt}\n\nयूज़र का प्रश्न: ${v}`;
+    // ============ STEP 1: LIVE INTERNET SEARCH ============
+    let liveContext = "";
+
+    // 1A. Wikipedia से ताज़ा जानकारी
+    try {
+        const wikiUrl = `https://hi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`;
+        const wikiRes = await fetch(wikiUrl);
+        if (wikiRes.ok) {
+            const wikiData = await wikiRes.json();
+            if (wikiData.extract) {
+                liveContext += `[Wikipedia]: ${wikiData.extract}\n\n`;
+            }
+        }
+    } catch (e) {}
+
+    // 1B. English Wikipedia fallback
+    if (!liveContext) {
+        try {
+            const wikiEnUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`;
+            const wikiEnRes = await fetch(wikiEnUrl);
+            if (wikiEnRes.ok) {
+                const wikiEnData = await wikiEnRes.json();
+                if (wikiEnData.extract) {
+                    liveContext += `[Wikipedia EN]: ${wikiEnData.extract}\n\n`;
+                }
+            }
+        } catch (e) {}
+    }
+
+    // 1C. DuckDuckGo Instant Answer API (ताज़ा खबरें, तथ्य)
+    try {
+        const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(v)}&format=json&no_html=1&skip_disambig=1`;
+        const ddgRes = await fetch(ddgUrl);
+        if (ddgRes.ok) {
+            const ddgData = await ddgRes.json();
+            if (ddgData.AbstractText) {
+                liveContext += `[DuckDuckGo]: ${ddgData.AbstractText}\n`;
+                if (ddgData.AbstractURL) liveContext += `स्रोत: ${ddgData.AbstractURL}\n\n`;
+            }
+            // Related topics (ताज़ा अपडेट)
+            if (ddgData.RelatedTopics && ddgData.RelatedTopics.length > 0) {
+                const rel = ddgData.RelatedTopics
+                    .slice(0, 3)
+                    .map(t => t.Text)
+                    .filter(Boolean)
+                    .join(" | ");
+                if (rel) liveContext += `[संबंधित ताज़ा जानकारी]: ${rel}\n\n`;
+            }
+        }
+    } catch (e) {}
+
+    // 1D. Google News RSS (breaking news के लिए)
+    try {
+        const newsUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(v)}&hl=hi&gl=IN&ceid=IN:hi`;
+        const newsRes = await fetch(newsUrl);
+        if (newsRes.ok) {
+            const newsTxt = await newsRes.text();
+            const titles = [...newsTxt.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)]
+                .map(m => m[1])
+                .slice(1, 4); // पहला title feed का नाम होता है
+            if (titles.length > 0) {
+                liveContext += `[ताज़ा समाचार हेडलाइन्स]: ${titles.join(" | ")}\n\n`;
+            }
+        }
+    } catch (e) {}
+
+    // ============ STEP 2: AI PROMPT तैयार करें ============
+    const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) और अद्यतन व्यवस्था के आधार पर उपयोगकर्ता के हर सवाल का सटीक, व्यावहारिक और प्रभावशाली हिंदी में उत्तर दें। नीचे दी गई लाइव इंटरनेट जानकारी का उपयोग करके ताज़ा और सटीक उत्तर दें।";
+
+    const fullPrompt = liveContext
+        ? `${systemPrompt}\n\n=== लाइव इंटरनेट जानकारी ===\n${liveContext}\n=== अंत ===\n\nयूज़र का प्रश्न: ${v}\n\nऊपर की लाइव जानकारी के आधार पर विस्तृत उत्तर दें।`
+        : `${systemPrompt}\n\nयूज़र का प्रश्न: ${v}`;
 
     let reply = "";
 
-    // 1. प्राथमिक सुरक्षित चैनल (एंटी-कैशे टाइमस्टैम्प के साथ)
+    // ============ STEP 3: AI से जवाब ============
     try {
-        const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}?seed=${Date.now()}`);
+        const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}?seed=${Date.now()}&model=openai`);
         if (res.ok) {
             const txt = await res.text();
             if (txt && !txt.startsWith('{"error"') && !txt.includes('"status":404')) {
@@ -1225,7 +1293,6 @@ async function sendBossQuery() {
         }
     } catch (e) {}
 
-    // 2. बैकअप सुरक्षित चैनल (यदि पहला नेटवर्क धीमा हो)
     if (!reply) {
         try {
             const resPost = await fetch("https://text.pollinations.ai/", {
@@ -1234,8 +1301,9 @@ async function sendBossQuery() {
                 body: JSON.stringify({
                     messages: [
                         { role: "system", content: systemPrompt },
-                        { role: "user", content: v }
+                        { role: "user", content: liveContext ? `लाइव जानकारी:\n${liveContext}\n\nसवाल: ${v}` : v }
                     ],
+                    model: "openai",
                     seed: Date.now()
                 })
             });
@@ -1252,14 +1320,18 @@ async function sendBossQuery() {
     if (loadElem) loadElem.remove();
 
     if (reply && reply.trim().length > 0) {
-        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI:\n</strong>${reply}</div>`;
+        const srcBadge = liveContext
+            ? `<div style="color:#00ff88; font-size:11px; margin-top:4px;">🌐 लाइव इंटरनेट से जानकारी ली गई</div>`
+            : "";
+        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI:\n</strong>${reply}${srcBadge}</div>`;
     } else {
         box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सर्वर से संपर्क नहीं हो पाया। कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
     }
     box.scrollTop = box.scrollHeight;
 }
 
-        function runStage(stage) {
+
+           function runStage(stage) {
             const notice = document.getElementById('stageStatusNotice');
             const table = document.getElementById('sandboxTable');
             if (stage === 1) notice.innerText = "✓ चरण 1: Impact Analysis संपन्न। विधिक सुरक्षा 100% अनुकूल।";
