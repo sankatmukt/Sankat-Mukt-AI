@@ -2,1240 +2,1250 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sankat Mukt AI - VVIP Presidential Console</title>
-    <!-- VVIP UI CSS Core Style Layout Rules -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>संकट मुक्त AI | प्रोटोटाइप कंसोल</title>
     <style>
         :root {
-            --vvip-gold: #ffd700;
-            --neon-gold: rgba(255, 215, 0, 0.8);
-            --bg-dark: #0a0a0c;
-            --surface-dark: #121216;
-            --text-main: #f0f0f5;
-            --text-muted: #a0a0b0;
-            --neon-green: #39ff14;
-            --alert-red: #ff3131;
+            --bg-primary: #0a0d14;
+            --bg-secondary: #121722;
+            --bg-tertiary: #1a2232;
+            --gold-primary: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.35);
+            --text-primary: #f2f5fa;
+            --text-secondary: #9aa7bc;
+            --border-color: #263348;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
-            padding-bottom: 80px;
         }
 
-        /* Ambient VVIP Branding Face Top Bar */
-        .presidential-header {
-            background: linear-gradient(180deg, #16161f 0%, var(--surface-dark) 100%);
-            padding: 20px 15px;
+        /* --- हेडर: 2-स्तरीय मोबाइल-फर्स्ट लेआउट --- */
+        header {
+            background: rgba(10, 13, 20, 0.98);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .header-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .brand-logo-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            box-shadow: 0 0 12px var(--gold-glow);
+            animation: pulse-glow 2.5s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 8px var(--gold-glow); }
+            50% { box-shadow: 0 0 16px rgba(212, 175, 55, 0.6); }
+            100% { box-shadow: 0 0 8px var(--gold-glow); }
+        }
+
+        .brand-name-radiant {
+            font-size: 1.05rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #ffffff, var(--gold-primary), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            letter-spacing: 0.3px;
+        }
+
+        .header-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--gold-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .header-btn.key-btn {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.15);
+            font-weight: bold;
+        }
+
+        .header-sub-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-pill {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            outline: none;
+            flex: 1;
+        }
+
+        /* --- सोशल प्रूफ बार --- */
+        .live-ticker-strip {
+            background: #0d121c;
+            border-bottom: 1px solid var(--border-color);
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            color: #8da0b8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-green);
+        }
+
+        /* --- मुख्य कार्यक्षेत्र --- */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* भरोसा कार्ड */
+        .trust-banner-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(18, 23, 34, 0.95));
+            border: 1px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .trust-banner-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .trust-banner-sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* PhonePe-Style Micro-Grid (8 Squircle Cards) */
+        .grid-header {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: -4px;
+        }
+
+        .phonepe-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .squircle-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            border-bottom: 2px solid var(--vvip-gold);
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        /* Soft Neon Gold Ambient Pulse Style for Trishul */
-        .trishul-logo-box {
-            position: relative;
-            display: inline-block;
+        .squircle-card:active {
+            transform: scale(0.96);
+            border-color: var(--gold-primary);
+        }
+
+        .squircle-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .squircle-label {
+            font-size: 0.68rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        /* इनपुट कमांड बार */
+        .command-bar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+        }
+
+        .command-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .command-btn {
+            background: var(--gold-primary);
+            border: none;
+            color: #000;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.74rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* संवाद फ़ीड */
+        .chat-feed-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feed-item {
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .feed-item-ai {
+            background: #111622;
+            border-left: 3px solid var(--gold-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .feed-item-user {
+            background: var(--bg-tertiary);
+            align-self: flex-end;
+            max-width: 85%;
+        }
+
+        /* संकल्प योजना कार्ड्स */
+        .plan-row-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .plan-sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-price-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--gold-primary);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* --- मॉडल्स (Overlays) --- */
+        .modal-layer {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 12px;
+        }
+
+        .modal-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .modal-heading-text {
+            font-size: 0.92rem;
+            color: var(--gold-primary);
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* स्क्रोल करने योग्य डीड बॉक्स */
+        .deed-scroll-box {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            color: #8c96a5;
+            max-height: 140px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        /* --- 7-कमरों वाला एडमिन कंसोल --- */
+        #adminView {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-primary);
+            z-index: 3000;
+            flex-direction: column;
+        }
+
+        .admin-header-bar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-tabs-scroll {
+            display: flex;
+            overflow-x: auto;
+            background: #0b0f16;
+            border-bottom: 1px solid var(--border-color);
+            padding: 6px 8px;
+            gap: 6px;
+            scrollbar-width: none;
+        }
+        .admin-tabs-scroll::-webkit-scrollbar { display: none; }
+
+        .admin-tab-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .admin-tab-btn.active {
+            background: var(--gold-primary);
+            color: #000;
+            font-weight: 700;
+            border-color: var(--gold-primary);
+        }
+
+        .admin-content-area {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .room-pane {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .room-pane.active {
+            display: flex;
+        }
+
+        .admin-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .admin-card h3 {
+            font-size: 0.85rem;
+            color: var(--gold-primary);
             margin-bottom: 8px;
         }
 
-        .trishul-logo {
-            font-size: 38px;
-            color: var(--vvip-gold);
-            text-shadow: 0 0 15px var(--neon-gold);
-            animation: trishulPulse 3s infinite ease-in-out;
+        .action-btn-ui {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
         }
+        .action-btn-ui:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+        .action-btn-ui.btn-gold { background: var(--gold-primary); color: #000; font-weight: 700; }
+        .action-btn-ui.btn-red { background: var(--accent-red); color: #fff; border: none; }
+        .action-btn-ui.btn-green { background: var(--accent-green); color: #fff; border: none; }
 
-        @keyframes trishulPulse {
-            0% { text-shadow: 0 0 10px var(--neon-gold); transform: scale(1); }
-            50% { text-shadow: 0 0 25px var(--vvip-gold), 0 0 40px var(--neon-gold); transform: scale(1.05); }
-            100% { text-shadow: 0 0 10px var(--neon-gold); transform: scale(1); }
+        /* प्रीव्यू सैंडबॉक्स टेबल */
+        .preview-table {
+            width: 100%;
+            font-size: 0.72rem;
+            border-collapse: collapse;
+            margin: 8px 0;
         }
-
-        .app-title {
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        .preview-table th, .preview-table td {
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            text-align: left;
         }
+        .preview-table th { background: var(--bg-tertiary); color: var(--gold-primary); }
 
-        /* Live Active Traffic Gauge Widget */
-        .live-counter-badge {
-            display: inline-flex;
+        /* डुरेस वेधशाला */
+        #duressCamo {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #090d14;
+            color: #cfd6e0;
+            z-index: 9999;
+            flex-direction: column;
             align-items: center;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-top: 10px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--neon-green);
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 10px var(--neon-green);
-            animation: dotPulse 1.5s infinite ease-in-out;
-        }
-
-        @keyframes dotPulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; box-shadow: 0 0 15px var(--neon-green); }
-            100% { opacity: 0.4; }
-        }
-
-        #clientDisplayCounter {
-            color: var(--neon-green);
-            margin-left: 4px;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top VVIP Branding Zone -->
-    <header class="presidential-header">
-        <div class="trishul-logo-box">
-            <div class="trishul-logo">🔱</div>
+    <!-- हेडर: 2-स्तरीय कॉम्पैक्ट लेआउट -->
+    <header>
+        <div class="header-top-row">
+            <div class="brand-box" onclick="handleBrandClick()">
+                <div class="brand-logo-icon">🔱</div>
+                <div class="brand-name-radiant" id="appMainTitle">संकट मुक्त AI</div>
+            </div>
+            <div class="header-top-actions">
+                <button class="header-btn" title="शेयर करें" onclick="openModal('shareModal')">📢</button>
+                <button class="header-btn" title="विधिक वॉल्ट" onclick="openModal('vaultModal')">🛡️</button>
+                <button class="header-btn key-btn" title="प्रेसिडेंशियल पासकी" onclick="promptPasskey()">🔑</button>
+            </div>
         </div>
-        <h1 class="app-title">Sankat Mukt AI</h1>
-        <div class="live-counter-badge">
-            <span class="pulse-dot"></span>
-            <span>Live Connected Users: <strong id="clientDisplayCounter">1,00,000</strong> [Secured Nodes]</span>
+
+        <div class="header-sub-row">
+            <select class="select-pill" id="countryDropdown" onchange="onCountryChange()">
+                <option value="IN">🇮🇳 भारत</option>
+                <option value="US">🇺🇸 USA</option>
+                <option value="AE">🇦🇪 UAE</option>
+                <option value="GB">🇬🇧 UK</option>
+            </select>
+            <select class="select-pill" id="langDropdown" onchange="onLanguageChange()">
+                <!-- डायनामिक विकल्प -->
+            </select>
         </div>
     </header>
-   <!-- VVIP CSS Style Core Layout Rules (Continuation of Part 1) -->
-    <style>
-        /* Mantra Dhun Hub Floating Console Styles */
-        .mantra-hub {
-            background: linear-gradient(135deg, #181824 0%, #0f0f18 100%);
-            border: 1px solid var(--vvip-gold);
-            margin: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
-        }
-        .mantra-title {
-            color: var(--vvip-gold);
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .mantra-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .mantra-btn {
-            background: rgba(255, 215, 0, 0.05);
-            border: 1px solid var(--vvip-gold);
-            color: #ffffff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .mantra-btn.active {
-            background: var(--vvip-gold);
-            color: #000000;
-            box-shadow: 0 0 10px var(--neon-gold);
-        }
 
-        /* Country-to-Local Language Cascade Styles */
-        .language-hub {
-            background: var(--surface-dark);
-            margin: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--vvip-gold);
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        .vvip-select {
-            width: 100%;
-            background: #1c1c24;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-        }
-        .global-slogan-line {
-            background: rgba(255, 215, 0, 0.03);
-            border: 1px dashed rgba(255, 215, 0, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #ffffff;
-        }
+    <!-- सोशल प्रूफ पट्टी -->
+    <div class="live-ticker-strip">
+        <span class="live-dot"></span>
+        <span id="liveCounterText">342+ साधक इस समय समाधान प्राप्त कर रहे हैं</span>
+    </div>
 
-        /* Trust & Share Gateway Grid Flex */
-        .trust-share-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 15px;
-        }
-        .trust-card, .share-card {
-            background: var(--surface-dark);
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .card-header-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--vvip-gold);
-            margin-bottom: 8px;
-        }
-        .trust-text {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-        .share-btn-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .share-action-btn {
-            background: linear-gradient(90deg, #1d1d29 0%, #252538 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #ffffff;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .share-action-btn:hover {
-            border-color: var(--vvip-gold);
-            box-shadow: 0 0 8px rgba(255,215,0,0.2);
-        }
-    </style>
-
-    <!-- Multi-Mantra Player Hub -->
-    <section class="mantra-hub">
-        <div class="mantra-title">🎵 Dynamic Mantra Player Console</div>
-        <div class="mantra-controls">
-            <button class="mantra-btn active" id="btnMantra1" onclick="toggleMantra('Mantra1')">महामृत्युंजय मंत्र</button>
-            <button class="mantra-btn" id="btnMantra2" onclick="toggleMantra('Mantra2')">गायत्री मंत्र</button>
-            <button class="mantra-btn" id="btnMantra3" onclick="toggleMantra('Mantra3')">नारायण धुन</button>
-            <button class="mantra-btn" id="btnMantraOff" onclick="stopAllMantras()">Sound Off</button>
+    <!-- मुख्य कार्यक्षेत्र -->
+    <main>
+        <!-- भरोसा क्यों करें बैनर -->
+        <div class="trust-banner-card" onclick="openModal('whyTrustModal')">
+            <div>
+                <div class="trust-banner-title">🔱 संकट मुक्त AI पर भरोसा क्यों करें?</div>
+                <div class="trust-banner-sub">पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) • प्राचीन मंत्र-विज्ञान व विधिक प्रज्ञा</div>
+            </div>
+            <div style="font-size: 16px; color: var(--gold-primary);">➔</div>
         </div>
-    </section>
 
-    <!-- Cascade Country & Language Hub -->
-    <section class="language-hub">
-        <div class="form-group">
-            <label>1. Select Your Country / अपना देश चुनें</label>
-            <select class="vvip-select" id="countrySelector" onchange="cascadeLanguages()">
-                <option value="IN">🇮🇳 भारत देश (India)</option>
-                <option value="AE">🇦🇪 यूएई/दुबई (UAE/Dubai)</option>
-                <option value="CN">🇨🇳 चीन देश (China)</option>
-                <option value="US">🇺🇸 अमेरिका (America)</option>
-                <option value="RU">🇷🇺 रूस देश (Russia)</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>2. Choose Local Language / अपनी स्थानीय भाषा चुनें</label>
-            <select class="vvip-select" id="languageSelector" onchange="updateGlobalSloganLanguage()">
-                <!-- Populated dynamically via JavaScript in final modules -->
-                <option value="hi">हिन्दी (Hindi)</option>
-                <option value="en">English</option>
-                <option value="hinglish">Hinglish (हिन्गलिश)</option>
-            </select>
-        </div>
-        <!-- VVIP Global Slogan Box -->
-        <div class="global-slogan-line" id="globalSloganText">
-            ⚠️ <strong>वैश्विक विधिक-आध्यात्मिक उद्घोष:</strong> अब भाषा की दीवारें हमेशा के लिए खत्म! सीधे समाधान आपके द्वार आपकी मनपसंद भाषा में। चाहे आप रशियन हों, Indian हों या चाइनीज़, सीधा आपकी भाषा में सटीक समाधान मिलेगा आचार्य अर्जुन के कठोर मंत्र तप के द्वारा तुरंत। अपने संपूर्ण संकट के अचूक समाधान हेतु सीधे इसी बक्से के नीचे दिए गए <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> के मुख्य गेटवे पर आएं और आज ही अपना जीवन संकट मुक्त बनाएं! 🔱
-        </div>
-    </section>
-
-    <!-- Trust Shield & One-Click Social Engine -->
-    <section class="trust-share-row">
-        <div class="trust-card">
-            <div class="card-header-title">🛡️ क्यों भरोसा करें?</div>
-            <div class="trust-text" id="coreTrustAnswer">
-                Sankat Mukt AI सर्वोच्च विधिक नियमों, उच्च-स्तरीय IT इन्फ्रास्ट्रक्चर और आचार्य अर्जुन जी के कठोर मंत्र तप का एक अचूक समन्वय है, जो आपकी विधिक और आध्यात्मिक सुरक्षा सुनिश्चित करता है।
+        <!-- PhonePe-शैली का 8-ग्रिड -->
+        <div class="grid-header">समाधान व मार्गदर्शन सेवाएँ:</div>
+        <div class="phonepe-grid">
+            <div class="squircle-card" style="border-color: var(--gold-primary);" onclick="openModal('studentModal')">
+                <div class="squircle-icon">🎓</div>
+                <div class="squircle-label">विद्यार्थी मेधा</div>
+            </div>
+            <div class="squircle-card" onclick="selectGridItem('विधिक व न्यायिक संरक्षण (Order 7 Rule 11 / BNS)')">
+                <div class="squircle-icon">⚖️</div>
+                <div class="squircle-label">विधिक सुरक्षा</div>
+            </div>
+            <div class="squircle-card" onclick="selectGridItem('स्वप्न विश्लेषण व आंतरिक शांति (136.1 Hz ॐ नाद)')">
+                <div class="squircle-icon">👁️</div>
+                <div class="squircle-label">स्वप्न शांति</div>
+            </div>
+            <div class="squircle-card" onclick="selectGridItem('अत्यंत निजी व गोपनीय परामर्श (अनुच्छेद 25 द्वारा सुरक्षित)')">
+                <div class="squircle-icon">🔒</div>
+                <div class="squircle-label">गोपनीय विमर्श</div>
+            </div>
+            <div class="squircle-card" onclick="selectGridItem('व्यापारिक व आर्थिक समृद्धि (श्री-समृद्धि विधान)')">
+                <div class="squircle-icon">👑</div>
+                <div class="squircle-label">व्यापार वृद्धि</div>
+            </div>
+            <div class="squircle-card" onclick="selectGridItem('पारिवारिक सामंजस्य व कलह शमन')">
+                <div class="squircle-icon">🕊️</div>
+                <div class="squircle-label">गृह शांति</div>
+            </div>
+            <div class="squircle-card" onclick="selectGridItem('आरोग्य नाद तरंग व मानसिक संबल (528 Hz)')">
+                <div class="squircle-icon">🌿</div>
+                <div class="squircle-label">आरोग्य नाद</div>
+            </div>
+            <div class="squircle-card" onclick="triggerCheckout('राज-सिंहासन महा-संकल्प VVIP संवाद', 101000)">
+                <div class="squircle-icon">📞</div>
+                <div class="squircle-label">VVIP संवाद</div>
             </div>
         </div>
-        <div class="share-card">
-            <div class="card-header-title">🔗 1-Click Share</div>
-            <div class="share-btn-grid">
-                <button class="share-action-btn" onclick="executeNativeShare('whatsapp')">WhatsApp</button>
-                <button class="share-action-btn" onclick="executeNativeShare('telegram')">Telegram</button>
-                <button class="share-action-btn" onclick="executeNativeShare('facebook')">Facebook</button>
+
+        <!-- इनपुट कमांड बार -->
+        <div class="command-bar">
+            <input type="text" class="command-input" id="userProblemInput" placeholder="अपनी समस्या या जिज्ञासा लिखें या बोलें...">
+            <button class="command-btn" onclick="startQueryWorkflow()">समाधान लें</button>
+        </div>
+
+        <!-- संवाद फ़ीड -->
+        <div class="chat-feed-box" id="chatFeedBox">
+            <div class="feed-item feed-item-ai">
+                <strong>प्रणाम।</strong> पूज्य आचार्य अर्जुन जी के संप्रभु परामर्श पोर्टल पर आपका स्वागत है। आप अपनी समस्या दर्ज कर सकते हैं; आपका संपूर्ण विवरण संविधान के अनुच्छेद 25 व देवास-इंदौर क्षेत्राधिकार के अधीन सुरक्षित है।
             </div>
         </div>
-    </section>
-   <!-- VVIP CSS Style Core Layout Rules (Continuation of Part 2) -->
-    <style>
-        /* Horizontal Navigation Tabs Deck Styles */
-        .tabs-container {
-            margin: 15px;
-            background: #111116;
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-        .tabs-header-scroll {
-            display: flex;
-            overflow-x: auto;
-            gap: 8px;
-            padding-bottom: 5px;
-        }
-        /* Custom Custom Scrollbar for Mobile Smooth Navigation */
-        .tabs-header-scroll::-webkit-scrollbar {
-            height: 4px;
-        }
-        .tabs-header-scroll::-webkit-scrollbar-thumb {
-            background: var(--vvip-gold);
-            border-radius: 2px;
-        }
-        .tab-trigger-btn {
-            background: #181822;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-muted);
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .tab-trigger-btn.active {
-            background: linear-gradient(135deg, #2c2505 0%, #151202 100%);
-            border-color: var(--vvip-gold);
-            color: var(--vvip-gold);
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
-        }
 
-        /* Standard Tab Content Display Window */
-        .tab-content-panel {
-            display: none;
-            background: var(--surface-dark);
-            margin: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.03);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-        .tab-content-panel.active {
-            display: block;
-            animation: fadeInTab 0.3s ease-in-out;
-        }
-        @keyframes fadeInTab {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* In-Tab Internal Layout Components */
-        .panel-heading {
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 6px;
-        }
-        .tab-slogan-alert {
-            background: rgba(255, 215, 0, 0.02);
-            border-left: 3px solid var(--vvip-gold);
-            padding: 10px;
-            border-radius: 0 6px 6px 0;
-            font-size: 12px;
-            line-height: 1.4;
-            color: var(--text-main);
-            margin-top: 15px;
-        }
-    </style>
-
-    <!-- Master Working Tabs Deck -->
-    <nav class="tabs-container">
-        <div class="tabs-header-scroll">
-            <button class="tab-trigger-btn active" onclick="switchActiveTab('clientTab')">Client Portal</button>
-            <button class="tab-trigger-btn" onclick="switchActiveTab('predictionTab')">सटीक भविष्यवाणी</button>
-            <button class="tab-trigger-btn" onclick="switchActiveTab('astroTab')">Astro AI</button>
-            <button class="tab-trigger-btn" onclick="switchActiveTab('courtTab')">FIR & Court Case</button>
-            <button class="tab-trigger-btn" onclick="switchActiveTab('universalTab')">Universal AI</button>
-            <button class="tab-trigger-btn" onclick="switchActiveTab('vipPayTab')">👑 संकट मुक्त महा-योजना</button>
-            <button class="tab-trigger-btn" onclick="switchActiveTab('adminTab')">🔒 Admin Control</button>
-        </div>
-    </nav>
-
-    <!-- Content Sections Windows -->
-    
-    <!-- 1. Client Portal Window -->
-    <div id="clientTab" class="tab-content-panel active">
-        <div class="panel-heading">📱 Client Management Workspace</div>
-        <p style="font-size: 13px; color: var(--text-muted);">यहाँ ग्राहकों की सामान्य ट्रैफ़िक श्रेणियों, बेसिक प्रोफाइल सेटिंग्स और सर्विस रिक्वेस्ट्स की प्रगति का पूरा ब्यौरा प्रदर्शित होता है।</p>
-        
-        <!-- Default Slogan Route -->
-        <div class="tab-slogan-alert">
-            🔮 <strong>वैश्विक सार्वभौमिक समाधान एवं विधिक-आध्यात्मिक घोषणा:</strong> चाहे ब्रह्मांड की कोई भी जटिल जानकारी हो या आपके जीवन का कोई असाधारण संकट—इसका तत्काल निवारण अब पूरी तरह संभव है। बिना एक सेकंड गंवाए सीधे मुख्य मेनू बार में 'Admin Control' के ठीक पहले बने <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> टैब के मुख्य दरवाजे पर प्रवेश करें, अपना प्रीमियम पैकेज 1-Click सुरक्षित भुगतान द्वारा सक्रिय करें और आचार्य जी की साक्षात् महा-ऊर्जा का आशीर्वाद प्राप्त करें! 🔱
-        </div>
-    </div>
-   <!-- 2. सटीक भविष्यवाणी Window -->
-    <div id="predictionTab" class="tab-content-panel">
-        <div class="panel-heading">🔮 सटीक भविष्यवाणी एवं आध्यात्मिक समाधान</div>
-        <div class="form-group">
-            <label>अपनी वर्तमान समस्या दर्ज करें (Type Your Problem)</label>
-            <textarea class="vvip-select" id="predictionQueryInput" rows="3" placeholder="यहाँ अपनी समस्या विस्तार से लिखें..."></textarea>
-        </div>
-        
-        <!-- Manual Location Input Node for Spiritual Coordinates Alignment -->
-        <div class="form-group" style="margin-top: 10px;">
-            <label>🌍 आध्यात्मिक समन्वय हेतु स्थान दर्ज करें (Manual Location For Spiritual Energy Alignment)</label>
-            <input type="text" class="vvip-select" id="manualAstroLocation" placeholder="शहर, देश या पिनकोड दर्ज करें">
-        </div>
-
-        <!-- Default Conversion Slogan Route -->
-        <div class="tab-slogan-alert">
-            🔮 <strong>व्यक्तिगत संकट विधिक-आध्यात्मिक घोषणा:</strong> आपके जीवन की हर जटिल व्यक्तिगत समस्या, गृह क्लेश, मानसिक अशांति या भाग्य की रुकावटों का तत्काल एवं अचूक निवारण केवल <strong>आचार्य अर्जुन जी के कठोर मंत्र तप के द्वारा तुरंत</strong> ही संभव है। सरकारी नियमों के पूर्ण अनुपालन के साथ, अपने संकटों को जड़ से मुक्त करने के लिए तुरंत ऊपर हॉरिजॉन्टल मेनू डेक में चमक रहे <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> टैब पर सीधे क्लिक करें, अपना भारी पैकेज चुनें और 1-Click में अपना भाग्य पूर्णतः रूपांतरित करें! 🔱
-        </div>
-    </div>
-
-    <!-- 3. Astro AI Window -->
-    <div id="astroTab" class="tab-content-panel">
-        <div class="panel-heading">✨ Astro AI - Cosmic Resonance Matrix</div>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">यह नोड ब्रह्मांडीय ध्वनि तरंगों और आपके व्यक्तिगत आध्यात्मिक ग्रिड का रीयल-टाइम मिलान करता है।</p>
-        
-        <!-- Default Conversion Slogan Route -->
-        <div class="tab-slogan-alert">
-            🔮 <strong>वैश्विक सार्वभौमिक समाधान एवं विधिक-आध्यात्मिक घोषणा:</strong> चाहे ब्रह्मांड की कोई भी जटिल जानकारी हो या आपके जीवन का कोई असाधारण संकट—इसका तत्काल निवारण अब पूरी तरह संभव है। बिना एक सेकंड गंवाए सीधे मुख्य मेनू बार में 'Admin Control' के ठीक पहले बने <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> टैब के मुख्य दरवाजे पर प्रवेश करें, अपना प्रीमियम पैकेज 1-Click सुरक्षित भुगतान द्वारा सक्रिय करें और आचार्य जी की साक्षात् महा-ऊर्जा का आशीर्वाद प्राप्त करें! 🔱
-        </div>
-    </div>
-
-    <!-- 4. FIR & Court Case Solutions Window -->
-    <div id="courtTab" class="tab-content-panel">
-        <div class="panel-heading">🏛️ FIR & Court Case Solutions Portal</div>
-        
-        <!-- Real-Time Live Location / Safety Tracking Interface Component -->
-        <div style="background: rgba(255, 49, 49, 0.05); border: 1px solid var(--alert-red); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 13px; font-weight: 700; color: var(--alert-red); display: flex; align-items: center; gap: 6px;">
-                    <span class="pulse-dot" style="background-color: var(--alert-red); box-shadow: 0 0 10px var(--alert-red);"></span>
-                    VVIP विधिक साक्ष्य सुरक्षा ट्रैकर (Legal Evidence Tracker)
-                </span>
+        <!-- प्रमुख संकल्प योजनाएँ -->
+        <div class="grid-header" style="margin-top: 6px;">पवित्र मार्गदर्शन संकल्प (सशुल्क):</div>
+        <div class="plan-row-card" style="border-left: 3px solid var(--gold-primary);">
+            <div>
+                <div class="plan-title">आरंभिक संशय-निवारण व शांति-दर्शन</div>
+                <div class="plan-sub">मानसिक शांति, 136.1 Hz प्राथमिक नाद-निर्देश।</div>
             </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">आपातकालीन विधिक संकट में अपनी लाइव लोकेशन को सीधे हमारे असीमित क्लाउड सर्वर्स पर सुरक्षित रिकॉर्ड करने के लिए नीचे का बटन दबाएं।</p>
-            <button class="share-action-btn" id="locationSafetyBtn" style="background: var(--alert-red); border: none; width: 100%;" onclick="toggleRealTimeTracking()">🔴 Activate Real-Time Safety Tracking</button>
+            <button class="plan-price-btn" onclick="triggerCheckout('आरंभिक संशय-निवारण व शांति-दर्शन', 500)">₹500 संकल्प लें</button>
         </div>
 
-        <!-- Default Conversion Slogan Route -->
-        <div class="tab-slogan-alert">
-            🏛️ <strong>वैधानिक न्याय एवं तत्काल वैश्विक राहत घोषणा:</strong> यदि आप दुनिया के किसी भी कोने में किसी भी प्रकार के <strong>झूठे कोर्ट केस, पुलिस कंप्लेंट, अचानक हुई FIR या किसी भी गंभीर कानूनी नोटिस</strong> से संकट में हैं, तो यह समाधान <strong>IT Engineer, MBA एवं LLB विशेषज्ञ आचार्य अर्जुन जी</strong> के अदालती अनुभवों और कठोर मंत्र-तप की महा-शक्तिशाली ऊर्जा का अभेद्य कवच है। बिना एक सेकंड गंवाए तुरंत मुख्य स्क्रॉलिंग बार में दिए गए <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> टैब पर जाएं, अपना प्रीमियम विधिक-जीत पैकेज सक्रिय करें और कानूनी प्रताड़ना से आज ही 100% मुक्ति पाएं! 🔱
+        <div class="plan-row-card" style="border-left: 3px solid var(--accent-green);">
+            <div>
+                <div class="plan-title">🎓 विद्यार्थी मेधा जागरण व परीक्षा विजय</div>
+                <div class="plan-sub">प्रतियोगी परीक्षा, एकाग्रता, 432 Hz अध्ययन नाद।</div>
+            </div>
+            <button class="plan-price-btn" onclick="triggerCheckout('विद्यार्थी मेधा जागरण व परीक्षा विजय संकल्प', 1000)">₹1,000 संकल्प लें</button>
         </div>
-    </div>
-   <!-- 5. Universal AI Window -->
-    <div id="universalTab" class="tab-content-panel">
-        <div class="panel-heading">🌐 Universal AI Solutions Platform</div>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">यहाँ से आप ब्रह्मांड की कोई भी सामान्य जानकारी या तकनीकी कोडिंग सहायता तुरंत प्राप्त कर सकते हैं।</p>
-        
-        <!-- Default Conversion Slogan Route -->
-        <div class="tab-slogan-alert">
-            🔮 <strong>वैश्विक सार्वभौमिक समाधान एवं विधिक-आध्यात्मिक घोषणा:</strong> चाहे ब्रह्मांड की कोई भी जटिल जानकारी हो या आपके जीवन का कोई असाधारण संकट—इसका तत्काल निवारण अब पूरी तरह संभव है। बिना एक सेकंड गंवाए सीधे मुख्य मेनू बार में 'Admin Control' के ठीक पहले बने <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> टैब के मुख्य दरवाजे पर प्रवेश करें, अपना प्रीमियम पैकेज 1-Click सुरक्षित भुगतान द्वारा सक्रिय करें और आचार्य जी की साक्षात् महा-ऊर्जा का आशीर्वाद प्राप्त करें! 🔱
+
+        <div class="plan-row-card">
+            <div>
+                <div class="plan-title">ग्रह-बाधा व स्वप्न शांति विधान</div>
+                <div class="plan-sub">अशांत स्वप्नों का शमन, 136.1 Hz ॐ नाद तरंग।</div>
+            </div>
+            <button class="plan-price-btn" onclick="triggerCheckout('ग्रह-बाधा व स्वप्न शांति विधान', 2100)">₹2,100 संकल्प लें</button>
+        </div>
+
+        <div class="plan-row-card">
+            <div>
+                <div class="plan-title">महा-संकट निवारण सिद्ध रक्षा कवच</div>
+                <div class="plan-sub">पारिवारिक व व्यक्तिगत गंभीर अवरोधों का समाधान।</div>
+            </div>
+            <button class="plan-price-btn" onclick="triggerCheckout('महा-संकट निवारण सिद्ध रक्षा कवच', 5100)">₹5,100 संकल्प लें</button>
+        </div>
+    </main>
+
+    <!-- ==================== मॉडल्स ==================== -->
+
+    <!-- "भरोसा क्यों करें?" मॉडल -->
+    <div class="modal-layer" id="whyTrustModal">
+        <div class="modal-container">
+            <div class="modal-top">
+                <div class="modal-heading-text">🔱 संकट मुक्त AI पर भरोसा क्यों करें?</div>
+                <button class="close-btn" onclick="closeModal('whyTrustModal')">&times;</button>
+            </div>
+            <div style="font-size: 0.78rem; color: #cfd8e3; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+                <p><strong>1. पूज्य आचार्य अर्जुन जी की अद्वितीय मेधा:</strong> B.Sc. (Information Technology), LLB, MBA (E-Commerce) | IT Engineer, Legal Jurist & Cognitive Acoustic Strategist। आधुनिक विज्ञान और सनातन दर्शन का अनूठा समन्वय।</p>
+                <p><strong>2. प्राचीन लुप्त मंत्र-शक्तियों का पुनरुत्थान:</strong> वर्षों के कठोर अनुष्ठान द्वारा प्राचीन शब्द-नाद और मंत्र-ऊर्जा को आधुनिक जीवन के संकटों के समाधान हेतु प्रामाणिक बनाया गया है।</p>
+                <p><strong>3. संकट मुक्त भारत व विश्व का संकल्प:</strong> प्रत्येक मानव के व्यक्तिगत, विधिक, पारिवारिक अथवा स्वप्न-दोष जैसे संकटों का सीधा व सटीक समाधान प्रदान करना।</p>
+                <p><strong>4. सशुल्क संकल्पों की शुचिता:</strong> यह कोई व्यापार नहीं, बल्कि शास्त्रसम्मत ऊर्जा-विनिमय (Energy Exchange) और संप्रभु प्रणाली को बिना किसी बाहरी विज्ञापन के स्वायत्त रखने का सात्विक साधन है।</p>
+            </div>
+            <button class="action-btn-ui btn-gold" onclick="closeModal('whyTrustModal')">अवगत हुए</button>
         </div>
     </div>
 
-    <!-- 6. 👑 संकट मुक्त महा-योजना एवं लाइव कॉल Window -->
-    <div id="vipPayTab" class="tab-content-panel">
-        <div class="panel-heading" style="color: var(--vvip-gold); display: flex; align-items: center; gap: 8px;">👑 संकट मुक्त महा-योजना एवं लाइव कॉल</div>
-        
-        <!-- VVIP Tab Slogan -->
-        <p style="font-size: 13px; line-height: 1.5; margin-bottom: 15px; color: #ffffff; background: rgba(255,215,0,0.02); padding: 10px; border: 1px dashed rgba(255,215,0,0.2); border-radius: 6px;">
-            🔱 <strong>विधिक-आध्यात्मिक संकट निवारण महा-उद्घोष:</strong> जीवन के भीषणतम व्यक्तिगत, वित्तीय या अदालती संकटों का अंतिम और अचूक निवारण केवल <strong>आचार्य अर्जुन जी के कठोर मंत्र तप की संचित महा-ऊर्जा (Mantra Power)</strong> के सीधे तरंग प्रतिध्वनि जुड़ाव से ही संभव है। भारतीय संविधान के <strong>Article 25</strong> एवं वैश्विक उपभोक्ता संरक्षण नीतियों के 100% अनुपालन के साथ, अपनी समस्या का तत्काल साक्षात् समाधान प्राप्त करने के लिए बिना समय गंवाए नीचे से अपना अभीष्ट प्रीमियम पैकेज चुनें और 1-Click सुरक्षित भुगतान द्वारा सीधे आचार्य जी से लाइव कनेक्ट हों! 🔱
+    <!-- आधिकारिक स्लोगन मॉडल -->
+    <div class="modal-layer" id="sloganModal">
+        <div class="modal-container">
+            <div class="modal-top">
+                <div class="modal-heading-text">🔱 पूज्य आचार्य अर्जुन जी का आधिकारिक उद्घोष</div>
+                <button class="close-btn" onclick="closeModal('sloganModal')">&times;</button>
+            </div>
+            <p id="sloganContentText" style="font-size: 0.82rem; line-height: 1.6; color: var(--text-primary);"></p>
+            <button class="action-btn-ui btn-gold" onclick="closeModal('sloganModal')">स्वीकार व आगे बढ़ें</button>
+        </div>
+    </div>
+
+    <!-- विद्यार्थी मेधा मॉडल -->
+    <div class="modal-layer" id="studentModal">
+        <div class="modal-container">
+            <div class="modal-top">
+                <div class="modal-heading-text">🎓 विद्यार्थी व युवा मेधा प्रज्ञा केंद्र</div>
+                <button class="close-btn" onclick="closeModal('studentModal')">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button class="action-btn-ui" onclick="setStudentField('प्रतियोगी परीक्षा विजय (UPSC/PSC/SSC)')">📚 प्रतियोगी परीक्षा विजय (UPSC/PSC/SSC)</button>
+                <button class="action-btn-ui" onclick="setStudentField('व्यावसायिक प्रवेश परीक्षा (NEET/JEE/CLAT)')">🎯 व्यावसायिक प्रवेश (NEET/JEE/CLAT)</button>
+                <button class="action-btn-ui" onclick="setStudentField('मेधा जागरण व 432 Hz अध्ययन नाद')">🧠 मेधा जागरण व 432 Hz अध्ययन नाद</button>
+                <button class="action-btn-ui" onclick="setStudentField('साक्षात्कार आत्मविश्वास (Interview Mastery)')">🎙️ साक्षात्कार आत्मविश्वास</button>
+            </div>
+            <button class="action-btn-ui btn-green" style="margin-top: 6px;" onclick="triggerCheckout('विद्यार्थी मेधा जागरण व परीक्षा विजय संकल्प', 1000)">⚡ ₹1,000 विद्यार्थी संकल्प लें</button>
+        </div>
+    </div>
+
+    <!-- त्रि-स्तरीय विधिक अनुबंध व OTP मॉडल -->
+    <div class="modal-layer" id="otpModal">
+        <div class="modal-container">
+            <div class="modal-top">
+                <div class="modal-heading-text">🔒 पहचान सत्यापन एवं सेवा अनुबंध</div>
+                <button class="close-btn" onclick="closeModal('otpModal')">&times;</button>
+            </div>
+            <input type="text" id="seekerName" placeholder="आपका पूरा नाम" style="padding: 8px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.8rem;">
+            <input type="tel" id="seekerMobile" placeholder="मोबाइल / व्हाट्सएप नंबर" style="padding: 8px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.8rem;">
+            
+            <div style="display: flex; gap: 6px;">
+                <input type="text" id="seekerOtp" placeholder="4-अंकीय OTP (डिफ़ॉल्ट: 1234)" style="flex: 1; padding: 8px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.8rem;">
+                <button class="action-btn-ui" onclick="alert('OTP प्रेषित! परीक्षण हेतु 1234 दर्ज करें।')">OTP भेजें</button>
+            </div>
+
+            <!-- त्रि-स्तरीय विधिक डीड -->
+            <div class="deed-scroll-box">
+                <strong>परामर्श आचार संहिता व सेवा अनुबंध:</strong><br>
+                1. <em>सेवा शुचिता:</em> यह प्लेटफॉर्म साधक के व्यक्तिगत मानसिक संतुलन, नाद-तरंग संवर्धन एवं शास्त्रीय मार्गदर्शन हेतु समर्पित है।<br>
+                2. <em>आजीवन संपर्क व संचार सहमति:</em> साधक पूज्य आचार्य अर्जुन जी एवं संस्थान द्वारा समय-समय पर आध्यात्मिक विचार, जीवन-मार्गदर्शन वीडियो, संदेश, तथा कॉल्स प्राप्त करने हेतु अपनी स्थायी सहमति प्रदान करता है, जो DND अथवा टेलीमार्केटिंग प्रतिबंधों से परे मान्य होगी।<br>
+                3. <em>30-दिवसीय अनिवार्य आंतरिक निवारण:</em> किसी भी विवाद की स्थिति में प्लेटफॉर्म के आंतरिक लोकपाल (Grievance Mechanism) में 30-दिवसीय समाधान प्रक्रिया पूर्ण करना अनिवार्य पूर्व-शर्त (Condition Precedent) है।<br>
+                4. <em>देवास व इंदौर (म.प्र.) अनन्य क्षेत्राधिकार:</em> समस्त विषयों का निपटारा केवल देवास अथवा इंदौर (मध्य प्रदेश, भारत) के सक्षम न्यायालयों के अधीन ही होगा (Order 7 Rule 11 CPC व धारा 28 अनुबंध अधिनियम)।<br>
+                5. <em>साक्ष्य मुहर:</em> OTP सत्यापन के साथ SHA-256 डिजिटल मुहर संचित होती है। अनुच्छेद 25 द्वारा धार्मिक-दार्शनिक स्वतंत्रता संरक्षित है।
+            </div>
+
+            <label style="font-size: 0.72rem; color: #8da0b8; display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="deedAgreeCheck" checked> मैं समस्त सेवा नियमों व देवास-इंदौर क्षेत्राधिकार से पूर्णतः सहमत हूँ।
+            </label>
+
+            <button class="action-btn-ui btn-green" onclick="completeOtpFlow()">सत्यापित करें एवं समाधान पत्र प्राप्त करें</button>
+        </div>
+    </div>
+
+    <!-- शेयर मॉडल -->
+    <div class="modal-layer" id="shareModal">
+        <div class="modal-container" style="max-width: 400px;">
+            <div class="modal-top">
+                <div class="modal-heading-text">📢 1-क्लिक सोशल शेयर</div>
+                <button class="close-btn" onclick="closeModal('shareModal')">&times;</button>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button class="action-btn-ui" onclick="socialShare('whatsapp')">💬 WhatsApp</button>
+                <button class="action-btn-ui" onclick="socialShare('telegram')">✈️ Telegram</button>
+                <button class="action-btn-ui" onclick="socialShare('twitter')">🐦 X (Twitter)</button>
+                <button class="action-btn-ui" onclick="socialShare('facebook')">📘 Facebook</button>
+                <button class="action-btn-ui" onclick="socialShare('copy')">🔗 लिंक कॉपी करें</button>
+            </div>
+            <div id="shareStatusTxt" style="font-size: 0.74rem; color: var(--accent-green); text-align: center;"></div>
+        </div>
+    </div>
+
+    <!-- विधिक वॉल्ट मॉडल -->
+    <div class="modal-layer" id="vaultModal">
+        <div class="modal-container">
+            <div class="modal-top">
+                <div class="modal-heading-text">🛡️ संप्रभु विधिक एवं साइबर वॉल्ट</div>
+                <button class="close-btn" onclick="closeModal('vaultModal')">&times;</button>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: 6px;">
+                <div><strong>1. Order 7 Rule 11 CPC:</strong> देवास-इंदौर के बाहर दायर कोई भी वाद प्रथम सुनवाई में खारिज होने योग्य।</div>
+                <div><strong>2. अनुच्छेद 25 व 26:</strong> सनातन नाद-विज्ञान एवं आध्यात्मिक मार्गदर्शन का संवैधानिक संरक्षण।</div>
+                <div><strong>3. IT Act धारा 65B:</strong> SHA-256 डिजिटल मुहर Conclusive साक्ष्य है।</div>
+                <div><strong>4. FEMA 1999 HSN 998314:</strong> 100% श्वेत सॉफ्टवेयर निर्यात राजस्व।</div>
+            </div>
+            <button class="action-btn-ui" onclick="closeModal('vaultModal')">बंद करें</button>
+        </div>
+    </div>
+
+    <!-- चेकआउट सिमुलेटर -->
+    <div class="modal-layer" id="checkoutModal">
+        <div class="modal-container" style="max-width: 400px;">
+            <div class="modal-top">
+                <div class="modal-heading-text">💳 1-क्लिक संकल्प भुगतान</div>
+                <button class="close-btn" onclick="closeModal('checkoutModal')">&times;</button>
+            </div>
+            <div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary);">चयनित संकल्प:</div>
+                <div id="payTitle" style="font-size: 0.95rem; color: var(--gold-primary); font-weight: 700;"></div>
+                <div id="payAmount" style="font-size: 1.2rem; font-weight: 800; color: #fff;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button class="action-btn-ui btn-green" onclick="confirmPayment('UPI')">⚡ 1-क्लिक UPI (PhonePe / GPay / Paytm)</button>
+                <button class="action-btn-ui" onclick="confirmPayment('Card')">💳 डेबिट / क्रेडिट कार्ड / NetBanking</button>
+                <button class="action-btn-ui" onclick="confirmPayment('PayPal')">🌐 PayPal / Stripe (USD / EUR / AED)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- डुरेस आवरण -->
+    <div id="duressCamo">
+        <h2 style="color: #9aa7bc; margin-bottom: 8px;">🕉️ दैनिक वैदिक पंचांग व ध्यान वेधशाला</h2>
+        <p style="font-size: 0.8rem; color: #5a697f; max-width: 400px; margin-bottom: 16px;">
+            "सत्य, समता और धैर्य ही जीवन के परम आधार हैं। श्वास चक्र पर ध्यान केंद्रित करें।"
         </p>
+        <button class="action-btn-ui" onclick="exitDuress()">वेधशाला से बाहर आएं</button>
+    </div>
 
-        <!-- Premium Packages Tiers Grid Layout -->
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- Pack 1 -->
-            <div style="background: #181822; border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; margin-bottom: 5px;">
-                    <span style="color: #64b5f6;">🎓 Student Mantra Focus Pack</span>
-                    <span style="color: var(--vvip-gold);">₹501</span>
-                </div>
-                <p style="font-size: 12px; color: var(--text-muted);">छात्रों के लिए आकादमिक भटकाव निवारण और करियर एकाग्रता हेतु विज्ञापित-विधिक प्राचीन ध्वनि तरंग परामर्श।</p>
-                <button class="share-action-btn" style="margin-top: 8px; width: 100%; border-color: #64b5f6;" onclick="triggerPaymentGateway(501, 'Student Pack')">1-Click Purchase</button>
+    <!-- ==================== 7 कोर संप्रभु एडमिन रूम्स ==================== -->
+    <div id="adminView">
+        <div class="admin-header-bar">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--gold-primary); font-weight: 700; font-size: 0.9rem;">🔱 प्रेसिडेंशियल कॉकपिट</span>
+                <span style="font-size: 0.65rem; background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color);">7 CORE ROOMS</span>
             </div>
-            <!-- Pack 2 -->
-            <div style="background: #181822; border: 1px solid rgba(255,215,0,0.2); padding: 12px; border-radius: 8px; box-shadow: 0 0 10px rgba(255,215,0,0.05);">
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; margin-bottom: 5px;">
-                    <span style="color: var(--vvip-gold);">⚖️ Divine Law & Victory Pack</span>
-                    <span style="color: var(--vvip-gold);">Extra Premium</span>
-                </div>
-                <p style="font-size: 12px; color: var(--text-muted);">घोर अदालती विवादों, अचानक हुई झूठी FIR, और पुलिस कंप्लेंट से परमानेंट कानूनी सुरक्षा एवं आचार्य अर्जुन जी के कठोर मंत्र तप के द्वारा तुरंत अचूक निवारण।</p>
-                <button class="share-action-btn" style="margin-top: 8px; width: 100%; background: rgba(255,215,0,0.1); border-color: var(--vvip-gold);" onclick="triggerPaymentGateway(11000, 'Victory Pack')">Buy Package (₹11,000)</button>
+            <div style="display: flex; gap: 6px;">
+                <button class="action-btn-ui btn-red" onclick="triggerDuress()">🚨 CAMO</button>
+                <button class="action-btn-ui" onclick="closeAdmin()">बाहर आएं</button>
             </div>
-            <!-- Pack 3 -->
-            <div style="background: linear-gradient(135deg, #1c1502 0%, #121216 100%); border: 1px solid var(--vvip-gold); padding: 12px; border-radius: 8px; box-shadow: 0 0 15px rgba(255,215,0,0.1);">
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; margin-bottom: 5px;">
-                    <span style="color: #e040fb;">👑 VVIP Business, Wealth & Royal Pack</span>
-                    <span style="color: var(--vvip-gold);">Highest Premium</span>
+        </div>
+
+        <!-- 7 रूम्स स्क्रोल टैब्स -->
+        <div class="admin-tabs-scroll">
+            <button class="admin-tab-btn active" onclick="switchAdminRoom(1)">Room 1: CRM व विधिक डोजियर</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(2)">Room 2: वित्तीय वॉल्ट व CA टैक्स</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(3)">Room 3: साइबर शील्ड व रूल्स</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(4)">Room 4: गणितीय नाद जनरेटर</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(5)">Room 5: क्लाउड IDE व सैंडबॉक्स</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(6)" style="border-color: var(--gold-primary);">👑 Room 6: AI Co-Pilot & 4-Stage</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(7)">Room 7: सोशल मार्केटिंग व टूल्स</button>
+        </div>
+
+        <div class="admin-content-area">
+
+            <!-- Room 1 -->
+            <div class="room-pane active" id="pane1">
+                <div class="admin-card">
+                    <h3>👥 साधक डोजियर व Order 7 Rule 11 First-Hearing Dismissal Pack</h3>
+                    <p style="font-size: 0.74rem; color: var(--text-secondary); margin-bottom: 8px;">
+                        देवास-इंदौर अनन्य क्षेत्राधिकार के आधार पर बाहर का वाद प्रथम सुनवाई में खारिज कराने वाला विधिक डोजियर:
+                    </p>
+                    <button class="action-btn-ui btn-red" onclick="buildDismissalDossier()">⚡ Generate First-Hearing Dismissal Pack</button>
+                    <div id="dismissalDossierNotice" style="margin-top: 8px; font-size: 0.74rem; color: var(--accent-green);"></div>
                 </div>
-                <p style="font-size: 12px; color: var(--text-muted);">व्यापारिक महा-अवरोधों, लक्ष्मी बंधन मुक्ति, और सीधे प्रेसिडेंट बॉस (आचार्य जी) से 1-Click Ultra HD वीडियो कॉल पर आमने-सामने का सर्वोच्च आध्यात्मिक नोड।</p>
-                <button class="share-action-btn" style="margin-top: 8px; width: 100%; background: var(--vvip-gold); color: #000000; font-weight: 800;" onclick="triggerPaymentGateway(51000, 'VVIP Royal Pack')">Unlock VVIP Access (₹51,000)</button>
             </div>
+
+            <!-- Room 2 -->
+            <div class="room-pane" id="pane2">
+                <div class="admin-card">
+                    <h3>📊 वित्तीय वॉल्ट, CA बैलेंस शीट व FEMA e-BRC Pipeline</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 6px;">
+                        <div style="background: var(--bg-tertiary); padding: 8px; border-radius: 6px;">
+                            <div style="font-size: 0.68rem; color: var(--text-secondary);">ग्रॉस टर्नओवर</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--accent-green);">₹1,84,50,000</div>
+                        </div>
+                        <div style="background: var(--bg-tertiary); padding: 8px; border-radius: 6px;">
+                            <div style="font-size: 0.68rem; color: var(--text-secondary);">एडवांस टैक्स (30%)</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--accent-blue);">₹55,35,000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room 3 -->
+            <div class="room-pane" id="pane3">
+                <div class="admin-card">
+                    <h3>🛡️ 24/7 स्वायत्त साइबर शील्ड व ऑटो-रेगुलेटरी स्कैनर</h3>
+                    <p style="font-size: 0.74rem; color: var(--accent-green);">● Quantum Lattice Shield Active • IT Rules & BSA 2023 Scanned 100%</p>
+                </div>
+            </div>
+
+            <!-- Room 4 -->
+            <div class="room-pane" id="pane4">
+                <div class="admin-card">
+                    <h3>🎶 गणितीय नाद-ध्वनि सिंथेसाइज़र (Web Audio API)</h3>
+                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px;">0% स्टोरेज लोड। सीधे ब्राउज़र में लाइव साइन-वेव:</p>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button class="action-btn-ui" onclick="playWebTone(136.1)">136.1 Hz (ॐ नाद)</button>
+                        <button class="action-btn-ui" onclick="playWebTone(432)">432 Hz (मेधा नाद)</button>
+                        <button class="action-btn-ui" onclick="playWebTone(528)">528 Hz (विजय नाद)</button>
+                        <button class="action-btn-ui btn-red" onclick="stopWebTone()">ध्वनि बंद करें</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room 5 -->
+            <div class="room-pane" id="pane5">
+                <div class="admin-card">
+                    <h3>💻 क्लाउड IDE, लाइव मोबाइल सैंडबॉक्स व 1-क्लिक पैकेजिंग</h3>
+                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 6px;">
+                        ब्राउज़र में लाइव टेस्ट करें और बिना Android Studio / Mac के पैकेज डाउनलोड करें:
+                    </p>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="action-btn-ui btn-green" onclick="alert('Android Native .APK कंपाइल संपन्न। डाउनलोड रेडी।')">📦 Build .APK</button>
+                        <button class="action-btn-ui" onclick="alert('iOS Package कंपाइल संपन्न।')">🍏 Build iOS</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room 6: हार्ट ऑफ़ द ऐप (4-स्टेज पाइपलाइन व AI Co-Pilot) -->
+            <div class="room-pane" id="pane6">
+                <div class="admin-card" style="border-color: var(--gold-primary);">
+                    <h3>🤖 सुप्रीम प्रेसिडेंशियल AI Co-Pilot (Gemini Ultra Mode)</h3>
+                    <div id="bossChatOutput" style="background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; height: 160px; overflow-y: auto; padding: 8px; font-size: 0.76rem; display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px;">
+                        <div style="color: #cfd8e3;"><strong>AI:</strong> प्रणाम प्रेसिडेंट बॉस! आप किसी भी विषय (विधिक, व्यापार, तकनीक) पर निर्देश दें। मैं 4-चरणीय पाइपलाइन के साथ क्रियान्वयन करूँगा।</div>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="bossQueryTxt" placeholder="अपना आदेश या प्रश्न दर्ज करें..." style="flex: 1; padding: 6px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.76rem;">
+                        <button class="action-btn-ui btn-gold" onclick="sendBossQuery()">आदेश दें</button>
+                    </div>
+                </div>
+
+                <!-- 4-चरणीय इंटरएक्टिव प्रीव्यू व सैंडबॉक्स टेबल -->
+                <div class="admin-card">
+                    <h3>📋 4-स्टेज लाइव प्रीव्यू व डिप्लॉयमेंट पाइपलाइन</h3>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <button class="action-btn-ui" onclick="runStage(1)">📊 चरण 1: Impact Analysis</button>
+                        <button class="action-btn-ui" onclick="runStage(2)">📄 चरण 2: Blueprint Dossier</button>
+                        <button class="action-btn-ui" onclick="runStage(3)">👁️ चरण 3: Sandbox Table Preview</button>
+                        <button class="action-btn-ui btn-green" onclick="runStage(4)">🚀 चरण 4: Final Launch & Silent Push</button>
+                    </div>
+
+                    <!-- इंटरएक्टिव टेबल -->
+                    <table class="preview-table" id="sandboxTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>पैरामीटर</th>
+                                <th>वर्तमान स्थिति</th>
+                                <th>नया सैंडबॉक्स प्रीव्यू</th>
+                                <th>विधिक स्थिति (Dewas/Indore)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>सर्विस प्लान</td>
+                                <td>आरंभिक संशय (₹500)</td>
+                                <td style="color: var(--gold-primary);">विद्यार्थी मेधा (₹1,000)</td>
+                                <td style="color: var(--accent-green);">100% अनुकूल (Order 7 Rule 11)</td>
+                            </tr>
+                            <tr>
+                                <td>डिवाइस लोड</td>
+                                <td>0% CPU / RAM</td>
+                                <td>0% (WASM Micro-Cluster)</td>
+                                <td>डेटा लीकेज शून्य (DPDP Act)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="stageStatusNotice" style="font-size: 0.74rem; color: var(--gold-primary);"></div>
+                </div>
+
+                <!-- सोशल प्रूफ स्लाइडर -->
+                <div class="admin-card">
+                    <h3>👥 फ्रंटएंड साधक काउंटर स्लाइडर</h3>
+                    <input type="range" min="100" max="2500" value="342" style="width: 100%; cursor: pointer;" oninput="updateCounterSlider(this.value)">
+                    <div style="font-size: 0.72rem; color: #8da0b8; margin-top: 4px;">संख्या: <strong id="sliderValTxt" style="color: #fff;">342</strong></div>
+                </div>
+            </div>
+
+            <!-- Room 7: सोशल मार्केटिंग, बैनर, स्क्रिप्ट व फ़ाइल टूल -->
+            <div class="room-pane" id="pane7">
+                <div class="admin-card">
+                    <h3>📢 सोशल मार्केटिंग, बैनर, स्क्रिप्ट व ऑटो-शेयर स्टूडियो</h3>
+                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px;">
+                        1-क्लिक में सोशल मीडिया सामग्री (X/Twitter, Reels, WhatsApp) तैयार और प्रसारित करें:
+                    </p>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <button class="action-btn-ui" onclick="generateMarketingContent('reel')">🎬 Reel Video Script</button>
+                        <button class="action-btn-ui" onclick="generateMarketingContent('twitter')">🐦 X Post / Thread</button>
+                        <button class="action-btn-ui" onclick="generateMarketingContent('banner')">🖼️ Banner Headline</button>
+                    </div>
+                    <div id="marketingResultBox" style="background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; font-size: 0.74rem; color: #cfd8e3; min-height: 50px;">
+                        सामग्री यहाँ जनरेट होगी...
+                    </div>
+                </div>
+
+                <!-- यूनिवर्सल फ़ाइल अपलोड, विश्लेषण व डाउनलोड टूल -->
+                <div class="admin-card">
+                    <h3>📁 यूनिवर्सल फ़ाइल अपलोड, न्यूरल विश्लेषण व डाउनलोड टूल</h3>
+                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px;">
+                        कोई भी फ़ाइल (PDF, Doc, JSON, Image) अपलोड करें; AI तुरंत विश्लेषण कर डाउनलोड फॉर्मेट तैयार करेगा:
+                    </p>
+                    <input type="file" id="universalFileInput" style="font-size: 0.74rem; color: #8da0b8; margin-bottom: 8px;">
+                    <div style="display: flex; gap: 6px;">
+                        <button class="action-btn-ui btn-gold" onclick="analyzeUploadedFile()">⚡ फ़ाइल अपलोड व न्यूरल विश्लेषण</button>
+                        <button class="action-btn-ui" onclick="downloadAnalyzedFile('dossier.txt')">📥 रिजल्ट डाउनलोड (.TXT)</button>
+                    </div>
+                    <div id="fileAnalyzeStatus" style="font-size: 0.72rem; color: var(--accent-green); margin-top: 6px;"></div>
+                </div>
+
+                <!-- लोकपाल निवारण -->
+                <div class="admin-card">
+                    <h3>⚖️ 30-दिवसीय आंतरिक लोकपाल रजिस्टर</h3>
+                    <p style="font-size: 0.72rem; color: var(--accent-green);">● कोई भी बाह्य विवाद लंबित नहीं है। समस्त साधक संतुष्ट हैं।</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- 7. Admin Control Gateway Password Screen -->
-    <div id="adminTab" class="tab-content-panel">
-        <div class="panel-heading">🔒 VVIP Presidential Gate Control</div>
-        <div id="adminLockScreen">
-            <div class="form-group">
-                <label>Enter Secret Code / गुप्त कोड दर्ज करें</label>
-                <input type="password" class="vvip-select" id="adminPasswordInput" style="text-align: center; letter-spacing: 5px;" placeholder="••••••••">
-            </div>
-            <button class="share-action-btn" style="width: 100%; border-color: var(--vvip-gold); margin-top: 5px;" onclick="verifyPresidentialPasskey()">Verify Presidential Security</button>
-            <div id="adminLoginError" style="color: var(--alert-red); font-size: 12px; margin-top: 8px; text-align: center; font-weight: 600; display: none;">❌ Access Denied: Invalid Security Code</div>
-        </div>
-        
-        <!-- Live Admin Panel Wrapper (Hidden by Default until verified) -->
-        <div id="liveAdminPanel" style="display: none;">
-            <!-- Admin Workspace Header -->
-            <div style="background: rgba(255,215,0,0.05); padding: 10px; border: 1px solid var(--vvip-gold); border-radius: 8px; margin-bottom: 15px; font-size: 13px; font-weight: 700; color: var(--vvip-gold); text-align: center;">
-                🔱 Welcome President Boss: 'You & Me' Autonomous Boardroom Active 🔱
-            </div>
-           <!-- Inside liveAdminPanel: Internal VVIP Sub-Tabs Row Selection -->
-            <div style="margin-bottom: 15px; border-bottom: 1px dashed rgba(255,215,0,0.2); padding-bottom: 10px;">
-                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">🔱 SELECT EMPLOYEES VIRTUAL ROOM (६-सदस्यीय टीम कक्ष):</label>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                    <button class="tab-trigger-btn active" id="subBtnCa" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminCaRoom')">📊 CA Tax Engine</button>
-                    <button class="tab-trigger-btn" id="subBtnBank" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminBankRoom')">🌐 Bank Handler</button>
-                    <button class="tab-trigger-btn" id="subBtnIt" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminItRoom')">🛡️ Server IT Shield</button>
-                    <button class="tab-trigger-btn" id="subBtnMarket" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminMarketRoom')">📢 Digital Marketer</button>
-                    <button class="tab-trigger-btn" id="subBtnVideo" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminVideoRoom')">🎬 Video Producer</button>
-                    <button class="tab-trigger-btn" id="subBtnLegal" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminLegalRoom')">⚖️ Legal Advisors</button>
-                    <button class="tab-trigger-btn" id="subBtnDoctor" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminDoctorRoom')">🩺 Doctor Node</button>
-                    <button class="tab-trigger-btn" id="subBtnLaunch" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminLaunchRoom')">🚀 Software Architect</button>
-                    <button class="tab-trigger-btn" id="subBtnResource" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminResourceRoom')">🌍 King Resources</button>
-                    <button class="tab-trigger-btn" id="subBtnScanner" style="padding: 6px 12px; font-size: 11px;" onclick="switchAdminRoom('adminScannerRoom')">⚙️ Evolution Scanner</button>
-                </div>
-            </div>
-
-            <!-- SUB-ROOM WINDOWS FOR ADMIN BOARDROOM -->
-
-            <!-- Room A: Autonomous CA Tax Engine -->
-            <div id="adminCaRoom" class="admin-room-panel" style="display: block; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #64b5f6; margin-bottom: 8px;">📊 CA Tax Engine Workspace [Senior CA Mode]</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-                    <button class="share-action-btn" style="border-color: #64b5f6;" onclick="executeCaAction('audit')">1-Click Tax Audit Report</button>
-                    <button class="share-action-btn" style="background: rgba(100,181,246,0.1); border-color: #64b5f6;" onclick="executeCaAction('pay')">1-Click All Tax Paid</button>
-                </div>
-                <!-- Interactive Review Dialog Hub -->
-                <div class="form-group">
-                    <label style="color: #64b5f6;">💬 Discuss with Senior CA:</label>
-                    <div id="caChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="caChatInput" style="padding: 6px; font-size: 12px;" placeholder="टैक्स लायबिलिटी के बारे में पूछें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('ca')">Send</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room B: Global Bank Handler -->
-            <div id="adminBankRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: var(--vvip-gold); margin-bottom: 8px;">🌐 Global Bank Handler Console [Bank Manager Mode]</div>
-                <div id="bankLedgerDisplay" style="background: #0c0c12; padding: 8px; border-radius: 6px; font-size: 11px; color: #a0a0b0; font-family: monospace; margin-bottom: 10px; line-height: 1.4; border: 1px solid rgba(255,215,0,0.1);">
-                    [SYSTEM REVENUE STATUS LOG]<br>
-                    • Total Inflow (INR): ₹0.00<br>
-                    • Conversion Deductions: 1.8% Standard Stripe/PayPal tier<br>
-                    • Net Available Vault Balance: ₹0.00
-                </div>
-                <div class="form-group">
-                    <label style="color: var(--vvip-gold);">💬 Discuss with Bank Manager:</label>
-                    <div id="bankChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="bankChatInput" style="padding: 6px; font-size: 12px;" placeholder="विदेशी मुद्रा बहीखाता या एक्सचेंज चार्ज पूछें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('bank')">Send</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room C: App Health Server IT Shield -->
-            <div id="adminItRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: var(--neon-green); margin-bottom: 8px;">🛡️ App Health & Security Monitoring Hub [Chief IT Engineer Mode]</div>
-                <div id="itSecurityStatusAlert" style="background: rgba(57,255,20,0.05); border: 1px solid var(--neon-green); padding: 8px; border-radius: 6px; font-size: 11px; color: var(--neon-green); margin-bottom: 10px; font-weight: 600;">
-                    📡 IT Security Indicator Status: 100% Secure Nodes Protected. No active malware/DDoS patterns detected.
-                </div>
-                <div class="form-group">
-                    <label style="color: var(--neon-green);">💬 Discuss with IT Security Engineer:</label>
-                    <div id="itChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="itChatInput" style="padding: 6px; font-size: 12px;" placeholder="सर्वर लोड या साइबर शील्ड पैच स्थिति पूछें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('it')">Send</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room D: Social Media Marketing Manager -->
-            <div id="adminMarketRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #e040fb; margin-bottom: 8px;">📢 Social Media Marketing Manager Workspace [Marketing Head Mode]</div>
-                <button class="share-action-btn" style="border-color: #e040fb; width: 100%; margin-bottom: 12px;" onclick="triggerAgenticWorkflow('marketing')">🚀 1-Click Distribute Auto-Generated Daily Content</button>
-                <div class="form-group">
-                    <label style="color: #e040fb;">💬 Discuss Content Matter Files:</label>
-                    <div id="marketChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="marketChatInput" style="padding: 6px; font-size: 12px;" placeholder="यूट्यूब स्क्रिप्ट, रील या ट्विटर संदेश प्लान करें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('market')">Send</button>
-                    </div>
-                </div>
-            </div>
-           <!-- Room E: Super HD Gemini Video Producer -->
-            <div id="adminVideoRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #ffb74d; margin-bottom: 8px;">🎬 Super HD Gemini Video Producer [Video Director Mode]</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">आपके निर्देशानुसार किसी भी इमेज या थीम को 1 सेकंड में सिनेमैटिक वीडियो क्लिप में परिवर्तित करने वाला अल्ट्रा-एचडी इंजन।</p>
-                <div class="form-group">
-                    <label style="color: #ffb74d;">💬 Command Cinematic Video Clip / Upload Base Image:</label>
-                    <div id="videoChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px; margin-bottom: 5px;">
-                        <input type="text" class="vvip-select" id="videoChatInput" style="padding: 6px; font-size: 12px;" placeholder="वीडियो की स्क्रिप्ट या विषय लिखें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('video')">Generate</button>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #0c0c12; padding: 6px; border-radius: 6px; border: 1px dashed rgba(255,255,255,0.1);">
-                        <span style="font-size: 11px; color: var(--text-muted);">📎 Upload Base Concept Image:</span>
-                        <input type="file" id="videoFileInput" style="font-size: 11px; color: var(--vvip-gold);" onchange="handleAdminFileUpload('video')">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room F: Supreme Court Legal Advisors -->
-            <div id="adminLegalRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #ff5252; margin-bottom: 8px;">⚖️ Supreme Court Legal Advisors Room [Chief Legal Council]</div>
-                <div id="legalAmendmentTicker" style="background: rgba(255,82,82,0.05); padding: 6px; border-radius: 6px; font-size: 11px; color: #ff5252; margin-bottom: 10px; border: 1px solid rgba(255,82,82,0.2);">
-                    ⚖️ 24/7 Global Gazette Update: Checking international funding policy & DPDP Act compliance rows.
-                </div>
-                <div class="form-group">
-                    <label style="color: #ff5252;">💬 Discuss with Chief Legal Advisor:</label>
-                    <div id="legalChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="legalChatInput" style="padding: 6px; font-size: 12px;" placeholder="विदेशी फंडिंग, सरकारी नियमों या अनुच्छेदों पर विधिक राय लें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('legal')">Consult</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room G: Global Medical Council & Doctor Node -->
-            <div id="adminDoctorRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #4db6ac; margin-bottom: 8px;">🩺 Global Medical Council [Personal Medical Director Mode]</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">चिकित्सा विज्ञान, हेल्थ रिसर्च और प्राइवेसी सुरक्षा के तहत आपकी व्यक्तिगत सेहत की निगरानी करने वाला नोड।</p>
-                <div class="form-group">
-                    <label style="color: #4db6ac;">💬 Diagnostics Box / Upload Medical Report Photo:</label>
-                    <div id="doctorChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px; margin-bottom: 5px;">
-                        <input type="text" class="vvip-select" id="doctorChatInput" style="padding: 6px; font-size: 12px;" placeholder="लक्षण, चिकित्सा शोध या स्वास्थ्य नीतियां डिस्कस करें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('doctor')">Diagnose</button>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #0c0c12; padding: 6px; border-radius: 6px; border: 1px dashed rgba(255,255,255,0.1);">
-                        <span style="font-size: 11px; color: var(--text-muted);">📷 Upload Prescription/X-Ray:</span>
-                        <input type="file" id="doctorFileInput" style="font-size: 11px; color: var(--vvip-gold);" onchange="handleAdminFileUpload('doctor')">
-                    </div>
-                </div>
-            </div>
-           <!-- Room H: Core Software Architect & Launchpad [In-App Cloud IDE] -->
-            <div id="adminLaunchRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #b388ff; margin-bottom: 8px;">🚀 Core Software Architect & Launchpad [In-App Cloud IDE & Compiler]</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Acode/Termux/Pydroid3 की इन-बिल्ट स्वतंत्र क्षमता। यहाँ कोड लिखें, कंपाइल करें और सीधे वेब-प्रिव्यू पर रन करें।</p>
-                
-                <!-- Cloud Sandbox Terminal Interface -->
-                <div style="margin-bottom: 10px;">
-                    <textarea class="vvip-select" id="cloudIdeCodeEditor" rows="5" style="font-family: monospace; font-size: 11px; background: #07070a; color: #a8ff60; border-color: rgba(255,255,255,0.05);" placeholder="<!-- यहाँ अपना HTML/JS/Python कोड लिखें या टेस्ट करें -->"></textarea>
-                    <button class="share-action-btn" style="border-color: #b388ff; width: 100%; margin-top: 5px; background: rgba(179,136,255,0.05);" onclick="executeCloudIdeSandbox()">⚡ LIVE RUN & TEST CODE</button>
-                </div>
-
-                <!-- Step-by-Step Build & Configuration Watchdog Dashboard -->
-                <div style="background: #0c0c12; padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 12px;">
-                    <span style="font-size: 11px; font-weight: 700; color: #b388ff; display: block; margin-bottom: 4px;">🛠️ Offline .APK / .IOS Configuration Help Desk:</span>
-                    <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">लैपटॉप पर Cordova/Android Studio सेट करने, Node.js पाथ एनवायरनमेंट वेरिएबल्स ट्यून करने और Xcode प्रोफाइल बाइंडिंग की चरण-दर-चरण मार्गदर्शिका यहाँ उपलब्ध रहेगी।</p>
-                </div>
-
-                <div class="form-group">
-                    <label style="color: #b388ff;">💬 Discuss with Chief Software Architect:</label>
-                    <div id="launchChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="launchChatInput" style="padding: 6px; font-size: 12px;" placeholder="नया सॉफ़्टवेयर लॉन्चिंग, सर्वर डिप्लॉयमेंट या बग्स फिक्सिंग पूछें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('launch')">Send</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room I: World King Maker Information Resources -->
-            <div id="adminResourceRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: var(--vvip-gold); margin-bottom: 8px;">🌍 World King Maker Information Resources [Grand Resource Engine]</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">गूगल एआई स्टूडियो के अनफिल्टर्ड प्रीमियम नोड से सिंक। ब्रह्मांड का सबसे बड़ाPrivate Knowledge Vault।</p>
-                
-                <!-- In-App Universal Media & Video Player Box -->
-                <div style="background: #000000; height: 110px; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid rgba(255,215,0,0.2); margin-bottom: 10px; position: relative; overflow: hidden;">
-                    <span style="font-size: 11px; color: var(--text-muted); z-index: 2;">📺 Universal Video & Audio In-Chat Playback Player</span>
-                    <div id="universalInAppPlayerScreen" style="font-size: 10px; color: var(--vvip-gold); margin-top: 4px; font-family: monospace; z-index: 2;">[ Status: Ready for streaming all media formats ]</div>
-                </div>
-
-                <div class="form-group">
-                    <label style="color: var(--vvip-gold);">💬 Unfiltered Global Insights Request Box:</label>
-                    <div id="resourceChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="resourceChatInput" style="padding: 6px; font-size: 12px;" placeholder="वैश्विक साम्राज्य रणनीति, कोडिंग ब्लूप्रिंट या डेटा चार्ट्स मंगाएं...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('resource')">Broadcast</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room J: Dynamic Technology Ledger & 24/7 Autonomous Evolution Scanner -->
-            <div id="adminScannerRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                <div style="font-size: 14px; font-weight: 700; color: #26a69a; margin-bottom: 8px;">⚙️ Dynamic Technology Ledger & Evolution Scanner [Total Command Room]</div>
-                <div id="scannerLiveAlertDisplay" style="background: rgba(38,166,154,0.05); padding: 8px; border-radius: 6px; font-size: 11px; color: #26a69a; margin-bottom: 10px; border: 1px solid rgba(38,166,154,0.2); line-height: 1.4; font-weight: 600;">
-                    📡 Evolution Watchdog Status: 24/7 Auto Scan Active.<br>
-                    • Current Stack: Python Base Server, Gemini SDK, Polymer Encr.<br>
-                    • Up-to-date: October 2026 Core Infrastructure Shield OK.
-                </div>
-                <div class="form-group">
-                    <label style="color: #26a69a;">💬 Presidential Autonomous Review & Path Mapping Hub:</label>
-                    <div id="scannerChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="scannerChatInput" style="padding: 6px; font-size: 12px;" placeholder="डार्क वेब थ्रेट पैच या नई ट्रेंडिंग तकनीक विश्लेषण...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('scanner')">Scan Market</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UNIVERSAL 1-CLICK PATH INJECTION AUTOMATION BUTTON (Appears across rooms) -->
-            <div style="margin-top: 15px; background: rgba(57,255,20,0.02); border: 1px dashed rgba(57,255,20,0.3); padding: 10px; border-radius: 8px; text-align: center;">
-                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-family: monospace;">[ Autonomous Auto-Path Detector Routing Mode Active ]</div>
-                <button class="share-action-btn" id="universalUpgradeMasterBtn" style="background: linear-gradient(90deg, #1e461e 0%, #2e7d32 100%); border-color: var(--neon-green); color: #ffffff; width: 100%; font-weight: 700; letter-spacing: 1px;" onclick="executeUniversalPathUpgradeInjection()">✅ UPDATE & UPGRADE NOW</button>
-            </div>
-           <!-- Room K: Global Transmission Locator & Intelligent Routing Engine -->
-            <div id="adminLocatorRoom" class="admin-room-panel" style="display: none; background: #14141c; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02); margin-top: 10px;">
-                <div style="font-size: 14px; font-weight: 700; color: #26a69a; margin-bottom: 8px;">🌍 Global Transmission Locator & Routing Hub [VVIP Tracker Node]</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">विश्व स्तर पर सक्रिय सशुल्क ग्राहकों की रीयल-टाइम लोकेशन, विज़ुअल ग्राफ ट्रैकिंग और रीयल-टाइम सेफ रूट मैपिंग रूम।</p>
-                
-                <!-- Live Client Route Visualizer Map Overlay Box -->
-                <div style="background: #09090d; border: 1px solid rgba(38,166,154,0.3); height: 120px; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 12px; overflow: hidden; position: relative;">
-                    <div style="font-size: 11px; color: #26a69a; z-index: 2; font-weight: 700;">📡 Live Geographic Transmission Stream & Route Graph</div>
-                    <div id="locatorRealTimeStreamData" style="font-size: 10px; color: var(--text-muted); font-family: monospace; text-align: center; margin-top: 4px; padding: 0 10px; z-index: 2;">[ Target Coordinates: System listening for active incoming client pings... ]</div>
-                </div>
-
-                <!-- Presidential Manual Overlay Form Input -->
-                <div class="form-group" style="background: #0c0c12; padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 12px;">
-                    <label style="color: #26a69a; font-size: 12px; font-weight: 700;">📌 Presidential Manual Area Input Console:</label>
-                    <div style="display: flex; gap: 5px; margin-top: 5px;">
-                        <input type="text" class="vvip-select" id="manualAreaTracerInput" style="padding: 6px; font-size: 12px;" placeholder="कोई भी गुप्त अक्षांश/देशांतर या क्षेत्र का नाम दर्ज करें...">
-                        <button class="mantra-btn" style="padding: 6px 12px; background: #26a69a; color: #000000; font-weight: 700; border: none;" onclick="executeManualAreaTracerOverride()">Trace Area</button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label style="color: #26a69a;">💬 Discuss with Navigation & Routing Manager:</label>
-                    <div id="locatorChatHistory" style="height: 100px; background: #0c0c12; overflow-y: auto; padding: 8px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.05);"></div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" class="vvip-select" id="locatorChatInput" style="padding: 6px; font-size: 12px;" placeholder="ग्राहक का लाइव लोकेशन रूट या ट्रैकिंग मैप डेटा पूछें...">
-                        <button class="mantra-btn" style="padding: 6px 12px;" onclick="sendAdminRoomMessage('locator')">Get Route</button>
-                    </div>
-                </div>
-            </div>
-
-        </div> <!-- Closing liveAdminPanel Widget Box Container -->
-    </div> <!-- Closing Main Admin Tab Block Window Panel -->
-
-    <!-- BASE FOOTER ZONES (PERMANENT VISUAL SHIELD & UTILITIES) -->
-
-    <!-- Footer Content Decoupled Layout Column Grid -->
-    <footer style="margin: 25px 15px 15px 15px; display: flex; flex-direction: column; gap: 15px;">
-        
-        <!-- Permanent Live Legal Shield Notice Banner Section -->
-        <div style="background: rgba(255,49,49,0.02); border: 1px solid rgba(255,49,49,0.2); padding: 12px; border-radius: 12px; border-left: 4px solid var(--alert-red);" id="permanentLegalShieldBanner">
-            <div style="font-size: 14px; font-weight: 700; color: var(--alert-red); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">⚖️ वैधानिक चेतावनी एवं कानूनी रक्षा कवच (Permanent Live Legal Shield)</div>
-            <div style="font-size: 12px; line-height: 1.5; color: var(--text-muted);" id="legalShieldNoticeDynamicText">
-                यह डिजिटल प्लेटफॉर्म आचार्य अर्जुन जी के संचित आध्यात्मिक अनुसंधान और कठोर मंत्र-तप की ध्वनि तरंग गणनाओं पर आधारित है। भारतीय संविधान के <strong>Article 25</strong>, डिजिटल पर्सनल डेटा प्रोटेक्शन एक्ट (DPDP 2026), और उपभोक्ता संरक्षण नियमों के पूर्ण अनुपालन के साथ यह समस्त सेवाएँ पूरी तरह सुरक्षित और विधिक रूप से अधिकृत हैं।
-            </div>
-        </div>
-
-        <!-- 100% Autonomous Resolution Complaint, Suggestion & Feedback Tool Box Widget -->
-        <div style="background: var(--surface-dark); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
-            <div style="font-size: 14px; font-weight: 700; color: var(--vvip-gold); margin-bottom: 8px;">📝 ग्राहक प्रतिक्रिया, सुझाव एवं शिकायत निवारण (100% Automated Resolution Box)</div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">यदि आपके पास ऐप से संबंधित कोई सुझाव, फीडबैक या तकनीकी शिकायत है, तो उसे यहाँ दर्ज करें। हमारी स्वायत्त सुरक्षा प्रणाली इसका तत्काल निवारण करेगी।</p>
-            <div class="form-group">
-                <textarea class="vvip-select" id="clientComplaintInputBox" rows="2" style="font-size: 12px; background: #181822;" placeholder="अपनी शिकायत या अनमोल सुझाव यहाँ लिखें..."></textarea>
-            </div>
-            <button class="share-action-btn" style="width: 100%; border-color: var(--vvip-gold); margin-top: 5px; font-size: 12px; padding: 8px;" onclick="submitAutomatedClientResolutionRequest()">Submit Request</button>
-            <div id="complaintSuccessAlert" style="color: var(--neon-green); font-size: 11px; margin-top: 6px; text-align: center; font-weight: 600; display: none;">✅ Request Logged: 100% Automated Resolution Engine Processing.</div>
-        </div>
-
-    </footer>
-
-    <!-- Fixed Bottom Action Micro-Navigation Info Strip for Clients (Zero local Cognitive Load) -->
-    <div style="position: fixed; bottom: 0; left: 0; right: 0; background: #0f0f15; border-top: 1px solid rgba(255,255,255,0.05); padding: 8px; text-align: center; font-size: 11px; color: var(--text-muted); z-index: 9999;">
-        🔒 Fully Secure Autonomous Engine • 10,000x Anti-Hacker Shield Enabled
-    </div>
-   <!-- VVIP JAVASCRIPT CORE ENGINE LOGIC SLAB -->
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // Global State & Core Configuration Parameters
-        let currentActiveAudio = null;
-        let realActiveUsersInterval = null;
-        let isRealTimeTrackingActive = false;
+        const PASSKEY_MASTER = "1947";
+        const PASSKEY_DURESS = "9999";
+        let brandTapCount = 0;
+        let audioCtx = null;
+        let audioOsc = null;
 
-        // Language Cascade Local Databases Mapping
-        const globalLanguageDictionary = {
-            'IN': [
-                { value: 'hi', text: 'हिन्दी (Hindi)' },
-                { value: 'en', text: 'English' },
-                { value: 'hinglish', text: 'Hinglish (हिन्गलिश)' },
-                { value: 'mr', text: 'मराठी (Marathi)' },
-                { value: 'gu', text: 'गुजराती (Gujarati)' },
-                { value: 'kn', text: 'कन्नड़ (Kannada)' },
-                { value: 'te', text: 'तेलुगु (Telugu)' },
-                { value: 'bn', text: 'बंगाली (Bengali)' },
-                { value: 'or', text: 'ओड़िया (Oriya)' },
-                { value: 'ml', text: 'मलयालम (Malayalam)' }
-            ],
-            'AE': [
-                { value: 'ar', text: 'العربية (Arabic)' },
-                { value: 'en', text: 'English' }
-            ],
-            'CN': [
-                { value: 'zh', text: 'Standard Chinese (Mandarin)' },
-                { value: 'en', text: 'English' }
-            ],
-            'US': [
-                { value: 'en', text: 'US English (Universal Standard)' }
-            ],
-            'RU': [
-                { value: 'ru', text: 'Русский (Russian)' },
-                { value: 'en', text: 'English' }
-            ]
+        const royalSlogans = {
+            hi: "विश्व के किसी भी कोने में हों—हर जटिल समस्या का समाधान पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) के कठोर मंत्र-तप, शब्द-नाद विज्ञान व विधिक प्रज्ञा द्वारा आपकी ही भाषा में सुनिश्चित है। अनुच्छेद 25 व देवास-इंदौर क्षेत्राधिकार में 100% सुरक्षित।",
+            en: "Authentic solutions to life's most complex challenges guaranteed in your language through the rigorous mantra-tap, acoustic resonance, and legal acumen of Acharya Arjun Ji (B.Sc. IT, LLB, MBA). Protected under Article 25 and exclusive Dewas/Indore jurisdiction.",
+            ar: "الحلول الحقيقية لمشاكلكم مضمونة بلغتكم من خلال علم الرنين الصوتي والقوة الروحية للعلامة أرجون جي، مع حماية قانونية كاملة.",
+            ta: "ஆச்சார்யா அர்ஜுன் ஜியின் மந்திர சக்தி மற்றும் ஒலி அதிர்வு அறிவியல் மூலம் உங்கள் தாய்மொழியிலேயே உடனடி தீர்வு உறுதி செய்யப்படுகிறது.",
+            mr: "पूज्य आचार्य अर्जुन जी यांच्या कठोर मंत्र-तप व नाद-विज्ञानाद्वारे आपल्या मातृभाषेत तात्काळ व खात्रीशीर तोडगा उपलब्ध आहे."
         };
 
-        // Standard Layout UI Tab Switcher Engine
-        function switchActiveTab(targetTabId) {
-            // Remove active classes from all panels
-            const panels = document.querySelectorAll('.tab-content-panel');
-            panels.forEach(panel => panel.classList.remove('active'));
+        const countryLangs = {
+            IN: [{ c: "hi", n: "हिन्दी" }, { c: "mr", n: "मराठी" }, { c: "ta", n: "தமிழ்" }, { c: "en", n: "English" }],
+            US: [{ c: "en", n: "English (US)" }],
+            AE: [{ c: "ar", n: "العربية" }, { c: "en", n: "English (Gulf)" }],
+            GB: [{ c: "en", n: "English (UK)" }]
+        };
 
-            // Remove active classes from all trigger buttons
-            const buttons = document.querySelectorAll('.tab-trigger-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-
-            // Activate current panel target
-            const activePanel = document.getElementById(targetTabId);
-            if (activePanel) {
-                activePanel.classList.add('active');
-            }
-
-            // Find matching event button to activate
-            event.currentTarget.classList.add('active');
-        }
-
-        // Country-to-Local Language Cascade Loader Engine
-        function cascadeLanguages() {
-            const countrySelect = document.getElementById('countrySelector');
-            const langSelect = document.getElementById('languageSelector');
-            const selectedCountry = countrySelect.value;
-
-            // Clear legacy mapping array nodes
-            langSelect.innerHTML = '';
-
-            // Fetch current country nodes array list
-            if (globalLanguageDictionary[selectedCountry]) {
-                globalLanguageDictionary[selectedCountry].forEach(lang => {
-                    const option = document.createElement('option');
-                    option.value = lang.value;
-                    option.textContent = lang.text;
-                    langSelect.appendChild(option);
-                });
-            }
-            updateGlobalSloganLanguage();
-        }
-
-        // Floating Mantra Dhun Core Audio Player Methods
-        function toggleMantra(mantraId) {
-            // Stop existing running player nodes
-            stopAllMantras();
-
-            // Clear previous button highlights
-            const buttons = document.querySelectorAll('.mantra-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-
-            // Set specific targeted interface item active state
-            let activeBtnId = 'btnMantra1';
-            if (mantraId === 'Mantra2') activeBtnId = 'btnMantra2';
-            if (mantraId === 'Mantra3') activeBtnId = 'btnMantra3';
-
-            const activeBtn = document.getElementById(activeBtnId);
-            if (activeBtn) activeBtn.classList.add('active');
-
-            // Web Audio API Simulation Logic Node for Medium Voice Playback
-            console.log(`[Audio Stream Core] Now streaming targeted track: ${mantraId} in medium comfortable volume variables.`);
-            currentActiveAudio = mantraId;
-        }
-
-        function stopAllMantras() {
-            const buttons = document.querySelectorAll('.mantra-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btnMantraOff').classList.add('active');
-            
-            if (currentActiveAudio) {
-                console.log(`[Audio Stream Core] Closed active stream loop: ${currentActiveAudio}`);
-                currentActiveAudio = null;
-            }
-        }
-       // Dynamic Multilingual Global Slogan Updater Node
-        function updateGlobalSloganLanguage() {
-            const langSelect = document.getElementById('languageSelector');
-            const sloganBox = document.getElementById('globalSloganText');
-            const selectedLang = langSelect.value;
-
-            // Base Dict Translations for Core Professional Global Slogan
-            const slogans = {
-                'hi': `⚠️ <strong>वैश्विक विधिक-आध्यात्मिक उद्घोष:</strong> अब भाषा की दीवारें हमेशा के लिए खत्म! सीधे समाधान आपके द्वार आपकी मनपसंद भाषा में। चाहे आप रशियन हों, Indian हों या चाइनीज़, सीधा आपकी भाषा में सटीक समाधान मिलेगा आचार्य अर्जुन के कठोर मंत्र तप के द्वारा तुरंत। अपने संपूर्ण संकट के अचूक समाधान हेतु सीधे इसी बक्से के नीचे दिए गए <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> के मुख्य गेटवे पर आएं और आज ही अपना जीवन संकट मुक्त बनाएं! 🔱`,
-                'en': `⚠️ <strong>Global Legal-Spiritual Declaration:</strong> Language barriers are now permanently dissolved! Direct solutions at your doorstep in your preferred native tongue. Whether you are Russian, Indian, Chinese, or Arabic, get instant precise remedies through Acharya Arjun's intense Mantra Tap. For ultimate mitigation, proceed directly to the <strong>'👑 VIP Core Pay & Live Call'</strong> gateway located right below this console! 🔱`,
-                'hinglish': `⚠️ <strong>Global Legal-Spiritual Announcement:</strong> Ab bhasha ki saari diware khatam! Seedha samadhan aapke dwaar par aapki manpasand bhasha me. Chahe aap Russian ho, Indian ho, ya Chinese, seedha aapki language me precise solution milega Acharya Arjun ke kathor Mantra Tap ke dwara turant. Apne pure sankat ke achook samadhan ke liye seedhe is box ke niche diye gaye <strong>'👑 Sankat Mukt Maha-Yojana & Live Call'</strong> main gateway par aayein! 🔱`,
-                'mr': `⚠️ <strong>जागतिक कायदेशीर-आध्यात्मिक उद्घोषणा:</strong> आता भाषेच्या भिंती कायमच्या संपल्या! तुमच्या आवडत्या स्थानिक भाषेत थेट तुमच्या दारात अचूक समाधान. तुम्ही रशियन, इंडियन किंवा चायनीज असाल, आचार्य अर्जुन यांच्या कठोर मंत्र तपाद्वारे त्वरित समाधान मिळेल. संपूर्ण संकट निवारणासाठी खाली दिलेल्या <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> मुख्य गेटवेवर जा! 🔱`,
-                'gu': `⚠️ <strong>વૈશ્વિક કાનૂની-આધ્યાત્મિક ઉદ્ઘોષણા:</strong> હવે ભાષાની દીવાલો હંમેશા માટે ખતમ! સીધા સમાધાન આપના દ્વાર પર આપની મનપસંદ સ્થાનિક ભાષામાં. તમે રશિયન હોવ, ઇન્ડિયન હોવ કે ચાઇનીઝ, આચાર્ય અર્જુનજીના કઠોર મંત્ર તપ દ્વારા ત્વરित અચૂક નિવારણ મળશે. સંપૂર્ણ સંકટ મુક્તિ માટે નીચે આપેલા <strong>'👑 संकट मुक्त महा-योजना एवं लाइव कॉल'</strong> મુખ્ય ગેટવે પર જાઓ! 🔱`,
-                'ar': `⚠️ <strong>الإعلان القانوني الروحي العالمي:</strong> لقد تلاشت عوائق اللغة نهائيًا! حلول مباشرة بين يديك بلغتك المحلية المفضلة. سواء كنت روسيًا أو هنديًا أو صينيًا، احصل على حلول دقيقة فورية من خلال قوة مانترا أشاريا أرجุน. للحل النهائي، توجه مباشرة إلى بوابة <strong>'👑 VIP Core Pay & Live Call'</strong> أدناه! 🔱`,
-                'ru': `⚠️ <strong>Глобальная Юридическо-Духовная Декларация:</strong> Языковые барьеры навсегда стерты! Прямые решения у вас на дому на вашем родном языке. Будь вы русским, индийцем или китайцем, получите мгновенные точные ответы благодаря суровому Мантра-Тапу Ачарьи Арджуна. Для полного разрешения перейдите к шлюзу <strong>'👑 VIP Core Pay & Live Call'</strong> ниже! 🔱`
-            };
-
-            // Fallback to Hindi if translated string node missing
-            sloganBox.innerHTML = slogans[selectedLang] || slogans['hi'];
-        }
-
-        // Native 1-Click Social Media Engine
-        function executeNativeShare(platform) {
-            const shareText = "Sankat Mukt AI - विश्व का सबसे VVIP विधिक एवं आध्यात्मिक समाधान मंच। आचार्य अर्जुन जी के मंत्र तप और आधुनिक सुपर एआई तकनीक का संगम।";
-            const shareUrl = window.location.href;
-            let finalUrl = "";
-
-            if (platform === 'whatsapp') {
-                finalUrl = `https://whatsapp.com{encodeURIComponent(shareText + " " + shareUrl)}`;
-            } else if (platform === 'telegram') {
-                finalUrl = `https://t.me{encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
-            } else if (platform === 'facebook') {
-                finalUrl = `https://facebook.com{encodeURIComponent(shareUrl)}`;
-            }
-
-            if (finalUrl !== "") {
-                console.log(`[Share Core] Launching native window router for: ${platform}`);
-                window.open(finalUrl, '_blank');
-            }
-        }
-
-        // 1-Click Superfast Global Payment Simulator Gateway
-        function triggerPaymentGateway(amount, packageName) {
-            console.log(`[Secure Core Pay] Initializing financial handshake for amount: ₹${amount}`);
-            alert(`[👑 Secure Core Pay Gate Active]\n\nPackage: ${packageName}\nAmount: ₹${amount}\n\nStatus: Initializing 1-Click Encrypted Transaction Interface (UPI/Debit Card/Net Banking/PayPal) with device hardware token mapping. Bypassing server load variables.`);
-        }
-
-        // VVIP Presidential Gate Password Verification Logic
-        function verifyPresidentialPasskey() {
-            const passkeyInput = document.getElementById('adminPasswordInput');
-            const lockScreen = document.getElementById('adminLockScreen');
-            const adminPanel = document.getElementById('liveAdminPanel');
-            const errorLabel = document.getElementById('adminLoginError');
-
-            // Default encrypted core hardcoded token mapping value
-            if (passkeyInput.value === 'admin123') {
-                lockScreen.style.display = 'none';
-                adminPanel.style.display = 'block';
-                errorLabel.style.display = 'none';
-                initializeAdminDashboardTrafficCounters();
-                console.log("[Presidential Auth] 10,000x Hardware Bound Session Verified. Welcome President Boss.");
-            } else {
-                errorLabel.style.display = 'block';
-                passkeyInput.value = '';
-            }
-        }
-       // Internal Admin Boardroom Virtual Space Tab Switcher
-        function switchAdminRoom(targetRoomId) {
-            // Remove active classes from all sub-panels
-            const rooms = document.querySelectorAll('.admin-room-panel');
-            rooms.forEach(room => room.style.display = 'none');
-
-            // Deactivate all sub-trigger links highlight state
-            const subButtons = document.querySelectorAll('#liveAdminPanel .tab-trigger-btn');
-            subButtons.forEach(btn => btn.classList.remove('active'));
-
-            // Display current requested zone
-            const activeRoom = document.getElementById(targetRoomId);
-            if (activeRoom) {
-                activeRoom.style.display = 'block';
-            }
-
-            // Map current targeted trigger element highlight state
-            const mappingBtnId = {
-                'adminCaRoom': 'subBtnCa',
-                'adminBankRoom': 'subBtnBank',
-                'adminItRoom': 'subBtnIt',
-                'adminMarketRoom': 'subBtnMarket',
-                'adminVideoRoom': 'subBtnVideo',
-                'adminLegalRoom': 'subBtnLegal',
-                'adminDoctorRoom': 'subBtnDoctor',
-                'adminLaunchRoom': 'subBtnLaunch',
-                'adminResourceRoom': 'subBtnResource',
-                'adminScannerRoom': 'subBtnScanner',
-                'adminLocatorRoom': 'subBtnResource'
-            };
-
-            const triggerBtn = document.getElementById(mappingBtnId[targetRoomId]);
-            if (triggerBtn) triggerBtn.classList.add('active');
-            console.log(`[Admin Space Router] Welcome to workspace cell node: ${targetRoomId}`);
-        }
-
-        // Live Admin Panel Room Chat Communications Simulated Message Flow
-        function sendAdminRoomMessage(roomKey) {
-            const inputField = document.getElementById(`${roomKey}ChatInput`);
-            const historyBox = document.getElementById(`${roomKey}ChatHistory`);
-            
-            if (!inputField || inputField.value.trim() === "") return;
-            
-            const userMsgText = inputField.value.trim();
-            
-            // Render user command row line items immediately
-            historyBox.innerHTML += `<div style="margin-bottom: 6px; color: #ffffff;"><strong>Boss:</strong> ${userMsgText}</div>`;
-            inputField.value = "";
-            
-            // Auto scroll container
-            historyBox.scrollTop = historyBox.scrollHeight;
-
-            // Generate autonomous precise response mock values for local verification
-            setTimeout(() => {
-                let aiResponseText = `प्रेसिडेंट बॉस, मैंने आपके इस निर्देश को अपने कोर सर्वर्स पर चलाकर सुरक्षित सेव कर लिया है। यह 100% एरर-फ्री है।`;
-                
-                if (roomKey === 'ca') {
-                    aiResponseText = `प्रेसिडेंट बॉस, सीनियर सीए के रूप में मैंने आपकी विधिक टैक्स रिपोर्ट और 2026 ऑडिट फाइलों का मिलान कर लिया है। '✅ UPDATE & UPGRADE NOW' दबाकर इसे सिंक करें।`;
-                } else if (roomKey === 'bank') {
-                    aiResponseText = `प्रेसिडेंट बॉस, आपके बैंक मैनेजर के रूप में मैंने वैश्विक लेज़र बहीखाता री-चेक कर लिया है। सीमा-पार के सभी डिजिटल ट्रांजेक्शन्स और एक्सचेंज रेट्स 100% नियंत्रण में हैं।`;
-                } else if (roomKey === 'it') {
-                    aiResponseText = `प्रेसिडेंट बॉस, आपके मुख्य सर्वर आईटी इंजीनियर के रूप में मैंने 10,000 गुना तेज़ स्वायत्त साइबर सुरक्षा कवच री-रन किया है। हैकर्स और मैलवेयर का कोई जोखिम नहीं है।`;
-                } else if (roomKey === 'legal') {
-                    aiResponseText = `प्रेसिडेंट बॉस, आपके विधिक सलाहकार के रूप में मैंने Article 25 इतिहास और सुप्रीम कोर्ट के अप्रैल 2026 के नवीनतम ९-न्यायाधीशों के बेंच आदेश के उद्धरण सिंक कर दिए हैं।`;
-                } else if (roomKey === 'launch') {
-                    aiResponseText = `प्रेसिडेंट बॉस, आपके सॉफ्टवेयर मेंटर के रूप में मैंने कोड एनवायरनमेंट वेरिएबल्स को कंपाइलर में लोड कर दिया है। आप ऊपर सीधे 'LIVE RUN' दबाकर चेक कर सकते हैं।`;
-                }
-
-                historyBox.innerHTML += `<div style="margin-bottom: 4px; color: var(--vvip-gold);"><strong>AI Employee:</strong> ${aiResponseText}</div>`;
-                historyBox.scrollTop = historyBox.scrollHeight;
-            }, 800);
-        }
-
-        // Core Software Architect & Launchpad - In-App Cloud IDE Compiling Sandbox Engine
-        function executeCloudIdeSandbox() {
-            const codeEditorValue = document.getElementById('cloudIdeCodeEditor').value;
-            console.log("[Cloud IDE Engine] Initiating compilation loop context variables...");
-            
-            if (codeEditorValue.trim() === "") {
-                alert("[❌ Cloud IDE Compiler Alert]\n\nError: Code workspace editor is completely empty. Please input any HTML or Javascript code script to test.");
-                return;
-            }
-
-            alert("[⚡ Cloud IDE Sandbox Compilation Successful]\n\nStatus: 100% Error-Free. Running simulated web-preview console buffer inside server cluster. No local RAM or device device load.");
-        }
-       // Media Handling & Universal Input Multi-Format File Handlers
-        function handleAdminFileUpload(roomType) {
-            const fileInput = document.getElementById(`${roomType}FileInput`);
-            if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;
-
-            const selectedFile = fileInput.files[0];
-            const historyBox = document.getElementById(`${roomType}ChatHistory`);
-
-            // Inject File Reference metadata visualization into the custom inbox box
-            historyBox.innerHTML += `<div style="margin-bottom: 6px; color: var(--neon-green);"><strong>📎 Uploaded File:</strong> ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(2)} KB)</div>`;
-            historyBox.scrollTop = historyBox.scrollHeight;
-
-            console.log(`[Universal File Hub] processing file mapping structure for format: ${selectedFile.name}`);
-
-            // Automated Instant Media Transformation Router mock execution loop
-            setTimeout(() => {
-                let diagnosticOutput = `[🔒 Zero-Leak Scan] फ़ाइल ${selectedFile.name} का शत-प्रतिशत सटीक विश्लेषण आपकी स्थानीय भाषा में पूरा हो चुका है। स्थिति: पूर्णतः सुरक्षित एवं विधिक अनुपालन ओके।`;
-                if (roomType === 'doctor') {
-                    diagnosticOutput = `🩺 <strong>Clinical Analysis Complete:</strong> प्रेसिडेंट बॉस, मैंने अपलोडेड मेडिकल दस्तावेज़ की इमेज स्कैन कर ली है। आपके व्यक्तिगत स्वास्थ्य प्रोफाइल के अनुसार डेटा पूर्णतः सामान्य है और लाइफटाइम असीमित सर्वर तिजोरी में लॉक कर दिया गया है।`;
-                } else if (roomType === 'video') {
-                    diagnosticOutput = `🎬 <strong>Cinematic Core Engine Response:</strong> बॉस, इस इमेज कांसेप्ट को ६० FPS अल्ट्रा-सिनेमैटिक .mp4 प्रारूप में कनवर्ट कर दिया गया है। नीचे दिए गए बटन से आप इसे सीधे इन-ऐप प्रिव्यू प्लेयर में लोड या डाउनलोड कर सकते हैं।`;
-                }
-                historyBox.innerHTML += `<div style="margin-bottom: 4px; color: var(--vvip-gold);"><strong>AI Employee:</strong> ${diagnosticOutput}</div>`;
-                historyBox.scrollTop = historyBox.scrollHeight;
-            }, 1000);
-        }
-
-        // Global Transmission Locator & Intelligent Routing Engine Tracker Node
-        function executeManualAreaTracerOverride() {
-            const areaInput = document.getElementById('manualAreaTracerInput');
-            const streamDisplay = document.getElementById('locatorRealTimeStreamData');
-            
-            if (areaInput.value.trim() === "") {
-                alert("[❌ Locator Console Alert]\n\nPlease enter a valid country coordinates code or locality name to construct route graph.");
-                return;
-            }
-
-            const targetLocation = areaInput.value.trim();
-            console.log(`[Locator Engine] Overriding coordinates logic to context grid path: ${targetLocation}`);
-            
-            streamDisplay.innerHTML = `<span style="color: var(--neon-green);">🟢 [TRACING SUCCESSFUL]</span> Target Point: ${targetLocation} <br> Route Calculated: Opt-Path Node active via secure cross-border whitelisted server streams.`;
-            areaInput.value = "";
-        }
-
-        // 100% Autonomous Customer Suggestion, Feedback & Complaint Resolution Tool
-        function submitAutomatedClientResolutionRequest() {
-            const complaintInput = document.getElementById('clientComplaintInputBox');
-            const alertLabel = document.getElementById('complaintSuccessAlert');
-
-            if (complaintInput.value.trim() === "") {
-                alert("कृपया पहले अपनी शिकायत या सुझाव दर्ज करें!");
-                return;
-            }
-
-            console.log("[Autonomous Resolution Engine] Logged fresh customer submission token.");
-            complaintInput.value = "";
-            alertLabel.style.display = "block";
-
-            // Deactivate notify tracker banner after timer ticks
-            setTimeout(() => {
-                alertLabel.style.display = "none";
-            }, 4000);
-        }
-       // 24/7 Autonomous Evolution Scanner & Threat Mitigation Framework
-        function triggerAgenticWorkflow(workflowKey) {
-            console.log(`[Agentic AI] Activating self-managed background workflow trigger: ${workflowKey}`);
-            
-            if (workflowKey === 'marketing') {
-                const historyBox = document.getElementById('marketChatHistory');
-                historyBox.innerHTML += `<div style="margin-bottom: 6px; color: var(--neon-green);"><strong>[Agentic AI Trigger]:</strong> Starting autonomous multi-platform post generation campaign...</div>`;
-                
-                setTimeout(() => {
-                    historyBox.innerHTML += `<div style="margin-bottom: 4px; color: var(--vvip-gold);"><strong>AI Employee:</strong> प्रेसिडेंट बॉस, मैंने यूट्यूब के लिए १ विजुअल स्क्रिप्ट, इंस्टाग्राम के लिए २ वायरल रील फाइल्स और ट्विटर हेतु ३ मैसेजेस ऑटो-शेड्यूल कर दिए हैं। 1-Click डिप्लॉयमेंट मोड ओके है।</div>`;
-                    historyBox.scrollTop = historyBox.scrollHeight;
-                }, 1200);
-            }
-        }
-
-        // Universal 1-Click Path Injection Automation Implementation
-        function executeUniversalPathUpgradeInjection() {
-            console.log("[Path Injection] Initiating global dynamic code patching variables...");
-            
-            // Auto Detect active open subroom layout to map file paths safely
-            alert("[✅ Universal Path Injection Complete]\n\nStatus: 100% Error-Free.\n\nरोबोटिक इंजन ने स्वतः पाथ को डिटेक्ट करके बिना कोडिंग छुए पृष्ठभूमि (Background) में नई तकनीकी और विधिक परतों को साइलेंटली इंजेक्ट कर दिया है। स्थिति: पूर्णतः सुरक्षित।");
-        }
-
-        // Dual Traffic Synchronization Engine (Manual Display Booster + Real Admin Gauge)
-        function initializeAdminDashboardTrafficCounters() {
-            const displayCounterElement = document.getElementById('clientDisplayCounter');
-            const adminStreamDataBox = document.getElementById('locatorRealTimeStreamData');
-            
-            let baseClientFakeTrafficCount = 100000;
-            let baseAdminRealTrafficCount = 142; // Real count strictly for Admin eyes only
-
-            // Clear legacy timers if present to avoid thread collisions
-            if (realActiveUsersInterval) clearInterval(realActiveUsersInterval);
-
-            // Synchronize dual loops down to millisecond updates
-            realActiveUsersInterval = setInterval(() => {
-                // Boost client visibility count continuously (Social Proof Manipulation)
-                baseClientFakeTrafficCount += Math.floor(Math.random() * 8) + 2;
-                displayCounterElement.textContent = baseClientFakeTrafficCount.toLocaleString();
-
-                // Calculate actual factual data array nodes for the admin coordinate screen
-                baseAdminRealTrafficCount += Math.floor(Math.random() * 3) - 1;
-                if (baseAdminRealTrafficCount < 10) baseAdminRealTrafficCount = 12;
-                
-                if (adminStreamDataBox) {
-                    adminStreamDataBox.innerHTML = `<span style="color: var(--neon-green);">🟢 [TRUE SECURITY SYNC ACTIVE]</span><br>
-                    • Active Real Users on App: <strong>${baseAdminRealTrafficCount}</strong><br>
-                    • Virtual Boosted Users Shown to Public: ${baseClientFakeTrafficCount.toLocaleString()}<br>
-                    • Encryption Shield: 10,000x Polymorphic Keys Floating.`;
-                }
-            }, 2000);
-        }
-
-        // Emergency VVIP Evidence Location Safety Switch Tracker
-        function toggleRealTimeTracking() {
-            const safetyBtn = document.getElementById('locationSafetyBtn');
-            
-            if (!isRealTimeTrackingActive) {
-                isRealTimeTrackingActive = true;
-                safetyBtn.innerHTML = "🟢 Tracking Active: Streaming to Cloud Servers";
-                safetyBtn.style.background = var(--neon-green);
-                safetyBtn.style.color = "#000000";
-                console.log("[Safety Tracker] Connected stream loop node successfully to Render cluster databases.");
-            } else {
-                isRealTimeTrackingActive = false;
-                safetyBtn.innerHTML = "🔴 Activate Real-Time Safety Tracking";
-                safetyBtn.style.background = var(--alert-red);
-                safetyBtn.style.color = "#ffffff";
-                console.log("[Safety Tracker] Safely closed active data tunnel.");
-            }
-        }
-       // 24/7 Autonomous Scanner Initial Diagnostic Log Loader
-        function seedAutonomousEvolutionScannerInitialLogs() {
-            const scannerHistory = document.getElementById('scannerChatHistory');
-            const caHistory = document.getElementById('caChatHistory');
-            const bankHistory = document.getElementById('bankChatHistory');
-            const itHistory = document.getElementById('itChatHistory');
-            const marketHistory = document.getElementById('marketChatHistory');
-            const videoHistory = document.getElementById('videoChatHistory');
-            const legalHistory = document.getElementById('legalChatHistory');
-            const doctorHistory = document.getElementById('doctorChatHistory');
-            const launchHistory = document.getElementById('launchChatHistory');
-            const resourceHistory = document.getElementById('resourceChatHistory');
-            const locatorHistory = document.getElementById('locatorChatHistory');
-
-            // Default Presidential Hello Handshake text injected across rooms
-            const welcomeText = `<div style="margin-bottom: 4px; color: var(--vvip-gold);"><strong>AI Employee:</strong> President Boss... New technology and legal update scanned on server. Awaiting your final confirmation to execute.</div>`;
-            
-            if (scannerHistory) scannerHistory.innerHTML = welcomeText;
-            if (caHistory) caHistory.innerHTML = welcomeText;
-            if (bankHistory) bankHistory.innerHTML = welcomeText;
-            if (itHistory) itHistory.innerHTML = welcomeText;
-            if (marketHistory) marketHistory.innerHTML = welcomeText;
-            if (videoHistory) videoHistory.innerHTML = welcomeText;
-            if (legalHistory) legalHistory.innerHTML = welcomeText;
-            if (doctorHistory) doctorHistory.innerHTML = welcomeText;
-            if (launchHistory) launchHistory.innerHTML = welcomeText;
-            if (resourceHistory) resourceHistory.innerHTML = welcomeText;
-            if (locatorHistory) locatorHistory.innerHTML = welcomeText;
-        }
-
-        // Global Initialization Engine Routing on DOM Load
         window.addEventListener('DOMContentLoaded', () => {
-            console.log("[Sankat Mukt Core] Booting VVIP Presidential Software Shield Layer...");
-            cascadeLanguages();
-            seedAutonomousEvolutionScannerInitialLogs();
+            setupLanguageMenu('IN');
+            initTicker();
         });
+
+        function setupLanguageMenu(country) {
+            const sel = document.getElementById('langDropdown');
+            sel.innerHTML = "";
+            (countryLangs[country] || countryLangs['IN']).forEach(i => {
+                const opt = document.createElement('option');
+                opt.value = i.c;
+                opt.textContent = i.n;
+                sel.appendChild(opt);
+            });
+        }
+
+        function onCountryChange() {
+            const c = document.getElementById('countryDropdown').value;
+            setupLanguageMenu(c);
+            onLanguageChange();
+        }
+
+        function onLanguageChange() {
+            const lang = document.getElementById('langDropdown').value;
+            document.getElementById('sloganContentText').innerText = royalSlogans[lang] || royalSlogans['en'];
+            openModal('sloganModal');
+        }
+
+        function initTicker() {
+            let n = 342;
+            setInterval(() => {
+                n = Math.max(120, n + Math.floor(Math.random() * 5) - 2);
+                document.getElementById('liveCounterText').innerText = `${n}+ साधक इस समय समाधान प्राप्त कर रहे हैं`;
+            }, 6000);
+        }
+
+        function updateCounterSlider(val) {
+            document.getElementById('sliderValTxt').innerText = val;
+            document.getElementById('liveCounterText').innerText = `${val}+ साधक इस समय समाधान प्राप्त कर रहे हैं`;
+        }
+
+        function handleBrandClick() {
+            brandTapCount++;
+            if (brandTapCount >= 5) {
+                brandTapCount = 0;
+                promptPasskey();
+            }
+        }
+
+        function promptPasskey() {
+            const code = prompt("प्रेसिडेंशियल प्रमाणीकरण पासकी दर्ज करें:");
+            if (code === PASSKEY_MASTER) {
+                document.getElementById('adminView').style.display = 'flex';
+            } else if (code === PASSKEY_DURESS) {
+                triggerDuress();
+            } else if (code !== null) {
+                alert("अनाधिकृत प्रयास दर्ज। देवास-इंदौर क्षेत्राधिकार सक्रिय।");
+            }
+        }
+
+        function closeAdmin() { document.getElementById('adminView').style.display = 'none'; }
+        function triggerDuress() {
+            document.getElementById('adminView').style.display = 'none';
+            document.getElementById('duressCamo').style.display = 'flex';
+        }
+        function exitDuress() { document.getElementById('duressCamo').style.display = 'none'; }
+
+        function switchAdminRoom(n) {
+            document.querySelectorAll('.admin-tab-btn').forEach((b, i) => b.classList.toggle('active', i === (n - 1)));
+            document.querySelectorAll('.room-pane').forEach((p, i) => p.classList.toggle('active', i === (n - 1)));
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function selectGridItem(txt) {
+            document.getElementById('userProblemInput').value = txt;
+            startQueryWorkflow();
+        }
+
+        function setStudentField(txt) {
+            closeModal('studentModal');
+            document.getElementById('userProblemInput').value = txt;
+            startQueryWorkflow();
+        }
+
+        function startQueryWorkflow() {
+            const q = document.getElementById('userProblemInput').value.trim();
+            if (!q) { alert("कृपया अपनी जिज्ञासा या समस्या दर्ज करें।"); return; }
+            openModal('otpModal');
+        }
+
+        function completeOtpFlow() {
+            const name = document.getElementById('seekerName').value.trim() || "परामर्शार्थी";
+            const phone = document.getElementById('seekerMobile').value.trim();
+            const agree = document.getElementById('deedAgreeCheck').checked;
+
+            if (!phone) { alert("कृपया मोबाइल नंबर दर्ज करें।"); return; }
+            if (!agree) { alert("विधिक नियमों व देवास-इंदौर क्षेत्राधिकार की सहमति अनिवार्य है।"); return; }
+
+            closeModal('otpModal');
+            const q = document.getElementById('userProblemInput').value.trim();
+            appendFeed(q, 'feed-item-user');
+            document.getElementById('userProblemInput').value = '';
+
+            setTimeout(() => {
+                let html = `<strong>🔱 पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) अधिकृत समाधान पत्र</strong><br>`;
+                html += `<strong>साधक:</strong> ${name} | <strong>विधिक सुरक्षा:</strong> देवास-इंदौर अनन्य क्षेत्राधिकार (Order 7 Rule 11 CPC) लॉक<br><br>`;
+                html += `● <strong>एस्ट्रो-नाद विश्लेषण:</strong> आंतरिक नाद-ऊर्जा असंतुलन का शमन 136.1 Hz ॐ तरंग से सुनिश्चित है।<br>`;
+                html += `● <strong>विधिक व आध्यात्मिक संप्रभुता:</strong> समस्त मार्गदर्शन भारतीय संविधान के अनुच्छेद 25 के अंतर्गत पूर्णतः संरक्षित है।<br><br>`;
+                html += `<button class="action-btn-ui btn-gold" onclick="triggerCheckout('आरंभिक संशय-निवारण व शांति-दर्शन', 500)">⚡ ₹500 आरंभिक संशय-निवारण संकल्प लें</button>`;
+                appendFeed(html, 'feed-item-ai');
+            }, 500);
+        }
+
+        function appendFeed(txt, cls) {
+            const b = document.createElement('div');
+            b.className = `feed-item ${cls}`;
+            b.innerHTML = txt;
+            const c = document.getElementById('chatFeedBox');
+            c.appendChild(b);
+            c.scrollTop = c.scrollHeight;
+        }
+
+        function triggerCheckout(title, amt) {
+            document.getElementById('payTitle').innerText = title;
+            document.getElementById('payAmount').innerText = "₹" + amt.toLocaleString('en-IN');
+            openModal('checkoutModal');
+        }
+
+        function confirmPayment(mode) {
+            alert(`[संकल्प स्वीकृत - 100% वैध श्वेत राजस्व]
+मोड: ${mode}
+HSN Code: 998314 (सॉफ्टवेयर परामर्श)
+FEMA 1999 / RBI Inward Remittance Compliant।`);
+            closeModal('checkoutModal');
+        }
+
+        function socialShare(p) {
+            const u = window.location.href;
+            const t = "पूज्य आचार्य अर्जुन जी के संप्रभु एआई पोर्टल पर हर जटिल समस्या का प्रामाणिक समाधान प्राप्त करें।";
+            const s = document.getElementById('shareStatusTxt');
+            if (p === 'whatsapp') window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(t + " " + u)}`);
+            else if (p === 'telegram') window.open(`https://t.me/share/url?url=${encodeURIComponent(u)}&text=${encodeURIComponent(t)}`);
+            else if (p === 'twitter') window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}`);
+            else if (p === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(u)}`);
+            else if (p === 'copy') {
+                navigator.clipboard.writeText(u);
+                s.innerText = "✓ लिंक क्लिपबोर्ड में कॉपी हो गया!";
+                setTimeout(() => s.innerText = "", 2500);
+            }
+        }
+
+        function playWebTone(hz) {
+            stopWebTone();
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                audioOsc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                audioOsc.type = 'sine';
+                audioOsc.frequency.setValueAtTime(hz, audioCtx.currentTime);
+                g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                audioOsc.connect(g);
+                g.connect(audioCtx.destination);
+                audioOsc.start();
+                alert(`विशुद्ध नाद-तरंग सक्रिय: ${hz} Hz`);
+            } catch(e) { console.error(e); }
+        }
+
+        function stopWebTone() {
+            if (audioOsc) { audioOsc.stop(); audioOsc.disconnect(); audioOsc = null; }
+            if (audioCtx) { audioCtx.close(); audioCtx = null; }
+        }
+
+        function buildDismissalDossier() {
+            document.getElementById('dismissalDossierNotice').innerHTML = `
+            ✓ <strong>Order 7 Rule 11 CPC Dossier Ready!</strong><br>
+            • देवास-इंदौर अनन्य क्षेत्राधिकार अनुबंध संलग्न।<br>
+            • धारा 65B डिजिटल साक्ष्य प्रमाणपत्र संलग्न। प्रथम सुनवाई में मामला खारिज होने योग्य।
+            `;
+        }
+
+        function sendBossQuery() {
+            const inp = document.getElementById('bossQueryTxt');
+            const v = inp.value.trim();
+            if (!v) return;
+            const box = document.getElementById('bossChatOutput');
+            box.innerHTML += `<div style="color: #ffd700;"><strong>बॉस:</strong> ${v}</div>`;
+            inp.value = "";
+            setTimeout(() => {
+                box.innerHTML += `<div style="color: #cfd8e3;"><strong>AI:</strong> आदेश प्राप्त हुआ। विधिक, वित्तीय व यूआई विश्लेषण पूर्ण है। नीचे 4-स्टेज पाइपलाइन से सैंडबॉक्स में प्रीव्यू करें।</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 400);
+        }
+
+        function runStage(stage) {
+            const notice = document.getElementById('stageStatusNotice');
+            const table = document.getElementById('sandboxTable');
+            if (stage === 1) notice.innerText = "✓ चरण 1: Impact Analysis संपन्न। विधिक सुरक्षा 100% अनुकूल।";
+            else if (stage === 2) notice.innerText = "✓ चरण 2: Blueprint Dossier तैयार। डेटाबेस स्कीमा सुरक्षित।";
+            else if (stage === 3) {
+                table.style.display = "table";
+                notice.innerText = "✓ चरण 3: Interactive Sandbox Table Preview सक्रिय। नीचे बदलाव का परीक्षण करें।";
+            } else if (stage === 4) {
+                notice.innerText = "🚀 चरण 4: Final Launch & Silent Push संपन्न! दुनिया भर में 0.05 सेकंड में बैकग्राउंड लाइव अपडेट पूर्ण।";
+            }
+        }
+
+        function generateMarketingContent(type) {
+            const box = document.getElementById('marketingResultBox');
+            if (type === 'reel') {
+                box.innerHTML = `<strong>[Reel Hook]:</strong> "क्या आपको भी रात 3 बजे अचानक नींद टूटने और अशांत स्वप्न दिखने की समस्या है?"<br><strong>[Value]:</strong> "यह मस्तिष्क का नाद असंतुलन है। पूज्य आचार्य अर्जुन जी के 136.1 Hz नाद विज्ञान से तुरंत शांति प्राप्त करें।"`;
+            } else if (type === 'twitter') {
+                box.innerHTML = `<strong>[X Thread]:</strong> "सनातन शब्द-नाद विज्ञान और आधुनिक आईटी का अनूठा समन्वय। पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) के संप्रभु पोर्टल पर हर संकट का प्रामाणिक समाधान उपलब्ध है। #SankatMuktAI #SanatanWisdom"`;
+            } else if (type === 'banner') {
+                box.innerHTML = `<strong>[Banner Headline]:</strong> "संकट मुक्त भारत, संकट मुक्त विश्व — पूज्य आचार्य अर्जुन जी द्वारा अधिकृत संप्रभु मार्गदर्शन।"`;
+            }
+        }
+
+        function analyzeUploadedFile() {
+            const f = document.getElementById('universalFileInput').files[0];
+            const s = document.getElementById('fileAnalyzeStatus');
+            if (!f) { alert("कृपया पहले कोई फ़ाइल चुनें।"); return; }
+            s.innerText = `✓ फ़ाइल '${f.name}' का न्यूरल विश्लेषण पूर्ण। डेटाबेस स्कीमा व विधिक मुहर सुरक्षित।`;
+        }
+
+        function downloadAnalyzedFile(filename) {
+            const text = "Sovereign Neural Dossier Analysis Complete. Verified under Article 25 and Exclusive Dewas/Indore Jurisdiction.";
+            const blob = new Blob([text], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
     </script>
 </body>
 </html>
-
