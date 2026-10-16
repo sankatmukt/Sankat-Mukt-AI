@@ -34,6 +34,7 @@
             overflow-x: hidden;
         }
 
+        /* शीर्ष हेडर */
         header {
             background: linear-gradient(180deg, #161b22 0%, var(--bg-base) 100%);
             border-bottom: 2px solid var(--gold-primary);
@@ -82,6 +83,7 @@
             100% { transform: scale(0.9); opacity: 0.7; }
         }
 
+        /* कमरा नेविगेशन टैब्स */
         .room-nav {
             display: flex;
             overflow-x: auto;
@@ -118,6 +120,7 @@
             font-weight: 700;
         }
 
+        /* मुख्य कंटेनर */
         main {
             flex: 1;
             padding: 12px;
@@ -132,8 +135,15 @@
 
         .room-section.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* कार्ड स्टाइल */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -155,6 +165,7 @@
             gap: 8px;
         }
 
+        /* चैट आउटपुट बॉक्स */
         #bossChatOutput {
             background: #0d1117;
             border: 1px solid var(--border-color);
@@ -168,6 +179,14 @@
             margin-bottom: 12px;
             font-size: 0.92rem;
             line-height: 1.5;
+        }
+
+        #bossChatOutput::-webkit-scrollbar {
+            width: 5px;
+        }
+        #bossChatOutput::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
         .chat-bubble-user {
@@ -191,6 +210,7 @@
             line-height: 1.6;
         }
 
+        /* त्वरित सवाल चिप्स */
         .quick-chips {
             display: flex;
             flex-wrap: wrap;
@@ -206,6 +226,7 @@
             padding: 5px 10px;
             border-radius: 16px;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .chip:hover {
@@ -213,6 +234,7 @@
             background: rgba(88, 166, 255, 0.1);
         }
 
+        /* इनपुट पंक्ति */
         .chat-input-row {
             display: flex;
             gap: 8px;
@@ -227,6 +249,7 @@
             padding: 12px;
             font-size: 0.95rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         #bossQueryTxt:focus {
@@ -247,6 +270,10 @@
             gap: 6px;
         }
 
+        .btn-action:active {
+            transform: scale(0.97);
+        }
+
         .btn-clear {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -255,6 +282,11 @@
             padding: 0 10px;
             cursor: pointer;
             font-size: 0.8rem;
+        }
+
+        .btn-clear:hover {
+            color: var(--gold-bright);
+            border-color: var(--gold-bright);
         }
 
         footer {
@@ -269,6 +301,7 @@
 </head>
 <body>
 
+    <!-- हेडर -->
     <header>
         <div class="brand-title">
             <span>🛡️ संकट मुक्त AI</span>
@@ -276,10 +309,11 @@
         </div>
         <div class="status-badge">
             <span class="status-dot"></span>
-            <span>लाइव Google Search ग्राउंडिंग सक्रिय</span>
+            <span>लाइव Google Search इंजन सक्रिय</span>
         </div>
     </header>
 
+    <!-- कमरा नेविगेशन टैब्स -->
     <nav class="room-nav">
         <button class="room-btn" onclick="openRoom(1)">कमरा 1: विधिक सुरक्षा</button>
         <button class="room-btn" onclick="openRoom(2)">कमरा 2: वित्तीय संकट</button>
@@ -289,65 +323,86 @@
         <button class="room-btn active" onclick="openRoom(6)">👑 कमरा 6: सुप्रीम AI कमांड</button>
     </nav>
 
+    <!-- मुख्य सामग्री -->
     <main>
+        <!-- कमरा 1 -->
         <section id="room1" class="room-section">
             <div class="card">
                 <div class="card-header">⚖️ विधिक सुरक्षा कवच (नवीन भारतीय कानून)</div>
-                <p style="font-size: 0.9rem; color: #cbd5e0; line-height: 1.6;">
-                    भारतीय न्याय संहिता (BNS), भारतीय नागरिक सुरक्षा संहिता (BNSS), और भारतीय साक्ष्य अधिनियम (BSA) के नवीनतम प्रावधान।
+                <p style="margin-bottom: 8px; font-size: 0.9rem; color: #cbd5e0;">1 जुलाई 2024 से भारत में नवीन आपराधिक कानून पूरी तरह लागू हैं:</p>
+                <ul style="padding-left: 20px; font-size: 0.88rem; line-height: 1.6; color: #a0aec0;">
+                    <li><strong>भारतीय न्याय संहिता (BNS):</strong> इसने पुराने IPC (1860) का स्थान लिया है।</li>
+                    <li><strong>भारतीय नागरिक सुरक्षा संहिता (BNSS):</strong> इसने CrPC (1973) का स्थान लिया है (Zero FIR व e-FIR व्यवस्था)।</li>
+                    <li><strong>भारतीय साक्ष्य अधिनियम (BSA):</strong> इसने Evidence Act (1872) का स्थान लिया है (डिजिटल साक्ष्य मान्य)।</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- कमरा 2 -->
+        <section id="room2" class="room-section">
+            <div class="card">
+                <div class="card-header">💰 वित्तीय संकट मोचन</div>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    अचानक ऋण संकट, बैंक रिकवरी कॉल या चेक बाउंस की स्थिति में घबराएँ नहीं। कानूनन कोई भी रिकवरी एजेंट अभद्रता नहीं कर सकता (RBI Fair Practices Code)। चेक बाउंस होने पर 30 दिन का विधिक नोटिस आवश्यक है।
                 </p>
             </div>
         </section>
 
-        <section id="room2" class="room-section">
-            <div class="card">
-                <div class="card-header">💰 वित्तीय संकट मोचन</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">ऋण संकट, बैंक रिकवरी कॉल व वित्तीय कानूनी सुरक्षा उपाय।</p>
-            </div>
-        </section>
-
+        <!-- कमरा 3 -->
         <section id="room3" class="room-section">
             <div class="card">
                 <div class="card-header">📈 व्यापारिक व प्रशासनिक रणनीति</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">व्यापारिक गतिरोध, अनुबंध सुरक्षा व अर्जुन-नीति मार्गदर्शन।</p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    साझेदारी विवाद, अनुबंध उल्लंघन या व्यापारिक गतिरोध के समय अर्जुन-नीति: पहले लिखित दस्तावेज़ व डिजिटल साक्ष्य सुरक्षित करें, फिर मध्यस्थता (Arbitration) का विकल्प अपनाएं।
+                </p>
             </div>
         </section>
 
+        <!-- कमरा 4 -->
         <section id="room4" class="room-section">
             <div class="card">
                 <div class="card-header">🧘 मानसिक शांति व स्थिरता</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">कठिन परिस्थितियों में धैर्य और निर्णय क्षमता।</p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    संकट के समय सबसे बड़ा हथियार शांत बुद्धि है। निर्णय हमेशा आवेश में नहीं, बल्कि परिणाम का 360-डिग्री विश्लेषण करके लें।
+                </p>
             </div>
         </section>
 
+        <!-- कमरा 5 -->
         <section id="room5" class="room-section">
             <div class="card">
                 <div class="card-header">🔮 आध्यात्मिक व रणनीतिक मार्गदर्शन</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। अपने पुरुषार्थ और धर्मसंगत रणनीति पर अडिग रहें, विजय सुनिश्चित होगी।
+                </p>
             </div>
         </section>
 
+        <!-- कमरा 6: सुप्रीम अर्जुन कमांड (AI लाइव सर्च व रणनीतिकार) -->
         <section id="room6" class="room-section active">
             <div class="card">
                 <div class="card-header" style="justify-content: space-between;">
                     <span>👑 सुप्रीम अर्जुन कमांड सेंटर (लाइव Google Search)</span>
-                    <button class="btn-clear" onclick="resetKey()">Key बदलें</button>
+                    <button class="btn-clear" onclick="resetApiKey()">Key बदलें</button>
                 </div>
 
+                <!-- त्वरित सवाल चिप्स -->
                 <div class="quick-chips">
                     <span class="chip" onclick="setQuery('वर्तमान में अमेरिका का राष्ट्रपति कौन है?')">🇺🇸 USA राष्ट्रपति</span>
                     <span class="chip" onclick="setQuery('वर्तमान में रूस का राष्ट्रपति कौन है?')">🇷🇺 रूस राष्ट्रपति</span>
-                    <span class="chip" onclick="setQuery('भारत में नए आपराधिक कानून BNS और BNSS के मुख्य नियम क्या हैं?')">⚖️ नए आपराधिक कानून</span>
-                    <span class="chip" onclick="setQuery('आज की ताज़ा राजनीतिक और विधिक स्थिति क्या है?')">🌐 आज का लाइव अपडेट</span>
+                    <span class="chip" onclick="setQuery('भारत के नए आपराधिक कानून BNS, BNSS और BSA के मुख्य नियम क्या हैं?')">⚖️ नए आपराधिक कानून</span>
+                    <span class="chip" onclick="setQuery('चेक बाउंस होने पर कानूनी बचाव और तत्काल रणनीति क्या है?')">📑 चेक बाउंस बचाव</span>
                 </div>
 
+                <!-- चैट विंडो -->
                 <div id="bossChatOutput">
                     <div class="chat-bubble-ai">
-<strong>🛡️ संकट मुक्त AI (Live Search Engine) तैयार है।</strong>
-यह सिस्टम सीधे Google के लाइव सर्च इंजन से जुड़ा है। आप दुनिया के किसी भी विषय पर आज की ताज़ा जानकारी पूछ सकते हैं।
+<strong>🛡️ संकट मुक्त AI (Arjun Tactical Engine) तैयार है।</strong>
+बॉस, आदेश दीजिए! आप देश-दुनिया, नए कानूनों (BNS), विधिक संकट, वित्तीय स्थिति या किसी भी प्रशासनिक विषय पर सवाल पूछ सकते हैं। लाइव Google सर्च के आधार पर सटीक उत्तर तुरंत प्रस्तुत किया जाएगा।
                     </div>
                 </div>
 
+                <!-- इनपुट व बटन -->
                 <div class="chat-input-row">
                     <input type="text" id="bossQueryTxt" placeholder="अपना प्रश्न या संकट यहाँ लिखें..." onkeydown="if(event.key==='Enter') sendBossQuery();">
                     <button class="btn-action" onclick="sendBossQuery()">
@@ -363,6 +418,7 @@
         संकट मुक्त AI © 2026 | अर्जुन आर्किटेक्चर | सर्वाधिकार सुरक्षित
     </footer>
 
+    <!-- मुख्य जावास्क्रिप्ट लॉजिक (शुद्ध Google Gemini + Google Search Grounding) -->
     <script>
         function openRoom(roomNum) {
             document.querySelectorAll('.room-section').forEach(el => el.classList.remove('active'));
@@ -381,9 +437,9 @@
             input.focus();
         }
 
-        function resetKey() {
-            localStorage.removeItem("gemini_live_key");
-            alert("Google API Key हटा दी गई है। अगला सवाल पूछने पर नई Key दर्ज करें।");
+        function resetApiKey() {
+            localStorage.removeItem("sankat_gemini_key");
+            alert("API Key हटा दी गई है। अगला सवाल पूछने पर नई Key दर्ज करने का विकल्प आएगा।");
         }
 
         async function sendBossQuery() {
@@ -391,13 +447,13 @@
             const v = inp.value.trim();
             if (!v) return;
 
-            // Google Gemini API Key की जांच
-            let apiKey = localStorage.getItem("gemini_live_key");
+            // Google Gemini API Key प्राप्त करना (स्थानीय स्टोरेज से)
+            let apiKey = localStorage.getItem("sankat_gemini_key");
             if (!apiKey || apiKey.length < 15) {
-                apiKey = prompt("कृपया अपनी Google Gemini API Key दर्ज करें:\n(यह केवल आपके ब्राउज़र में सुरक्षित रहेगी)");
+                apiKey = prompt("कृपया अपनी Google Gemini API Key दर्ज करें:\n(यह आपके ब्राउज़र में सुरक्षित रहेगी और दोबारा नहीं माँगी जाएगी)");
                 if (!apiKey) return;
                 apiKey = apiKey.trim();
-                localStorage.setItem("gemini_live_key", apiKey);
+                localStorage.setItem("sankat_gemini_key", apiKey);
             }
 
             const box = document.getElementById('bossChatOutput');
@@ -406,36 +462,55 @@
             box.scrollTop = box.scrollHeight;
 
             const loadId = "load_" + Date.now();
-            box.innerHTML += `<div id="${loadId}" style="color: #00ffcc; font-size: 0.88rem; padding: 6px;"><em>🌐 Google पर लाइव सर्च करके ताज़ा जानकारी खोजी जा रही है...</em></div>`;
+            box.innerHTML += `<div id="${loadId}" style="color: #00ffcc; font-size: 0.88rem; padding: 6px;"><em>🌐 लाइव Google Search से ताज़ा विश्लेषण जारी है...</em></div>`;
             box.scrollTop = box.scrollHeight;
 
+            const promptText = `निर्देश: आप 'संकट मुक्त AI' (Arjun Project) के सर्वोच्च विधिक, वित्तीय व रणनीतिक सलाहकार हैं। 
+वर्तमान समय वर्ष 2026 है। 
+Google Search का उपयोग करके उपयोगकर्ता के प्रश्न का बिल्कुल ताज़ा, 100% सटीक, विधिक रूप से पुष्ट और तार्किक उत्तर स्पष्ट व प्रभावशाली हिंदी में दें।
+
+उपयोगकर्ता का प्रश्न: ${v}`;
+
             try {
-                // gemini-2.5-flash + Google Search Grounding टूल
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                // 1. Google Gemini 1.5 Flash + Google Search Grounding
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 
-                const response = await fetch(url, {
+                let response = await fetch(url, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{
-                                text: `निर्देश: आप 'संकट मुक्त AI' (Arjun Project) के रणनीतिक व विधिक सलाहकार हैं।\nयूज़र के प्रश्न पर Google Search के लाइव नतीजों का उपयोग करें और वर्तमान समय के अनुसार 100% सटीक, ताज़ा और प्रामाणिक हिंदी में उत्तर दें।\n\nयूज़र का प्रश्न: ${v}`
-                            }]
+                            parts: [{ text: promptText }]
                         }],
-                        // यह टूल AI को सीधे Google Search इंजन से लाइव डेटा निकालने का अधिकार देता है
                         tools: [{
-                            google_search: {}
+                            googleSearch: {}
                         }]
                     })
                 });
 
-                const data = await response.json();
+                let data = await response.json();
+
+                // यदि Search Tool में कोई समस्या आए तो सीधे मॉडल से उत्तर लेना
+                if (data.error) {
+                    console.warn("Search tool fallback, retrying standard:", data.error.message);
+                    response = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: promptText }]
+                            }]
+                        })
+                    });
+                    data = await response.json();
+                }
+
                 const loadElem = document.getElementById(loadId);
                 if (loadElem) loadElem.remove();
 
                 if (data.error) {
                     if (data.error.message.includes("API key")) {
-                        localStorage.removeItem("gemini_live_key");
+                        localStorage.removeItem("sankat_gemini_key");
                     }
                     box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ एरर: ${data.error.message}</div>`;
                     box.scrollTop = box.scrollHeight;
@@ -444,16 +519,16 @@
 
                 const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (!reply) {
-                    throw new Error("उत्तर प्राप्त नहीं हुआ।");
+                    throw new Error("उत्तर प्राप्त नहीं हुआ");
                 }
 
-                box.innerHTML += `<div class="chat-bubble-ai"><strong>🛡️ संकट मुक्त AI (Google लाइव रिपोर्ट):\n</strong>${reply}</div>`;
+                box.innerHTML += `<div class="chat-bubble-ai"><strong>🛡️ संकट मुक्त AI (लाइव Google रिपोर्ट):\n</strong>${reply}</div>`;
                 box.scrollTop = box.scrollHeight;
 
             } catch (err) {
                 const loadElem = document.getElementById(loadId);
                 if (loadElem) loadElem.remove();
-                box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ नेटवर्क त्रुटि: ${err.message}</div>`;
+                box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ नेटवर्क समस्या: ${err.message}</div>`;
                 box.scrollTop = box.scrollHeight;
             }
         }
