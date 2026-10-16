@@ -2,1414 +2,552 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>संकट मुक्त AI | प्रोटोटाइप कंसोल</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>संकट मुक्त AI | Arjun Tactical Command System</title>
+    <!-- Puter.js इंजन: बिना किसी Key और बिना किसी सीमा के लाइव AI कनेक्शन -->
+    <script src="https://js.puter.com/v2/"></script>
     <style>
         :root {
-            --bg-primary: #0a0d14;
-            --bg-secondary: #121722;
-            --bg-tertiary: #1a2232;
+            --bg-base: #0a0c10;
+            --bg-card: #13171f;
+            --bg-input: #1a202c;
             --gold-primary: #d4af37;
-            --gold-glow: rgba(212, 175, 55, 0.35);
-            --text-primary: #f2f5fa;
-            --text-secondary: #9aa7bc;
-            --border-color: #263348;
-            --accent-green: #2ecc71;
-            --accent-red: #e74c3c;
-            --accent-blue: #3498db;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --gold-bright: #ffd700;
+            --border-color: #2d3748;
+            --text-main: #e2e8f0;
+            --text-muted: #a0aec0;
+            --danger: #e53e3e;
+            --success: #38a169;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: var(--font-family);
-            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif;
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            background-color: var(--bg-base);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
         }
 
-        /* --- हेडर: 2-स्तरीय मोबाइल-फर्स्ट लेआउट --- */
+        /* शीर्ष हेडर */
         header {
-            background: rgba(10, 13, 20, 0.98);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 8px 12px;
+            background: linear-gradient(180deg, #161b22 0%, var(--bg-base) 100%);
+            border-bottom: 2px solid var(--gold-primary);
+            padding: 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-
-        .header-top-row {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            width: 100%;
+            gap: 6px;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
         }
 
-        .brand-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .brand-logo-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            background: linear-gradient(135deg, #ffd700, #b8860b);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-            box-shadow: 0 0 12px var(--gold-glow);
-            animation: pulse-glow 2.5s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 8px var(--gold-glow); }
-            50% { box-shadow: 0 0 16px rgba(212, 175, 55, 0.6); }
-            100% { box-shadow: 0 0 8px var(--gold-glow); }
-        }
-
-        .brand-name-radiant {
-            font-size: 1.05rem;
+        .brand-title {
+            color: var(--gold-bright);
+            font-size: 1.4rem;
             font-weight: 800;
-            background: linear-gradient(90deg, #ffffff, var(--gold-primary), #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-            letter-spacing: 0.3px;
-        }
-
-        .header-top-actions {
+            letter-spacing: 1px;
             display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .header-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            color: var(--gold-primary);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .header-btn.key-btn {
-            border-color: var(--gold-primary);
-            background: rgba(212, 175, 55, 0.15);
-            font-weight: bold;
-        }
-
-        .header-sub-row {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
             gap: 8px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
-        .select-pill {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            padding: 4px 8px;
+        .status-badge {
+            font-size: 0.75rem;
+            background: rgba(56, 161, 105, 0.15);
+            color: #48bb78;
+            border: 1px solid #38a169;
+            padding: 3px 10px;
             border-radius: 12px;
-            font-size: 0.72rem;
-            outline: none;
-            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        /* --- सोशल प्रूफ बार --- */
-        .live-ticker-strip {
-            background: #0d121c;
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background-color: #48bb78;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        /* कमरा नेविगेशन टैब्स */
+        .room-nav {
+            display: flex;
+            overflow-x: auto;
+            background: #11141a;
             border-bottom: 1px solid var(--border-color);
-            padding: 4px 10px;
-            font-size: 0.72rem;
-            color: #8da0b8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .live-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            box-shadow: 0 0 6px var(--accent-green);
-        }
-
-        /* --- मुख्य कार्यक्षेत्र --- */
-        main {
-            flex: 1;
-            width: 100%;
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        /* भरोसा कार्ड */
-        .trust-banner-card {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(18, 23, 34, 0.95));
-            border: 1px solid var(--gold-primary);
-            border-radius: 12px;
-            padding: 12px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-
-        .trust-banner-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--gold-primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .trust-banner-sub {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
-        /* PhonePe-Style Micro-Grid (8 Squircle Cards) */
-        .grid-header {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: -4px;
-        }
-
-        .phonepe-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            padding: 8px;
             gap: 8px;
-            width: 100%;
+            scrollbar-width: thin;
         }
 
-        .squircle-card {
-            background: var(--bg-secondary);
+        .room-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+        .room-nav::-webkit-scrollbar-thumb {
+            background: var(--gold-primary);
+        }
+
+        .room-btn {
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            white-space: nowrap;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .squircle-card:active {
-            transform: scale(0.96);
-            border-color: var(--gold-primary);
+        .room-btn.active {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold-bright);
+            color: var(--gold-bright);
+            font-weight: 700;
         }
 
-        .squircle-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
+        /* मुख्य कंटेनर */
+        main {
+            flex: 1;
+            padding: 12px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .squircle-label {
-            font-size: 0.68rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            line-height: 1.2;
+        .room-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
         }
 
-        /* इनपुट कमांड बार */
-        .command-bar {
-            background: var(--bg-secondary);
+        .room-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* कार्ड स्टाइल */
+        .card {
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 6px 12px;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            color: var(--gold-bright);
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
         }
 
-        .command-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        .command-btn {
-            background: var(--gold-primary);
-            border: none;
-            color: #000;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 0.74rem;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        /* संवाद फ़ीड */
-        .chat-feed-box {
+        /* रूम 6: चैट आउटपुट बॉक्स */
+        #bossChatOutput {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            height: 380px;
+            overflow-y: auto;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-
-        .feed-item {
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.82rem;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.92rem;
             line-height: 1.5;
         }
 
-        .feed-item-ai {
-            background: #111622;
-            border-left: 3px solid var(--gold-primary);
-            border: 1px solid var(--border-color);
+        #bossChatOutput::-webkit-scrollbar {
+            width: 5px;
+        }
+        #bossChatOutput::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
-        .feed-item-user {
-            background: var(--bg-tertiary);
-            align-self: flex-end;
-            max-width: 85%;
+        .chat-bubble-user {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--gold-bright);
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            color: #ffd700;
+            align-self: flex-start;
+            max-width: 95%;
         }
 
-        /* संकल्प योजना कार्ड्स */
-        .plan-row-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .plan-title {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .plan-sub {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-
-        .plan-price-btn {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--gold-primary);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        /* --- मॉडल्स (Overlays) --- */
-        .modal-layer {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
+        .chat-bubble-ai {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-left: 3px solid #38a169;
             padding: 12px;
-        }
-
-        .modal-container {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 520px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .modal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .modal-heading-text {
-            font-size: 0.92rem;
-            color: var(--gold-primary);
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        /* स्क्रोल करने योग्य डीड बॉक्स */
-        .deed-scroll-box {
-            background: #0d1117;
-            border: 1px solid var(--border-color);
-            padding: 10px;
             border-radius: 8px;
-            font-size: 0.74rem;
-            color: #8c96a5;
-            max-height: 140px;
-            overflow-y: auto;
+            color: var(--text-main);
+            white-space: pre-wrap;
             line-height: 1.6;
         }
 
-        /* --- 7-कमरों वाला एडमिन कंसोल --- */
-        #adminView {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg-primary);
-            z-index: 3000;
-            flex-direction: column;
-        }
-
-        .admin-header-bar {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 10px 14px;
+        /* तुरंत सवाल पूछने वाले बटन */
+        .quick-chips {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-tabs-scroll {
-            display: flex;
-            overflow-x: auto;
-            background: #0b0f16;
-            border-bottom: 1px solid var(--border-color);
-            padding: 6px 8px;
+            flex-wrap: wrap;
             gap: 6px;
-            scrollbar-width: none;
+            margin-bottom: 12px;
         }
-        .admin-tabs-scroll::-webkit-scrollbar { display: none; }
 
-        .admin-tab-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.72rem;
+        .chip {
+            background: #1c2128;
+            border: 1px solid #30363d;
+            color: #58a6ff;
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 16px;
             cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
+            transition: all 0.2s;
         }
 
-        .admin-tab-btn.active {
-            background: var(--gold-primary);
+        .chip:hover {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        /* इनपुट कंट्रोल */
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        #bossQueryTxt {
+            flex: 1;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            padding: 12px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #bossQueryTxt:focus {
+            border-color: var(--gold-bright);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--gold-primary), #997a15);
             color: #000;
             font-weight: 700;
-            border-color: var(--gold-primary);
-        }
-
-        .admin-content-area {
-            flex: 1;
-            padding: 12px;
-            overflow-y: auto;
-        }
-
-        .room-pane {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .room-pane.active {
-            display: flex;
-        }
-
-        .admin-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
-        }
-
-        .admin-card h3 {
-            font-size: 0.85rem;
-            color: var(--gold-primary);
-            margin-bottom: 8px;
-        }
-
-        .action-btn-ui {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 7px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            padding: 0 18px;
+            font-size: 0.95rem;
             cursor: pointer;
-        }
-        .action-btn-ui:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
-        .action-btn-ui.btn-gold { background: var(--gold-primary); color: #000; font-weight: 700; }
-        .action-btn-ui.btn-red { background: var(--accent-red); color: #fff; border: none; }
-        .action-btn-ui.btn-green { background: var(--accent-green); color: #fff; border: none; }
-
-        /* प्रीव्यू सैंडबॉक्स टेबल */
-        .preview-table {
-            width: 100%;
-            font-size: 0.72rem;
-            border-collapse: collapse;
-            margin: 8px 0;
-        }
-        .preview-table th, .preview-table td {
-            border: 1px solid var(--border-color);
-            padding: 6px;
-            text-align: left;
-        }
-        .preview-table th { background: var(--bg-tertiary); color: var(--gold-primary); }
-
-        /* डुरेस वेधशाला */
-        #duressCamo {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #090d14;
-            color: #cfd6e0;
-            z-index: 9999;
-            flex-direction: column;
+            transition: transform 0.1s, opacity 0.2s;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            gap: 6px;
+        }
+
+        .btn-action:active {
+            transform: scale(0.97);
+        }
+
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 8px;
+            padding: 0 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-clear:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        footer {
             text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            background: #0a0c10;
         }
     </style>
 </head>
 <body>
 
-    <!-- हेडर: 2-स्तरीय कॉम्पैक्ट लेआउट -->
+    <!-- हेडर -->
     <header>
-        <div class="header-top-row">
-            <div class="brand-box" onclick="handleBrandClick()">
-                <div class="brand-logo-icon">🔱</div>
-                <div class="brand-name-radiant" id="appMainTitle">संकट मुक्त AI</div>
-            </div>
-            <div class="header-top-actions">
-                <button class="header-btn" title="शेयर करें" onclick="openModal('shareModal')">📢</button>
-                <button class="header-btn" title="विधिक वॉल्ट" onclick="openModal('vaultModal')">🛡️</button>
-                <button class="header-btn key-btn" title="प्रेसिडेंशियल पासकी" onclick="promptPasskey()">🔑</button>
-            </div>
+        <div class="brand-title">
+            <span>🛡️ संकट मुक्त AI</span>
+            <span style="font-size: 0.8rem; color: #8b949e; font-weight: normal;">| अर्जुन टैक्टिकल कमांड</span>
         </div>
-
-        <div class="header-sub-row">
-            <select class="select-pill" id="countryDropdown" onchange="onCountryChange()">
-                <option value="IN">🇮🇳 भारत</option>
-                <option value="US">🇺🇸 USA</option>
-                <option value="AE">🇦🇪 UAE</option>
-                <option value="GB">🇬🇧 UK</option>
-            </select>
-            <select class="select-pill" id="langDropdown" onchange="onLanguageChange()">
-                <!-- डायनामिक विकल्प -->
-            </select>
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            <span>लाइव सुपर-इंजन सक्रिय (वर्ष 2026 अद्यतन)</span>
         </div>
     </header>
 
-    <!-- सोशल प्रूफ पट्टी -->
-    <div class="live-ticker-strip">
-        <span class="live-dot"></span>
-        <span id="liveCounterText">342+ साधक इस समय समाधान प्राप्त कर रहे हैं</span>
-    </div>
+    <!-- कमरा नेविगेशन टैब्स -->
+    <nav class="room-nav">
+        <button class="room-btn" onclick="openRoom(1)">कमरा 1: विधिक सुरक्षा</button>
+        <button class="room-btn" onclick="openRoom(2)">कमरा 2: वित्तीय संकट</button>
+        <button class="room-btn" onclick="openRoom(3)">कमरा 3: व्यापारिक रणनीति</button>
+        <button class="room-btn" onclick="openRoom(4)">कमरा 4: मानसिक संतुलन</button>
+        <button class="room-btn" onclick="openRoom(5)">कमरा 5: ज्योतिष/मार्गदर्शन</button>
+        <button class="room-btn active" onclick="openRoom(6)">👑 कमra 6: सुप्रीम AI कमांड</button>
+    </nav>
 
-    <!-- मुख्य कार्यक्षेत्र -->
+    <!-- मुख्य सामग्री -->
     <main>
-        <!-- भरोसा क्यों करें बैनर -->
-        <div class="trust-banner-card" onclick="openModal('whyTrustModal')">
-            <div>
-                <div class="trust-banner-title">🔱 संकट मुक्त AI पर भरोसा क्यों करें?</div>
-                <div class="trust-banner-sub">पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) • प्राचीन मंत्र-विज्ञान व विधिक प्रज्ञा</div>
+        <!-- कमरा 1 -->
+        <section id="room1" class="room-section">
+            <div class="card">
+                <div class="card-header">⚖️ विधिक सुरक्षा कवच (नवीन भारतीय कानून)</div>
+                <p style="margin-bottom: 8px; font-size: 0.9rem; color: #cbd5e0;">1 जुलाई 2024 से भारत में नवीन आपराधिक कानून लागू हैं:</p>
+                <ul style="padding-left: 20px; font-size: 0.88rem; line-height: 1.6; color: #a0aec0;">
+                    <li><strong>भारतीय न्याय संहिता (BNS):</strong> IPC 1860 का स्थान लिया।</li>
+                    <li><strong>भारतीय नागरिक सुरक्षा संहिता (BNSS):</strong> CrPC 1973 का स्थान लिया (Zero FIR व e-FIR व्यवस्था)।</li>
+                    <li><strong>भारतीय साक्ष्य अधिनियम (BSA):</strong> Evidence Act 1872 का स्थान लिया (डिजिटल साक्ष्य मान्य)।</li>
+                </ul>
             </div>
-            <div style="font-size: 16px; color: var(--gold-primary);">➔</div>
-        </div>
+        </section>
 
-        <!-- PhonePe-शैली का 8-ग्रिड -->
-        <div class="grid-header">समाधान व मार्गदर्शन सेवाएँ:</div>
-        <div class="phonepe-grid">
-            <div class="squircle-card" style="border-color: var(--gold-primary);" onclick="openModal('studentModal')">
-                <div class="squircle-icon">🎓</div>
-                <div class="squircle-label">विद्यार्थी मेधा</div>
+        <!-- कमरा 2 -->
+        <section id="room2" class="room-section">
+            <div class="card">
+                <div class="card-header">💰 वित्तीय संकट मोचन</div>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    अचानक ऋण संकट, बैंक रिकवरी कॉल या चेक बाउंस की स्थिति में शांत रहें। कानूनन कोई भी रिकवरी एजेंट अभद्रता नहीं कर सकता (RBI Fair Practices Code)। चेक बाउंस होने पर 30 दिन का विधिक नोटिस आवश्यक है।
+                </p>
             </div>
-            <div class="squircle-card" onclick="selectGridItem('विधिक व न्यायिक संरक्षण (Order 7 Rule 11 / BNS)')">
-                <div class="squircle-icon">⚖️</div>
-                <div class="squircle-label">विधिक सुरक्षा</div>
-            </div>
-            <div class="squircle-card" onclick="selectGridItem('स्वप्न विश्लेषण व आंतरिक शांति (136.1 Hz ॐ नाद)')">
-                <div class="squircle-icon">👁️</div>
-                <div class="squircle-label">स्वप्न शांति</div>
-            </div>
-            <div class="squircle-card" onclick="selectGridItem('अत्यंत निजी व गोपनीय परामर्श (अनुच्छेद 25 द्वारा सुरक्षित)')">
-                <div class="squircle-icon">🔒</div>
-                <div class="squircle-label">गोपनीय विमर्श</div>
-            </div>
-            <div class="squircle-card" onclick="selectGridItem('व्यापारिक व आर्थिक समृद्धि (श्री-समृद्धि विधान)')">
-                <div class="squircle-icon">👑</div>
-                <div class="squircle-label">व्यापार वृद्धि</div>
-            </div>
-            <div class="squircle-card" onclick="selectGridItem('पारिवारिक सामंजस्य व कलह शमन')">
-                <div class="squircle-icon">🕊️</div>
-                <div class="squircle-label">गृह शांति</div>
-            </div>
-            <div class="squircle-card" onclick="selectGridItem('आरोग्य नाद तरंग व मानसिक संबल (528 Hz)')">
-                <div class="squircle-icon">🌿</div>
-                <div class="squircle-label">आरोग्य नाद</div>
-            </div>
-            <div class="squircle-card" onclick="triggerCheckout('राज-सिंहासन महा-संकल्प VVIP संवाद', 101000)">
-                <div class="squircle-icon">📞</div>
-                <div class="squircle-label">VVIP संवाद</div>
-            </div>
-        </div>
+        </section>
 
-        <!-- इनपुट कमांड बार -->
-        <div class="command-bar">
-            <input type="text" class="command-input" id="userProblemInput" placeholder="अपनी समस्या या जिज्ञासा लिखें या बोलें...">
-            <button class="command-btn" onclick="startQueryWorkflow()">समाधान लें</button>
-        </div>
-
-        <!-- संवाद फ़ीड -->
-        <div class="chat-feed-box" id="chatFeedBox">
-            <div class="feed-item feed-item-ai">
-                <strong>प्रणाम।</strong> पूज्य आचार्य अर्जुन जी के संप्रभु परामर्श पोर्टल पर आपका स्वागत है। आप अपनी समस्या दर्ज कर सकते हैं; आपका संपूर्ण विवरण संविधान के अनुच्छेद 25 व देवास-इंदौर क्षेत्राधिकार के अधीन सुरक्षित है।
+        <!-- कमरा 3 -->
+        <section id="room3" class="room-section">
+            <div class="card">
+                <div class="card-header">📈 व्यापारिक व प्रशासनिक रणनीति</div>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    साझेदारी विवाद, अनुबंध उल्लंघन या व्यापारिक गतिरोध के समय अर्जुन-नीति: पहले लिखित दस्तावेज़ व डिजिटल साक्ष्य सुरक्षित करें, फिर मध्यस्थता (Arbitration) का विकल्प अपनाएं।
+                </p>
             </div>
-        </div>
+        </section>
 
-        <!-- प्रमुख संकल्प योजनाएँ -->
-        <div class="grid-header" style="margin-top: 6px;">पवित्र मार्गदर्शन संकल्प (सशुल्क):</div>
-        <div class="plan-row-card" style="border-left: 3px solid var(--gold-primary);">
-            <div>
-                <div class="plan-title">आरंभिक संशय-निवारण व शांति-दर्शन</div>
-                <div class="plan-sub">मानसिक शांति, 136.1 Hz प्राथमिक नाद-निर्देश।</div>
+        <!-- कमरा 4 -->
+        <section id="room4" class="room-section">
+            <div class="card">
+                <div class="card-header">🧘 मानसिक शांति व स्थिरता</div>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    संकट के समय सबसे बड़ा हथियार शांत बुद्धि है। निर्णय हमेशा आवेश में नहीं, बल्कि परिणाम का 360-डिग्री विश्लेषण करके लें।
+                </p>
             </div>
-            <button class="plan-price-btn" onclick="triggerCheckout('आरंभिक संशय-निवारण व शांति-दर्शन', 500)">₹500 संकल्प लें</button>
-        </div>
+        </section>
 
-        <div class="plan-row-card" style="border-left: 3px solid var(--accent-green);">
-            <div>
-                <div class="plan-title">🎓 विद्यार्थी मेधा जागरण व परीक्षा विजय</div>
-                <div class="plan-sub">प्रतियोगी परीक्षा, एकाग्रता, 432 Hz अध्ययन नाद।</div>
+        <!-- कमरा 5 -->
+        <section id="room5" class="room-section">
+            <div class="card">
+                <div class="card-header">🔮 आध्यात्मिक व रणनीतिक मार्गदर्शन</div>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
+                    कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। अपने पुरुषार्थ और धर्मसंगत रणनीति पर अडिग रहें, विजय सुनिश्चित होगी।
+                </p>
             </div>
-            <button class="plan-price-btn" onclick="triggerCheckout('विद्यार्थी मेधा जागरण व परीक्षा विजय संकल्प', 1000)">₹1,000 संकल्प लें</button>
-        </div>
+        </section>
 
-        <div class="plan-row-card">
-            <div>
-                <div class="plan-title">ग्रह-बाधा व स्वप्न शांति विधान</div>
-                <div class="plan-sub">अशांत स्वप्नों का शमन, 136.1 Hz ॐ नाद तरंग।</div>
-            </div>
-            <button class="plan-price-btn" onclick="triggerCheckout('ग्रह-बाधा व स्वप्न शांति विधान', 2100)">₹2,100 संकल्प लें</button>
-        </div>
+        <!-- कमरा 6: सुप्रीम अर्जुन कमांड (AI लाइव सर्च व रणनीतिकार) -->
+        <section id="room6" class="room-section active">
+            <div class="card">
+                <div class="card-header" style="justify-content: space-between;">
+                    <span>👑 सुप्रीम अर्जुन कमांड सेंटर (लाइव AI)</span>
+                    <button class="btn-clear" onclick="clearChat()">साफ़ करें</button>
+                </div>
 
-        <div class="plan-row-card">
-            <div>
-                <div class="plan-title">महा-संकट निवारण सिद्ध रक्षा कवच</div>
-                <div class="plan-sub">पारिवारिक व व्यक्तिगत गंभीर अवरोधों का समाधान।</div>
+                <!-- त्वरित सवाल चिप्स -->
+                <div class="quick-chips">
+                    <span class="chip" onclick="setQuery('वर्तमान में अमेरिका का राष्ट्रपति कौन है?')">🇺🇸 USA राष्ट्रपति</span>
+                    <span class="chip" onclick="setQuery('वर्तमान में रूस का राष्ट्रपति कौन है?')">🇷🇺 रूस राष्ट्रपति</span>
+                    <span class="chip" onclick="setQuery('भारत के नए कानून BNS, BNSS और BSA के मुख्य नियम क्या हैं?')">⚖️ नए आपराधिक कानून</span>
+                    <span class="chip" onclick="setQuery('चेक बाउंस होने पर कानूनी बचाव और तत्काल रणनीति क्या है?')">📑 चेक बाउंस बचाव</span>
+                </div>
+
+                <!-- चैट विंडो -->
+                <div id="bossChatOutput">
+                    <div class="chat-bubble-ai">
+<strong>🛡️ संकट मुक्त AI (Arjun Tactical Engine) तैयार है।</strong>
+बॉस, आदेश दीजिए! आप देश-दुनिया, नए कानूनों (BNS), विधिक संकट, वित्तीय स्थिति या किसी भी प्रशासनिक विषय पर सवाल पूछ सकते हैं। सटीक उत्तर तुरंत प्रस्तुत किया जाएगा।
+                    </div>
+                </div>
+
+                <!-- इनपुट व बटन -->
+                <div class="chat-input-row">
+                    <input type="text" id="bossQueryTxt" placeholder="अपना प्रश्न या संकट यहाँ लिखें..." onkeydown="if(event.key==='Enter') sendBossQuery();">
+                    <button class="btn-action" onclick="sendBossQuery()">
+                        <span>आदेश दें</span>
+                        <span>⚡</span>
+                    </button>
+                </div>
             </div>
-            <button class="plan-price-btn" onclick="triggerCheckout('महा-संकट निवारण सिद्ध रक्षा कवच', 5100)">₹5,100 संकल्प लें</button>
-        </div>
+        </section>
     </main>
 
-    <!-- ==================== मॉडल्स ==================== -->
+    <footer>
+        संकट मुक्त AI © 2026 | अर्जुन आर्किटेक्चर | सर्वाधिकार सुरक्षित
+    </footer>
 
-    <!-- "भरोसा क्यों करें?" मॉडल -->
-    <div class="modal-layer" id="whyTrustModal">
-        <div class="modal-container">
-            <div class="modal-top">
-                <div class="modal-heading-text">🔱 संकट मुक्त AI पर भरोसा क्यों करें?</div>
-                <button class="close-btn" onclick="closeModal('whyTrustModal')">&times;</button>
-            </div>
-            <div style="font-size: 0.78rem; color: #cfd8e3; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
-                <p><strong>1. पूज्य आचार्य अर्जुन जी की अद्वितीय मेधा:</strong> B.Sc. (Information Technology), LLB, MBA (E-Commerce) | IT Engineer, Legal Jurist & Cognitive Acoustic Strategist। आधुनिक विज्ञान और सनातन दर्शन का अनूठा समन्वय।</p>
-                <p><strong>2. प्राचीन लुप्त मंत्र-शक्तियों का पुनरुत्थान:</strong> वर्षों के कठोर अनुष्ठान द्वारा प्राचीन शब्द-नाद और मंत्र-ऊर्जा को आधुनिक जीवन के संकटों के समाधान हेतु प्रामाणिक बनाया गया है।</p>
-                <p><strong>3. संकट मुक्त भारत व विश्व का संकल्प:</strong> प्रत्येक मानव के व्यक्तिगत, विधिक, पारिवारिक अथवा स्वप्न-दोष जैसे संकटों का सीधा व सटीक समाधान प्रदान करना।</p>
-                <p><strong>4. सशुल्क संकल्पों की शुचिता:</strong> यह कोई व्यापार नहीं, बल्कि शास्त्रसम्मत ऊर्जा-विनिमय (Energy Exchange) और संप्रभु प्रणाली को बिना किसी बाहरी विज्ञापन के स्वायत्त रखने का सात्विक साधन है।</p>
-            </div>
-            <button class="action-btn-ui btn-gold" onclick="closeModal('whyTrustModal')">अवगत हुए</button>
-        </div>
-    </div>
-
-    <!-- आधिकारिक स्लोगन मॉडल -->
-    <div class="modal-layer" id="sloganModal">
-        <div class="modal-container">
-            <div class="modal-top">
-                <div class="modal-heading-text">🔱 पूज्य आचार्य अर्जुन जी का आधिकारिक उद्घोष</div>
-                <button class="close-btn" onclick="closeModal('sloganModal')">&times;</button>
-            </div>
-            <p id="sloganContentText" style="font-size: 0.82rem; line-height: 1.6; color: var(--text-primary);"></p>
-            <button class="action-btn-ui btn-gold" onclick="closeModal('sloganModal')">स्वीकार व आगे बढ़ें</button>
-        </div>
-    </div>
-
-    <!-- विद्यार्थी मेधा मॉडल -->
-    <div class="modal-layer" id="studentModal">
-        <div class="modal-container">
-            <div class="modal-top">
-                <div class="modal-heading-text">🎓 विद्यार्थी व युवा मेधा प्रज्ञा केंद्र</div>
-                <button class="close-btn" onclick="closeModal('studentModal')">&times;</button>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-                <button class="action-btn-ui" onclick="setStudentField('प्रतियोगी परीक्षा विजय (UPSC/PSC/SSC)')">📚 प्रतियोगी परीक्षा विजय (UPSC/PSC/SSC)</button>
-                <button class="action-btn-ui" onclick="setStudentField('व्यावसायिक प्रवेश परीक्षा (NEET/JEE/CLAT)')">🎯 व्यावसायिक प्रवेश (NEET/JEE/CLAT)</button>
-                <button class="action-btn-ui" onclick="setStudentField('मेधा जागरण व 432 Hz अध्ययन नाद')">🧠 मेधा जागरण व 432 Hz अध्ययन नाद</button>
-                <button class="action-btn-ui" onclick="setStudentField('साक्षात्कार आत्मविश्वास (Interview Mastery)')">🎙️ साक्षात्कार आत्मविश्वास</button>
-            </div>
-            <button class="action-btn-ui btn-green" style="margin-top: 6px;" onclick="triggerCheckout('विद्यार्थी मेधा जागरण व परीक्षा विजय संकल्प', 1000)">⚡ ₹1,000 विद्यार्थी संकल्प लें</button>
-        </div>
-    </div>
-
-    <!-- त्रि-स्तरीय विधिक अनुबंध व OTP मॉडल -->
-    <div class="modal-layer" id="otpModal">
-        <div class="modal-container">
-            <div class="modal-top">
-                <div class="modal-heading-text">🔒 पहचान सत्यापन एवं सेवा अनुबंध</div>
-                <button class="close-btn" onclick="closeModal('otpModal')">&times;</button>
-            </div>
-            <input type="text" id="seekerName" placeholder="आपका पूरा नाम" style="padding: 8px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.8rem;">
-            <input type="tel" id="seekerMobile" placeholder="मोबाइल / व्हाट्सएप नंबर" style="padding: 8px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.8rem;">
-            
-            <div style="display: flex; gap: 6px;">
-                <input type="text" id="seekerOtp" placeholder="4-अंकीय OTP (डिफ़ॉल्ट: 1234)" style="flex: 1; padding: 8px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.8rem;">
-                <button class="action-btn-ui" onclick="alert('OTP प्रेषित! परीक्षण हेतु 1234 दर्ज करें।')">OTP भेजें</button>
-            </div>
-
-            <!-- त्रि-स्तरीय विधिक डीड -->
-            <div class="deed-scroll-box">
-                <strong>परामर्श आचार संहिता व सेवा अनुबंध:</strong><br>
-                1. <em>सेवा शुचिता:</em> यह प्लेटफॉर्म साधक के व्यक्तिगत मानसिक संतुलन, नाद-तरंग संवर्धन एवं शास्त्रीय मार्गदर्शन हेतु समर्पित है।<br>
-                2. <em>आजीवन संपर्क व संचार सहमति:</em> साधक पूज्य आचार्य अर्जुन जी एवं संस्थान द्वारा समय-समय पर आध्यात्मिक विचार, जीवन-मार्गदर्शन वीडियो, संदेश, तथा कॉल्स प्राप्त करने हेतु अपनी स्थायी सहमति प्रदान करता है, जो DND अथवा टेलीमार्केटिंग प्रतिबंधों से परे मान्य होगी।<br>
-                3. <em>30-दिवसीय अनिवार्य आंतरिक निवारण:</em> किसी भी विवाद की स्थिति में प्लेटफॉर्म के आंतरिक लोकपाल (Grievance Mechanism) में 30-दिवसीय समाधान प्रक्रिया पूर्ण करना अनिवार्य पूर्व-शर्त (Condition Precedent) है।<br>
-                4. <em>देवास व इंदौर (म.प्र.) अनन्य क्षेत्राधिकार:</em> समस्त विषयों का निपटारा केवल देवास अथवा इंदौर (मध्य प्रदेश, भारत) के सक्षम न्यायालयों के अधीन ही होगा (Order 7 Rule 11 CPC व धारा 28 अनुबंध अधिनियम)।<br>
-                5. <em>साक्ष्य मुहर:</em> OTP सत्यापन के साथ SHA-256 डिजिटल मुहर संचित होती है। अनुच्छेद 25 द्वारा धार्मिक-दार्शनिक स्वतंत्रता संरक्षित है।
-            </div>
-
-            <label style="font-size: 0.72rem; color: #8da0b8; display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="deedAgreeCheck" checked> मैं समस्त सेवा नियमों व देवास-इंदौर क्षेत्राधिकार से पूर्णतः सहमत हूँ।
-            </label>
-
-            <button class="action-btn-ui btn-green" onclick="completeOtpFlow()">सत्यापित करें एवं समाधान पत्र प्राप्त करें</button>
-        </div>
-    </div>
-
-    <!-- शेयर मॉडल -->
-    <div class="modal-layer" id="shareModal">
-        <div class="modal-container" style="max-width: 400px;">
-            <div class="modal-top">
-                <div class="modal-heading-text">📢 1-क्लिक सोशल शेयर</div>
-                <button class="close-btn" onclick="closeModal('shareModal')">&times;</button>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button class="action-btn-ui" onclick="socialShare('whatsapp')">💬 WhatsApp</button>
-                <button class="action-btn-ui" onclick="socialShare('telegram')">✈️ Telegram</button>
-                <button class="action-btn-ui" onclick="socialShare('twitter')">🐦 X (Twitter)</button>
-                <button class="action-btn-ui" onclick="socialShare('facebook')">📘 Facebook</button>
-                <button class="action-btn-ui" onclick="socialShare('copy')">🔗 लिंक कॉपी करें</button>
-            </div>
-            <div id="shareStatusTxt" style="font-size: 0.74rem; color: var(--accent-green); text-align: center;"></div>
-        </div>
-    </div>
-
-    <!-- विधिक वॉल्ट मॉडल -->
-    <div class="modal-layer" id="vaultModal">
-        <div class="modal-container">
-            <div class="modal-top">
-                <div class="modal-heading-text">🛡️ संप्रभु विधिक एवं साइबर वॉल्ट</div>
-                <button class="close-btn" onclick="closeModal('vaultModal')">&times;</button>
-            </div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: 6px;">
-                <div><strong>1. Order 7 Rule 11 CPC:</strong> देवास-इंदौर के बाहर दायर कोई भी वाद प्रथम सुनवाई में खारिज होने योग्य।</div>
-                <div><strong>2. अनुच्छेद 25 व 26:</strong> सनातन नाद-विज्ञान एवं आध्यात्मिक मार्गदर्शन का संवैधानिक संरक्षण।</div>
-                <div><strong>3. IT Act धारा 65B:</strong> SHA-256 डिजिटल मुहर Conclusive साक्ष्य है।</div>
-                <div><strong>4. FEMA 1999 HSN 998314:</strong> 100% श्वेत सॉफ्टवेयर निर्यात राजस्व।</div>
-            </div>
-            <button class="action-btn-ui" onclick="closeModal('vaultModal')">बंद करें</button>
-        </div>
-    </div>
-
-    <!-- चेकआउट सिमुलेटर -->
-    <div class="modal-layer" id="checkoutModal">
-        <div class="modal-container" style="max-width: 400px;">
-            <div class="modal-top">
-                <div class="modal-heading-text">💳 1-क्लिक संकल्प भुगतान</div>
-                <button class="close-btn" onclick="closeModal('checkoutModal')">&times;</button>
-            </div>
-            <div>
-                <div style="font-size: 0.78rem; color: var(--text-secondary);">चयनित संकल्प:</div>
-                <div id="payTitle" style="font-size: 0.95rem; color: var(--gold-primary); font-weight: 700;"></div>
-                <div id="payAmount" style="font-size: 1.2rem; font-weight: 800; color: #fff;"></div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-                <button class="action-btn-ui btn-green" onclick="confirmPayment('UPI')">⚡ 1-क्लिक UPI (PhonePe / GPay / Paytm)</button>
-                <button class="action-btn-ui" onclick="confirmPayment('Card')">💳 डेबिट / क्रेडिट कार्ड / NetBanking</button>
-                <button class="action-btn-ui" onclick="confirmPayment('PayPal')">🌐 PayPal / Stripe (USD / EUR / AED)</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- डुरेस आवरण -->
-    <div id="duressCamo">
-        <h2 style="color: #9aa7bc; margin-bottom: 8px;">🕉️ दैनिक वैदिक पंचांग व ध्यान वेधशाला</h2>
-        <p style="font-size: 0.8rem; color: #5a697f; max-width: 400px; margin-bottom: 16px;">
-            "सत्य, समता और धैर्य ही जीवन के परम आधार हैं। श्वास चक्र पर ध्यान केंद्रित करें।"
-        </p>
-        <button class="action-btn-ui" onclick="exitDuress()">वेधशाला से बाहर आएं</button>
-    </div>
-
-    <!-- ==================== 7 कोर संप्रभु एडमिन रूम्स ==================== -->
-    <div id="adminView">
-        <div class="admin-header-bar">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="color: var(--gold-primary); font-weight: 700; font-size: 0.9rem;">🔱 प्रेसिडेंशियल कॉकपिट</span>
-                <span style="font-size: 0.65rem; background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color);">7 CORE ROOMS</span>
-            </div>
-            <div style="display: flex; gap: 6px;">
-                <button class="action-btn-ui btn-red" onclick="triggerDuress()">🚨 CAMO</button>
-                <button class="action-btn-ui" onclick="closeAdmin()">बाहर आएं</button>
-            </div>
-        </div>
-
-        <!-- 7 रूम्स स्क्रोल टैब्स -->
-        <div class="admin-tabs-scroll">
-            <button class="admin-tab-btn active" onclick="switchAdminRoom(1)">Room 1: CRM व विधिक डोजियर</button>
-            <button class="admin-tab-btn" onclick="switchAdminRoom(2)">Room 2: वित्तीय वॉल्ट व CA टैक्स</button>
-            <button class="admin-tab-btn" onclick="switchAdminRoom(3)">Room 3: साइबर शील्ड व रूल्स</button>
-            <button class="admin-tab-btn" onclick="switchAdminRoom(4)">Room 4: गणितीय नाद जनरेटर</button>
-            <button class="admin-tab-btn" onclick="switchAdminRoom(5)">Room 5: क्लाउड IDE व सैंडबॉक्स</button>
-            <button class="admin-tab-btn" onclick="switchAdminRoom(6)" style="border-color: var(--gold-primary);">👑 Room 6: AI Co-Pilot & 4-Stage</button>
-            <button class="admin-tab-btn" onclick="switchAdminRoom(7)">Room 7: सोशल मार्केटिंग व टूल्स</button>
-        </div>
-
-        <div class="admin-content-area">
-
-            <!-- Room 1 -->
-            <div class="room-pane active" id="pane1">
-                <div class="admin-card">
-                    <h3>👥 साधक डोजियर व Order 7 Rule 11 First-Hearing Dismissal Pack</h3>
-                    <p style="font-size: 0.74rem; color: var(--text-secondary); margin-bottom: 8px;">
-                        देवास-इंदौर अनन्य क्षेत्राधिकार के आधार पर बाहर का वाद प्रथम सुनवाई में खारिज कराने वाला विधिक डोजियर:
-                    </p>
-                    <button class="action-btn-ui btn-red" onclick="buildDismissalDossier()">⚡ Generate First-Hearing Dismissal Pack</button>
-                    <div id="dismissalDossierNotice" style="margin-top: 8px; font-size: 0.74rem; color: var(--accent-green);"></div>
-                </div>
-            </div>
-
-            <!-- Room 2 -->
-            <div class="room-pane" id="pane2">
-                <div class="admin-card">
-                    <h3>📊 वित्तीय वॉल्ट, CA बैलेंस शीट व FEMA e-BRC Pipeline</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 6px;">
-                        <div style="background: var(--bg-tertiary); padding: 8px; border-radius: 6px;">
-                            <div style="font-size: 0.68rem; color: var(--text-secondary);">ग्रॉस टर्नओवर</div>
-                            <div style="font-size: 1rem; font-weight: 700; color: var(--accent-green);">₹1,84,50,000</div>
-                        </div>
-                        <div style="background: var(--bg-tertiary); padding: 8px; border-radius: 6px;">
-                            <div style="font-size: 0.68rem; color: var(--text-secondary);">एडवांस टैक्स (30%)</div>
-                            <div style="font-size: 1rem; font-weight: 700; color: var(--accent-blue);">₹55,35,000</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room 3 -->
-            <div class="room-pane" id="pane3">
-                <div class="admin-card">
-                    <h3>🛡️ 24/7 स्वायत्त साइबर शील्ड व ऑटो-रेगुलेटरी स्कैनर</h3>
-                    <p style="font-size: 0.74rem; color: var(--accent-green);">● Quantum Lattice Shield Active • IT Rules & BSA 2023 Scanned 100%</p>
-                </div>
-            </div>
-
-            <!-- Room 4 -->
-            <div class="room-pane" id="pane4">
-                <div class="admin-card">
-                    <h3>🎶 गणितीय नाद-ध्वनि सिंथेसाइज़र (Web Audio API)</h3>
-                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px;">0% स्टोरेज लोड। सीधे ब्राउज़र में लाइव साइन-वेव:</p>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                        <button class="action-btn-ui" onclick="playWebTone(136.1)">136.1 Hz (ॐ नाद)</button>
-                        <button class="action-btn-ui" onclick="playWebTone(432)">432 Hz (मेधा नाद)</button>
-                        <button class="action-btn-ui" onclick="playWebTone(528)">528 Hz (विजय नाद)</button>
-                        <button class="action-btn-ui btn-red" onclick="stopWebTone()">ध्वनि बंद करें</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room 5 -->
-            <div class="room-pane" id="pane5">
-                <div class="admin-card">
-                    <h3>💻 क्लाउड IDE, लाइव मोबाइल सैंडबॉक्स व 1-क्लिक पैकेजिंग</h3>
-                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 6px;">
-                        ब्राउज़र में लाइव टेस्ट करें और बिना Android Studio / Mac के पैकेज डाउनलोड करें:
-                    </p>
-                    <div style="display: flex; gap: 6px;">
-                        <button class="action-btn-ui btn-green" onclick="alert('Android Native .APK कंपाइल संपन्न। डाउनलोड रेडी।')">📦 Build .APK</button>
-                        <button class="action-btn-ui" onclick="alert('iOS Package कंपाइल संपन्न।')">🍏 Build iOS</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room 6: हार्ट ऑफ़ द ऐप (4-स्टेज पाइपलाइन व AI Co-Pilot) -->
-            <div class="room-pane" id="pane6">
-                <div class="admin-card" style="border-color: var(--gold-primary);">
-                    <h3>🤖 सुप्रीम प्रेसिडेंशियल AI Co-Pilot (Gemini Ultra Mode)</h3>
-                    <div id="bossChatOutput" style="background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; height: 160px; overflow-y: auto; padding: 8px; font-size: 0.76rem; display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px;">
-                        <div style="color: #cfd8e3;"><strong>AI:</strong> प्रणाम प्रेसिडेंट बॉस! आप किसी भी विषय (विधिक, व्यापार, तकनीक) पर निर्देश दें। मैं 4-चरणीय पाइपलाइन के साथ क्रियान्वयन करूँगा।</div>
-                    </div>
-                    <div style="display: flex; gap: 6px;">
-                        <input type="text" id="bossQueryTxt" placeholder="अपना आदेश या प्रश्न दर्ज करें..." style="flex: 1; padding: 6px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.76rem;">
-                        <button class="action-btn-ui btn-gold" onclick="sendBossQuery()">आदेश दें</button>
-                    </div>
-                </div>
-
-                <!-- 4-चरणीय इंटरएक्टिव प्रीव्यू व सैंडबॉक्स टेबल -->
-                <div class="admin-card">
-                    <h3>📋 4-स्टेज लाइव प्रीव्यू व डिप्लॉयमेंट पाइपलाइन</h3>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
-                        <button class="action-btn-ui" onclick="runStage(1)">📊 चरण 1: Impact Analysis</button>
-                        <button class="action-btn-ui" onclick="runStage(2)">📄 चरण 2: Blueprint Dossier</button>
-                        <button class="action-btn-ui" onclick="runStage(3)">👁️ चरण 3: Sandbox Table Preview</button>
-                        <button class="action-btn-ui btn-green" onclick="runStage(4)">🚀 चरण 4: Final Launch & Silent Push</button>
-                    </div>
-
-                    <!-- इंटरएक्टिव टेबल -->
-                    <table class="preview-table" id="sandboxTable" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>पैरामीटर</th>
-                                <th>वर्तमान स्थिति</th>
-                                <th>नया सैंडबॉक्स प्रीव्यू</th>
-                                <th>विधिक स्थिति (Dewas/Indore)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>सर्विस प्लान</td>
-                                <td>आरंभिक संशय (₹500)</td>
-                                <td style="color: var(--gold-primary);">विद्यार्थी मेधा (₹1,000)</td>
-                                <td style="color: var(--accent-green);">100% अनुकूल (Order 7 Rule 11)</td>
-                            </tr>
-                            <tr>
-                                <td>डिवाइस लोड</td>
-                                <td>0% CPU / RAM</td>
-                                <td>0% (WASM Micro-Cluster)</td>
-                                <td>डेटा लीकेज शून्य (DPDP Act)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div id="stageStatusNotice" style="font-size: 0.74rem; color: var(--gold-primary);"></div>
-                </div>
-
-                <!-- सोशल प्रूफ स्लाइडर -->
-                <div class="admin-card">
-                    <h3>👥 फ्रंटएंड साधक काउंटर स्लाइडर</h3>
-                    <input type="range" min="100" max="2500" value="342" style="width: 100%; cursor: pointer;" oninput="updateCounterSlider(this.value)">
-                    <div style="font-size: 0.72rem; color: #8da0b8; margin-top: 4px;">संख्या: <strong id="sliderValTxt" style="color: #fff;">342</strong></div>
-                </div>
-            </div>
-
-            <!-- Room 7: सोशल मार्केटिंग, बैनर, स्क्रिप्ट व फ़ाइल टूल -->
-            <div class="room-pane" id="pane7">
-                <div class="admin-card">
-                    <h3>📢 सोशल मार्केटिंग, बैनर, स्क्रिप्ट व ऑटो-शेयर स्टूडियो</h3>
-                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px;">
-                        1-क्लिक में सोशल मीडिया सामग्री (X/Twitter, Reels, WhatsApp) तैयार और प्रसारित करें:
-                    </p>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
-                        <button class="action-btn-ui" onclick="generateMarketingContent('reel')">🎬 Reel Video Script</button>
-                        <button class="action-btn-ui" onclick="generateMarketingContent('twitter')">🐦 X Post / Thread</button>
-                        <button class="action-btn-ui" onclick="generateMarketingContent('banner')">🖼️ Banner Headline</button>
-                    </div>
-                    <div id="marketingResultBox" style="background: #0d1117; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; font-size: 0.74rem; color: #cfd8e3; min-height: 50px;">
-                        सामग्री यहाँ जनरेट होगी...
-                    </div>
-                </div>
-
-                <!-- यूनिवर्सल फ़ाइल अपलोड, विश्लेषण व डाउनलोड टूल -->
-                <div class="admin-card">
-                    <h3>📁 यूनिवर्सल फ़ाइल अपलोड, न्यूरल विश्लेषण व डाउनलोड टूल</h3>
-                    <p style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px;">
-                        कोई भी फ़ाइल (PDF, Doc, JSON, Image) अपलोड करें; AI तुरंत विश्लेषण कर डाउनलोड फॉर्मेट तैयार करेगा:
-                    </p>
-                    <input type="file" id="universalFileInput" style="font-size: 0.74rem; color: #8da0b8; margin-bottom: 8px;">
-                    <div style="display: flex; gap: 6px;">
-                        <button class="action-btn-ui btn-gold" onclick="analyzeUploadedFile()">⚡ फ़ाइल अपलोड व न्यूरल विश्लेषण</button>
-                        <button class="action-btn-ui" onclick="downloadAnalyzedFile('dossier.txt')">📥 रिजल्ट डाउनलोड (.TXT)</button>
-                    </div>
-                    <div id="fileAnalyzeStatus" style="font-size: 0.72rem; color: var(--accent-green); margin-top: 6px;"></div>
-                </div>
-
-                <!-- लोकपाल निवारण -->
-                <div class="admin-card">
-                    <h3>⚖️ 30-दिवसीय आंतरिक लोकपाल रजिस्टर</h3>
-                    <p style="font-size: 0.72rem; color: var(--accent-green);">● कोई भी बाह्य विवाद लंबित नहीं है। समस्त साधक संतुष्ट हैं।</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ==================== JAVASCRIPT ==================== -->
+    <!-- मुख्य जावास्क्रिप्ट लॉजिक -->
     <script>
-        const PASSKEY_MASTER = "979576";
-        const PASSKEY_DURESS = "9795";
-        let brandTapCount = 0;
-        let audioCtx = null;
-        let audioOsc = null;
+        // 1. कमरा बदलने की व्यवस्था
+        function openRoom(roomNum) {
+            document.querySelectorAll('.room-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.room-btn').forEach(btn => btn.classList.remove('active'));
 
-        const royalSlogans = {
-            hi: "विश्व के किसी भी कोने में हों—हर जटिल समस्या का समाधान पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) के कठोर मंत्र-तप, शब्द-नाद विज्ञान व विधिक प्रज्ञा द्वारा आपकी ही भाषा में सुनिश्चित है। अनुच्छेद 25 व देवास-इंदौर क्षेत्राधिकार में 100% सुरक्षित।",
-            en: "Authentic solutions to life's most complex challenges guaranteed in your language through the rigorous mantra-tap, acoustic resonance, and legal acumen of Acharya Arjun Ji (B.Sc. IT, LLB, MBA). Protected under Article 25 and exclusive Dewas/Indore jurisdiction.",
-            ar: "الحلول الحقيقية لمشاكلكم مضمونة بلغتكم من خلال علم الرنين الصوتي والقوة الروحية للعلامة أرجون جي، مع حماية قانونية كاملة.",
-            ta: "ஆச்சார்யா அர்ஜுன் ஜியின் மந்திர சக்தி மற்றும் ஒலி அதிர்வு அறிவியல் மூலம் உங்கள் தாய்மொழியிலேயே உடனடி தீர்வு உறுதி செய்யப்படுகிறது.",
-            mr: "पूज्य आचार्य अर्जुन जी यांच्या कठोर मंत्र-तप व नाद-विज्ञानाद्वारे आपल्या मातृभाषेत तात्काळ व खात्रीशीर तोडगा उपलब्ध आहे."
-        };
+            const targetSection = document.getElementById('room' + roomNum);
+            if (targetSection) targetSection.classList.add('active');
 
-        const countryLangs = {
-            IN: [{ c: "hi", n: "हिन्दी" }, { c: "mr", n: "मराठी" }, { c: "ta", n: "தமிழ்" }, { c: "en", n: "English" }],
-            US: [{ c: "en", n: "English (US)" }],
-            AE: [{ c: "ar", n: "العربية" }, { c: "en", n: "English (Gulf)" }],
-            GB: [{ c: "en", n: "English (UK)" }]
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            setupLanguageMenu('IN');
-            initTicker();
-        });
-
-        function setupLanguageMenu(country) {
-            const sel = document.getElementById('langDropdown');
-            sel.innerHTML = "";
-            (countryLangs[country] || countryLangs['IN']).forEach(i => {
-                const opt = document.createElement('option');
-                opt.value = i.c;
-                opt.textContent = i.n;
-                sel.appendChild(opt);
-            });
+            const activeBtn = document.querySelectorAll('.room-btn')[roomNum - 1];
+            if (activeBtn) activeBtn.classList.add('active');
         }
 
-        function onCountryChange() {
-            const c = document.getElementById('countryDropdown').value;
-            setupLanguageMenu(c);
-            onLanguageChange();
+        // 2. त्वरित सवाल सेट करना
+        function setQuery(text) {
+            const input = document.getElementById('bossQueryTxt');
+            input.value = text;
+            input.focus();
         }
 
-        function onLanguageChange() {
-            const lang = document.getElementById('langDropdown').value;
-            document.getElementById('sloganContentText').innerText = royalSlogans[lang] || royalSlogans['en'];
-            openModal('sloganModal');
-        }
-
-        function initTicker() {
-            let n = 342;
-            setInterval(() => {
-                n = Math.max(120, n + Math.floor(Math.random() * 5) - 2);
-                document.getElementById('liveCounterText').innerText = `${n}+ साधक इस समय समाधान प्राप्त कर रहे हैं`;
-            }, 6000);
-        }
-
-        function updateCounterSlider(val) {
-            document.getElementById('sliderValTxt').innerText = val;
-            document.getElementById('liveCounterText').innerText = `${val}+ साधक इस समय समाधान प्राप्त कर रहे हैं`;
-        }
-
-        function handleBrandClick() {
-            brandTapCount++;
-            if (brandTapCount >= 5) {
-                brandTapCount = 0;
-                promptPasskey();
-            }
-        }
-
-        function promptPasskey() {
-            const code = prompt("प्रेसिडेंशियल प्रमाणीकरण पासकी दर्ज करें:");
-            if (code === PASSKEY_MASTER) {
-                document.getElementById('adminView').style.display = 'flex';
-            } else if (code === PASSKEY_DURESS) {
-                triggerDuress();
-            } else if (code !== null) {
-                alert("अनाधिकृत प्रयास दर्ज। देवास-इंदौर क्षेत्राधिकार सक्रिय।");
-            }
-        }
-
-        function closeAdmin() { document.getElementById('adminView').style.display = 'none'; }
-        function triggerDuress() {
-            document.getElementById('adminView').style.display = 'none';
-            document.getElementById('duressCamo').style.display = 'flex';
-        }
-        function exitDuress() { document.getElementById('duressCamo').style.display = 'none'; }
-
-        function switchAdminRoom(n) {
-            document.querySelectorAll('.admin-tab-btn').forEach((b, i) => b.classList.toggle('active', i === (n - 1)));
-            document.querySelectorAll('.room-pane').forEach((p, i) => p.classList.toggle('active', i === (n - 1)));
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function selectGridItem(txt) {
-            document.getElementById('userProblemInput').value = txt;
-            startQueryWorkflow();
-        }
-
-        function setStudentField(txt) {
-            closeModal('studentModal');
-            document.getElementById('userProblemInput').value = txt;
-            startQueryWorkflow();
-        }
-
-        function startQueryWorkflow() {
-            const q = document.getElementById('userProblemInput').value.trim();
-            if (!q) { alert("कृपया अपनी जिज्ञासा या समस्या दर्ज करें।"); return; }
-            openModal('otpModal');
-        }
-
-        function completeOtpFlow() {
-            const name = document.getElementById('seekerName').value.trim() || "परामर्शार्थी";
-            const phone = document.getElementById('seekerMobile').value.trim();
-            const agree = document.getElementById('deedAgreeCheck').checked;
-
-            if (!phone) { alert("कृपया मोबाइल नंबर दर्ज करें।"); return; }
-            if (!agree) { alert("विधिक नियमों व देवास-इंदौर क्षेत्राधिकार की सहमति अनिवार्य है।"); return; }
-
-            closeModal('otpModal');
-            const q = document.getElementById('userProblemInput').value.trim();
-            appendFeed(q, 'feed-item-user');
-            document.getElementById('userProblemInput').value = '';
-
-            setTimeout(() => {
-                let html = `<strong>🔱 पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) अधिकृत समाधान पत्र</strong><br>`;
-                html += `<strong>साधक:</strong> ${name} | <strong>विधिक सुरक्षा:</strong> देवास-इंदौर अनन्य क्षेत्राधिकार (Order 7 Rule 11 CPC) लॉक<br><br>`;
-                html += `● <strong>एस्ट्रो-नाद विश्लेषण:</strong> आंतरिक नाद-ऊर्जा असंतुलन का शमन 136.1 Hz ॐ तरंग से सुनिश्चित है।<br>`;
-                html += `● <strong>विधिक व आध्यात्मिक संप्रभुता:</strong> समस्त मार्गदर्शन भारतीय संविधान के अनुच्छेद 25 के अंतर्गत पूर्णतः संरक्षित है।<br><br>`;
-                html += `<button class="action-btn-ui btn-gold" onclick="triggerCheckout('आरंभिक संशय-निवारण व शांति-दर्शन', 500)">⚡ ₹500 आरंभिक संशय-निवारण संकल्प लें</button>`;
-                appendFeed(html, 'feed-item-ai');
-            }, 500);
-        }
-
-        function appendFeed(txt, cls) {
-            const b = document.createElement('div');
-            b.className = `feed-item ${cls}`;
-            b.innerHTML = txt;
-            const c = document.getElementById('chatFeedBox');
-            c.appendChild(b);
-            c.scrollTop = c.scrollHeight;
-        }
-
-        function triggerCheckout(title, amt) {
-            document.getElementById('payTitle').innerText = title;
-            document.getElementById('payAmount').innerText = "₹" + amt.toLocaleString('en-IN');
-            openModal('checkoutModal');
-        }
-
-        function confirmPayment(mode) {
-            alert(`[संकल्प स्वीकृत - 100% वैध श्वेत राजस्व]
-मोड: ${mode}
-HSN Code: 998314 (सॉफ्टवेयर परामर्श)
-FEMA 1999 / RBI Inward Remittance Compliant।`);
-            closeModal('checkoutModal');
-        }
-
-        function socialShare(p) {
-            const u = window.location.href;
-            const t = "पूज्य आचार्य अर्जुन जी के संप्रभु एआई पोर्टल पर हर जटिल समस्या का प्रामाणिक समाधान प्राप्त करें।";
-            const s = document.getElementById('shareStatusTxt');
-            if (p === 'whatsapp') window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(t + " " + u)}`);
-            else if (p === 'telegram') window.open(`https://t.me/share/url?url=${encodeURIComponent(u)}&text=${encodeURIComponent(t)}`);
-            else if (p === 'twitter') window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}`);
-            else if (p === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(u)}`);
-            else if (p === 'copy') {
-                navigator.clipboard.writeText(u);
-                s.innerText = "✓ लिंक क्लिपबोर्ड में कॉपी हो गया!";
-                setTimeout(() => s.innerText = "", 2500);
-            }
-        }
-
-        function playWebTone(hz) {
-            stopWebTone();
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                audioOsc = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                audioOsc.type = 'sine';
-                audioOsc.frequency.setValueAtTime(hz, audioCtx.currentTime);
-                g.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                audioOsc.connect(g);
-                g.connect(audioCtx.destination);
-                audioOsc.start();
-                alert(`विशुद्ध नाद-तरंग सक्रिय: ${hz} Hz`);
-            } catch(e) { console.error(e); }
-        }
-
-        function stopWebTone() {
-            if (audioOsc) { audioOsc.stop(); audioOsc.disconnect(); audioOsc = null; }
-            if (audioCtx) { audioCtx.close(); audioCtx = null; }
-        }
-
-        function buildDismissalDossier() {
-            document.getElementById('dismissalDossierNotice').innerHTML = `
-            ✓ <strong>Order 7 Rule 11 CPC Dossier Ready!</strong><br>
-            • देवास-इंदौर अनन्य क्षेत्राधिकार अनुबंध संलग्न।<br>
-            • धारा 65B डिजिटल साक्ष्य प्रमाणपत्र संलग्न। प्रथम सुनवाई में मामला खारिज होने योग्य।
+        // 3. चैट साफ़ करना
+        function clearChat() {
+            document.getElementById('bossChatOutput').innerHTML = `
+                <div class="chat-bubble-ai">
+<strong>🛡️ संकट मुक्त AI:</strong> चैट रीसेट कर दी गई है। नया प्रश्न पूछें।
+                </div>
             `;
         }
 
-    async function sendBossQuery() {
-    const inp = document.getElementById('bossQueryTxt');
-    const v = inp.value.trim();
-    if (!v) return;
+        // 4. मुख्य AI समाधान फ़ंक्शन (मल्टी-इंजन फ़ॉलबैक शील्ड)
+        async function sendBossQuery() {
+            const inp = document.getElementById('bossQueryTxt');
+            const v = inp.value.trim();
+            if (!v) return;
 
-    const box = document.getElementById('bossChatOutput');
-    box.innerHTML += `<div style="color: #ffd700; margin-top: 4px;"><strong>सवाल:</strong> ${v}</div>`;
-    inp.value = "";
-    box.scrollTop = box.scrollHeight;
+            const box = document.getElementById('bossChatOutput');
 
-    const loadId = "load_" + Date.now();
-    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) लाइव जानकारी ला रहा है...</em></div>`;
-    box.scrollTop = box.scrollHeight;
+            // यूज़र का संदेश दिखाएं
+            box.innerHTML += `<div class="chat-bubble-user"><strong>बॉस:</strong> ${v}</div>`;
+            inp.value = "";
+            box.scrollTop = box.scrollHeight;
 
-    // ============ HELPER: Timeout वाला fetch ============
-    async function fetchWithTimeout(url, options = {}, ms = 10000) {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), ms);
-        try {
-            const res = await fetch(url, { ...options, signal: controller.signal });
-            clearTimeout(timer);
-            return res;
-        } catch (e) {
-            clearTimeout(timer);
-            return null;
-        }
-    }
+            // लोडिंग इंडिकेटर
+            const loadId = "load_" + Date.now();
+            box.innerHTML += `<div id="${loadId}" style="color: #00ffcc; font-size: 0.88rem; padding: 6px;"><em>⚡ लाइव AI विश्लेषण व रिसर्च जारी है...</em></div>`;
+            box.scrollTop = box.scrollHeight;
 
-    // ============ STEP 1: LIVE INTERNET SEARCH ============
-    let liveContext = "";
+            // संकट मुक्त AI का स्थायी ज्ञान आधार व वर्ष 2026 का संदर्भ
+            const systemPrompt = `आप 'संकट मुक्त AI' (Arjun Command System) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं।
+वर्तमान समय वर्ष 2026 है।
+ताज़ा वास्तविक तथ्य:
+- अमेरिका के 47वें राष्ट्रपति: डोनाल्ड ट्रंप (Donald Trump) हैं।
+- रूस के राष्ट्रपति: व्लादिमीर पुतिन (Vladimir Putin) हैं।
+- भारत की राष्ट्रपति: श्रीमती द्रौपदी मुर्मू, प्रधानमंत्री: श्री नरेंद्र मोदी।
+- भारत में कानून: 1 जुलाई 2024 से IPC, CrPC, Evidence Act समाप्त होकर BNS (भारतीय न्याय संहिता), BNSS और BSA पूर्णतः लागू हैं।
+उपयोगकर्ता के किसी भी क्षेत्र (कानून, वित्त, संकट, विश्व ज्ञान) के सवाल पर बिना किसी बहाने या पुराने डेटा के, प्रभावशाली, सटीक व स्पष्ट हिंदी में समाधान दें।`;
 
-    // 1A. Wikipedia (हिंदी) — Summary API
-    try {
-        const wikiRes = await fetchWithTimeout(
-            `https://hi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`, {}, 5000
-        );
-        if (wikiRes && wikiRes.ok) {
-            const d = await wikiRes.json();
-            if (d.extract) liveContext += `[Wikipedia]: ${d.extract}\n\n`;
-        }
-    } catch (e) {}
+            const fullUserPrompt = `${systemPrompt}\n\nयूज़र का प्रश्न: ${v}`;
+            let replyText = "";
 
-    // 1B. Wikipedia (English fallback)
-    if (!liveContext) {
-        try {
-            const wEn = await fetchWithTimeout(
-                `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`, {}, 5000
-            );
-            if (wEn && wEn.ok) {
-                const d = await wEn.json();
-                if (d.extract) liveContext += `[Wikipedia EN]: ${d.extract}\n\n`;
+            // चैनल 1: Puter.js AI (सुपरफास्ट, कोई API Key नहीं, कोई CORS एरर नहीं)
+            if (typeof puter !== 'undefined' && puter.ai) {
+                try {
+                    const puterRes = await puter.ai.chat(fullUserPrompt, { model: 'gpt-4o-mini' });
+                    if (typeof puterRes === 'string') {
+                        replyText = puterRes;
+                    } else if (puterRes && puterRes.message && puterRes.message.content) {
+                        replyText = puterRes.message.content;
+                    }
+                } catch (err) {
+                    console.warn("Puter engine error, switching to Channel 2:", err);
+                }
             }
-        } catch (e) {}
-    }
 
-    // 1C. Google News RSS (ताज़ा खबरें)
-    try {
-        const newsRes = await fetchWithTimeout(
-            `https://news.google.com/rss/search?q=${encodeURIComponent(v)}&hl=hi&gl=IN&ceid=IN:hi`, {}, 6000
-        );
-        if (newsRes && newsRes.ok) {
-            const t = await newsRes.text();
-            const titles = [...t.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)]
-                .map(m => m[1]).slice(1, 4);
-            if (titles.length) liveContext += `[ताज़ा खबरें]: ${titles.join(" | ")}\n\n`;
-        }
-    } catch (e) {}
-
-    // ============ STEP 2: PROMPT ============
-    const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) के आधार पर सटीक, व्यावहारिक उत्तर हिंदी में दें। नीचे दी लाइव जानकारी का उपयोग करें।";
-    const userMsg = liveContext
-        ? `लाइव इंटरनेट जानकारी:\n${liveContext}\n\nसवाल: ${v}`
-        : v;
-
-    // ============ STEP 3: MULTI-ENDPOINT AI CALL ============
-    let reply = "";
-
-    // 🔹 Method A: KeylessAI (OpenAI-compatible, Cloudflare Worker)
-    if (!reply) {
-        try {
-            const r = await fetchWithTimeout("https://keylessai.thryx.workers.dev/v1/chat/completions", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: "gpt-4o",
-                    messages: [
-                        { role: "system", content: systemPrompt },
-                        { role: "user", content: userMsg }
-                    ]
-                })
-            }, 20000);
-            if (r && r.ok) {
-                const data = await r.json();
-                const txt = data?.choices?.[0]?.message?.content;
-                if (txt && txt.trim()) reply = txt;
+            // चैनल 2: सुरक्षित बैकअप चैनल (यदि चैनल 1 में विलंब हो)
+            if (!replyText) {
+                try {
+                    const resPost = await fetch("https://text.pollinations.ai/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            messages: [
+                                { role: "system", content: systemPrompt },
+                                { role: "user", content: v }
+                            ],
+                            seed: Date.now()
+                        })
+                    });
+                    if (resPost.ok) {
+                        const txt = await resPost.text();
+                        if (txt && !txt.startsWith('{"error"') && !txt.includes('"status":404')) {
+                            replyText = txt;
+                        }
+                    }
+                } catch (err) {
+                    console.warn("Channel 2 fallback:", err);
+                }
             }
-        } catch (e) { console.warn("Method A (KeylessAI) failed:", e); }
-    }
 
-    // 🔹 Method B: Pollinations POST /openai
-    if (!reply) {
-        try {
-            const r = await fetchWithTimeout("https://text.pollinations.ai/openai", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: "openai",
-                    messages: [
-                        { role: "system", content: systemPrompt },
-                        { role: "user", content: userMsg }
-                    ],
-                    seed: Math.floor(Math.random() * 999999)
-                })
-            }, 20000);
-            if (r && r.ok) {
-                const data = await r.json();
-                const txt = data?.choices?.[0]?.message?.content;
-                if (txt && txt.trim()) reply = txt;
+            // चैनल 3: सीधा GET चैनल (तृतीय सुरक्षा स्तर)
+            if (!replyText) {
+                try {
+                    const resGet = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullUserPrompt)}?seed=${Date.now()}`);
+                    if (resGet.ok) {
+                        const txtGet = await resGet.text();
+                        if (txtGet && !txtGet.startsWith('{"error"')) {
+                            replyText = txtGet;
+                        }
+                    }
+                } catch (err) {
+                    console.warn("Channel 3 fallback:", err);
+                }
             }
-        } catch (e) { console.warn("Method B (Pollinations POST) failed:", e); }
-    }
 
-    // 🔹 Method C: Pollinations GET (fallback)
-    if (!reply) {
-        try {
-            const r = await fetchWithTimeout(
-                `https://text.pollinations.ai/${encodeURIComponent(systemPrompt + "\n\n" + userMsg)}?seed=${Date.now()}`,
-                {}, 20000
-            );
-            if (r && r.ok) {
-                const txt = await r.text();
-                if (txt && !txt.startsWith('{"error"') && txt.trim().length > 5) reply = txt;
+            // लोडर हटाएं
+            const loadElem = document.getElementById(loadId);
+            if (loadElem) loadElem.remove();
+
+            // उत्तर स्क्रीन पर प्रस्तुत करें
+            if (replyText && replyText.trim().length > 0) {
+                box.innerHTML += `<div class="chat-bubble-ai"><strong>🛡️ संकट मुक्त AI:\n</strong>${replyText}</div>`;
+            } else {
+                box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ नेटवर्क सर्वर क्षणिक धीमा है। कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
             }
-        } catch (e) { console.warn("Method C (Pollinations GET) failed:", e); }
-    }
-
-    // 🔹 Method D: DuckDuckGo AI Chat (gpt-4o-mini / o3-mini)
-    if (!reply) {
-        try {
-            const r = await fetchWithTimeout("https://duckduckgo.com/duckchat/v1/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-vqd-4": "1"
-                },
-                body: JSON.stringify({
-                    model: "gpt-4o-mini",
-                    messages: [{ role: "user", content: userMsg }]
-                })
-            }, 15000);
-            if (r && r.ok) {
-                const txt = await r.text();
-                const clean = txt.replace(/data: /g, "").split("\n")
-                    .filter(l => l.trim())
-                    .map(l => { try { return JSON.parse(l).message || ""; } catch { return ""; } })
-                    .join("");
-                if (clean.trim()) reply = clean;
-            }
-        } catch (e) { console.warn("Method D (DuckDuckGo) failed:", e); }
-    }
-
-    // ============ STEP 4: DISPLAY ============
-    const loadElem = document.getElementById(loadId);
-    if (loadElem) loadElem.remove();
-
-    if (reply && reply.trim().length > 0) {
-        const srcBadge = liveContext
-            ? `<div style="color:#00ff88; font-size:11px; margin-top:4px;">🌐 लाइव इंटरनेट से जानकारी ली गई</div>`
-            : "";
-        box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI:\n</strong>${reply}${srcBadge}</div>`;
-    } else {
-        if (liveContext) {
-            box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid #ffa500; padding-left: 8px;"><strong>📡 लाइव जानकारी (AI उपलब्ध नहीं):\n</strong>${liveContext}</div>`;
-        } else {
-            box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सभी AI सर्वर व्यस्त हैं। कृपया 5 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
-        }
-    }
-    box.scrollTop = box.scrollHeight;
-}       function runStage(stage) {
-            const notice = document.getElementById('stageStatusNotice');
-            const table = document.getElementById('sandboxTable');
-            if (stage === 1) notice.innerText = "✓ चरण 1: Impact Analysis संपन्न। विधिक सुरक्षा 100% अनुकूल।";
-            else if (stage === 2) notice.innerText = "✓ चरण 2: Blueprint Dossier तैयार। डेटाबेस स्कीमा सुरक्षित।";
-            else if (stage === 3) {
-                table.style.display = "table";
-                notice.innerText = "✓ चरण 3: Interactive Sandbox Table Preview सक्रिय। नीचे बदलाव का परीक्षण करें।";
-            } else if (stage === 4) {
-                notice.innerText = "🚀 चरण 4: Final Launch & Silent Push संपन्न! दुनिया भर में 0.05 सेकंड में बैकग्राउंड लाइव अपडेट पूर्ण।";
-            }
-        }
-
-        function generateMarketingContent(type) {
-            const box = document.getElementById('marketingResultBox');
-            if (type === 'reel') {
-                box.innerHTML = `<strong>[Reel Hook]:</strong> "क्या आपको भी रात 3 बजे अचानक नींद टूटने और अशांत स्वप्न दिखने की समस्या है?"<br><strong>[Value]:</strong> "यह मस्तिष्क का नाद असंतुलन है। पूज्य आचार्य अर्जुन जी के 136.1 Hz नाद विज्ञान से तुरंत शांति प्राप्त करें।"`;
-            } else if (type === 'twitter') {
-                box.innerHTML = `<strong>[X Thread]:</strong> "सनातन शब्द-नाद विज्ञान और आधुनिक आईटी का अनूठा समन्वय। पूज्य आचार्य अर्जुन जी (B.Sc. IT, LLB, MBA) के संप्रभु पोर्टल पर हर संकट का प्रामाणिक समाधान उपलब्ध है। #SankatMuktAI #SanatanWisdom"`;
-            } else if (type === 'banner') {
-                box.innerHTML = `<strong>[Banner Headline]:</strong> "संकट मुक्त भारत, संकट मुक्त विश्व — पूज्य आचार्य अर्जुन जी द्वारा अधिकृत संप्रभु मार्गदर्शन।"`;
-            }
-        }
-
-        function analyzeUploadedFile() {
-            const f = document.getElementById('universalFileInput').files[0];
-            const s = document.getElementById('fileAnalyzeStatus');
-            if (!f) { alert("कृपया पहले कोई फ़ाइल चुनें।"); return; }
-            s.innerText = `✓ फ़ाइल '${f.name}' का न्यूरल विश्लेषण पूर्ण। डेटाबेस स्कीमा व विधिक मुहर सुरक्षित।`;
-        }
-
-        function downloadAnalyzedFile(filename) {
-            const text = "Sovereign Neural Dossier Analysis Complete. Verified under Article 25 and Exclusive Dewas/Indore Jurisdiction.";
-            const blob = new Blob([text], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            a.click();
+            box.scrollTop = box.scrollHeight;
         }
     </script>
 </body>
