@@ -1193,107 +1193,8 @@ FEMA 1999 / RBI Inward Remittance Compliant।`);
             • धारा 65B डिजिटल साक्ष्य प्रमाणपत्र संलग्न। प्रथम सुनवाई में मामला खारिज होने योग्य।
             `;
         }
-async function sendBossQuery() {
-    const inp = document.getElementById('bossQueryTxt');
-    const v = inp.value.trim();
-    if (!v) return;
 
-    const box = document.getElementById('bossChatOutput');
-    box.innerHTML += `<div style="color: #ffd700; margin-top: 4px;"><strong>सवाल:</strong> ${v}</div>`;
-    inp.value = "";
-    box.scrollTop = box.scrollHeight;
-
-    const loadId = "load_" + Date.now();
-    box.innerHTML += `<div id="${loadId}" style="color: #00ffcc;"><em>⚡ संकट मुक्त AI (Arjun) लाइव इंटरनेट से जानकारी ला रहा है...</em></div>`;
-    box.scrollTop = box.scrollHeight;
-
-    // ============ STEP 1: LIVE INTERNET SEARCH ============
-    let liveContext = "";
-
-    // 1A. Wikipedia से ताज़ा जानकारी
-    try {
-        const wikiUrl = `https://hi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`;
-        const wikiRes = await fetch(wikiUrl);
-        if (wikiRes.ok) {
-            const wikiData = await wikiRes.json();
-            if (wikiData.extract) {
-                liveContext += `[Wikipedia]: ${wikiData.extract}\n\n`;
-            }
-        }
-    } catch (e) {}
-
-    // 1B. English Wikipedia fallback
-    if (!liveContext) {
-        try {
-            const wikiEnUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`;
-            const wikiEnRes = await fetch(wikiEnUrl);
-            if (wikiEnRes.ok) {
-                const wikiEnData = await wikiEnRes.json();
-                if (wikiEnData.extract) {
-                    liveContext += `[Wikipedia EN]: ${wikiEnData.extract}\n\n`;
-                }
-            }
-        } catch (e) {}
-    }
-
-    // 1C. DuckDuckGo Instant Answer API (ताज़ा खबरें, तथ्य)
-    try {
-        const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(v)}&format=json&no_html=1&skip_disambig=1`;
-        const ddgRes = await fetch(ddgUrl);
-        if (ddgRes.ok) {
-            const ddgData = await ddgRes.json();
-            if (ddgData.AbstractText) {
-                liveContext += `[DuckDuckGo]: ${ddgData.AbstractText}\n`;
-                if (ddgData.AbstractURL) liveContext += `स्रोत: ${ddgData.AbstractURL}\n\n`;
-            }
-            // Related topics (ताज़ा अपडेट)
-            if (ddgData.RelatedTopics && ddgData.RelatedTopics.length > 0) {
-                const rel = ddgData.RelatedTopics
-                    .slice(0, 3)
-                    .map(t => t.Text)
-                    .filter(Boolean)
-                    .join(" | ");
-                if (rel) liveContext += `[संबंधित ताज़ा जानकारी]: ${rel}\n\n`;
-            }
-        }
-    } catch (e) {}
-
-    // 1D. Google News RSS (breaking news के लिए)
-    try {
-        const newsUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(v)}&hl=hi&gl=IN&ceid=IN:hi`;
-        const newsRes = await fetch(newsUrl);
-        if (newsRes.ok) {
-            const newsTxt = await newsRes.text();
-            const titles = [...newsTxt.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)]
-                .map(m => m[1])
-                .slice(1, 4); // पहला title feed का नाम होता है
-            if (titles.length > 0) {
-                liveContext += `[ताज़ा समाचार हेडलाइन्स]: ${titles.join(" | ")}\n\n`;
-            }
-        }
-    } catch (e) {}
-
-    // ============ STEP 2: AI PROMPT तैयार करें ============
-    const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) और अद्यतन व्यवस्था के आधार पर उपयोगकर्ता के हर सवाल का सटीक, व्यावहारिक और प्रभावशाली हिंदी में उत्तर दें। नीचे दी गई लाइव इंटरनेट जानकारी का उपयोग करके ताज़ा और सटीक उत्तर दें।";
-
-    const fullPrompt = liveContext
-        ? `${systemPrompt}\n\n=== लाइव इंटरनेट जानकारी ===\n${liveContext}\n=== अंत ===\n\nयूज़र का प्रश्न: ${v}\n\nऊपर की लाइव जानकारी के आधार पर विस्तृत उत्तर दें।`
-        : `${systemPrompt}\n\nयूज़र का प्रश्न: ${v}`;
-
-    let reply = "";
-
-    // ============ STEP 3: AI से जवाब ============
-    try {
-        const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}?seed=${Date.now()}&model=openai`);
-        if (res.ok) {
-            const txt = await res.text();
-            if (txt && !txt.startsWith('{"error"') && !txt.includes('"status":404')) {
-                reply = txt;
-            }
-        }
-    } catch (e) {}
-
-async function sendBossQuery() {
+    async function sendBossQuery() {
     const inp = document.getElementById('bossQueryTxt');
     const v = inp.value.trim();
     if (!v) return;
@@ -1308,7 +1209,7 @@ async function sendBossQuery() {
     box.scrollTop = box.scrollHeight;
 
     // ============ HELPER: Timeout वाला fetch ============
-    async function fetchWithTimeout(url, options = {}, ms = 8000) {
+    async function fetchWithTimeout(url, options = {}, ms = 10000) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), ms);
         try {
@@ -1324,7 +1225,7 @@ async function sendBossQuery() {
     // ============ STEP 1: LIVE INTERNET SEARCH ============
     let liveContext = "";
 
-    // 1A. Wikipedia (हिंदी)
+    // 1A. Wikipedia (हिंदी) — Summary API
     try {
         const wikiRes = await fetchWithTimeout(
             `https://hi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`, {}, 5000
@@ -1363,7 +1264,6 @@ async function sendBossQuery() {
 
     // ============ STEP 2: PROMPT ============
     const systemPrompt = "आप 'संकट मुक्त AI' (Arjun Project) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं। भारत के नए कानूनों (BNS, BNSS, BSA) के आधार पर सटीक, व्यावहारिक उत्तर हिंदी में दें। नीचे दी लाइव जानकारी का उपयोग करें।";
-
     const userMsg = liveContext
         ? `लाइव इंटरनेट जानकारी:\n${liveContext}\n\nसवाल: ${v}`
         : v;
@@ -1371,7 +1271,29 @@ async function sendBossQuery() {
     // ============ STEP 3: MULTI-ENDPOINT AI CALL ============
     let reply = "";
 
-    // 🔹 Method A: POST to Pollinations OpenAI endpoint (सबसे reliable)
+    // 🔹 Method A: KeylessAI (OpenAI-compatible, Cloudflare Worker)
+    if (!reply) {
+        try {
+            const r = await fetchWithTimeout("https://keylessai.thryx.workers.dev/v1/chat/completions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: "gpt-4o",
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: userMsg }
+                    ]
+                })
+            }, 20000);
+            if (r && r.ok) {
+                const data = await r.json();
+                const txt = data?.choices?.[0]?.message?.content;
+                if (txt && txt.trim()) reply = txt;
+            }
+        } catch (e) { console.warn("Method A (KeylessAI) failed:", e); }
+    }
+
+    // 🔹 Method B: Pollinations POST /openai
     if (!reply) {
         try {
             const r = await fetchWithTimeout("https://text.pollinations.ai/openai", {
@@ -1391,10 +1313,10 @@ async function sendBossQuery() {
                 const txt = data?.choices?.[0]?.message?.content;
                 if (txt && txt.trim()) reply = txt;
             }
-        } catch (e) { console.warn("Method A failed:", e); }
+        } catch (e) { console.warn("Method B (Pollinations POST) failed:", e); }
     }
 
-    // 🔹 Method B: GET endpoint (fallback 1)
+    // 🔹 Method C: Pollinations GET (fallback)
     if (!reply) {
         try {
             const r = await fetchWithTimeout(
@@ -1405,31 +1327,10 @@ async function sendBossQuery() {
                 const txt = await r.text();
                 if (txt && !txt.startsWith('{"error"') && txt.trim().length > 5) reply = txt;
             }
-        } catch (e) { console.warn("Method B failed:", e); }
+        } catch (e) { console.warn("Method C (Pollinations GET) failed:", e); }
     }
 
-    // 🔹 Method C: POST simple endpoint (fallback 2)
-    if (!reply) {
-        try {
-            const r = await fetchWithTimeout("https://text.pollinations.ai/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    messages: [
-                        { role: "system", content: systemPrompt },
-                        { role: "user", content: userMsg }
-                    ],
-                    seed: Date.now()
-                })
-            }, 20000);
-            if (r && r.ok) {
-                const txt = await r.text();
-                if (txt && !txt.startsWith('{"error"') && txt.trim().length > 5) reply = txt;
-            }
-        } catch (e) { console.warn("Method C failed:", e); }
-    }
-
-    // 🔹 Method D: Backup AI — DuckDuckGo AI chat
+    // 🔹 Method D: DuckDuckGo AI Chat (gpt-4o-mini / o3-mini)
     if (!reply) {
         try {
             const r = await fetchWithTimeout("https://duckduckgo.com/duckchat/v1/chat", {
@@ -1445,14 +1346,13 @@ async function sendBossQuery() {
             }, 15000);
             if (r && r.ok) {
                 const txt = await r.text();
-                // DuckDuckGo streams, सिर्फ text निकालें
                 const clean = txt.replace(/data: /g, "").split("\n")
                     .filter(l => l.trim())
                     .map(l => { try { return JSON.parse(l).message || ""; } catch { return ""; } })
                     .join("");
                 if (clean.trim()) reply = clean;
             }
-        } catch (e) { console.warn("Method D failed:", e); }
+        } catch (e) { console.warn("Method D (DuckDuckGo) failed:", e); }
     }
 
     // ============ STEP 4: DISPLAY ============
@@ -1465,16 +1365,14 @@ async function sendBossQuery() {
             : "";
         box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid var(--gold-primary); padding-left: 8px;"><strong>🛡️ संकट मुक्त AI:\n</strong>${reply}${srcBadge}</div>`;
     } else {
-        // 🔹 Fallback: अगर सब fail हो जाए, तो liveContext तो दिखा दो
         if (liveContext) {
             box.innerHTML += `<div style="color: #cfd8e3; white-space: pre-wrap; margin-top: 6px; border-left: 2px solid #ffa500; padding-left: 8px;"><strong>📡 लाइव जानकारी (AI उपलब्ध नहीं):\n</strong>${liveContext}</div>`;
         } else {
-            box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सभी सर्वर व्यस्त हैं। कृपया 5 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
+            box.innerHTML += `<div style="color: #f85149; margin-top: 4px;">❌ सभी AI सर्वर व्यस्त हैं। कृपया 5 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
         }
     }
     box.scrollTop = box.scrollHeight;
-}
-           function runStage(stage) {
+}       function runStage(stage) {
             const notice = document.getElementById('stageStatusNotice');
             const table = document.getElementById('sandboxTable');
             if (stage === 1) notice.innerText = "✓ चरण 1: Impact Analysis संपन्न। विधिक सुरक्षा 100% अनुकूल।";
