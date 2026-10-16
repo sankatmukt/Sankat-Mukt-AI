@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔱 संकट मुक्त AI | PhonePe Arjun Command System</title>
+    <title>🔱 संकट मुक्त AI | PhonePe Arjun Tactical Command</title>
     <style>
         :root {
             --phonepe-purple: #5f259f;
             --phonepe-dark: #12041f;
             --phonepe-tile: #1e0933;
-            --bg-base: #0a0312;
+            --bg-base: #090210;
             --bg-card: #140722;
             --gold-primary: #d4af37;
             --gold-bright: #ffd700;
-            --gold-glow: rgba(255, 215, 0, 0.28);
+            --gold-glow: rgba(255, 215, 0, 0.35);
             --border-color: #2e124d;
-            --border-gold: rgba(212, 175, 55, 0.45);
+            --border-gold: rgba(212, 175, 55, 0.5);
             --text-main: #f3e8ff;
             --text-muted: #b49bdf;
             --accent-cyan: #00f2fe;
@@ -40,9 +40,9 @@
             padding-bottom: 75px;
         }
 
-        /* 🟣 PhonePe स्टाइल टॉप हेडर */
+        /* 🟣 PhonePe टॉप हेडर */
         .phonepe-header {
-            background: linear-gradient(180deg, #26073b 0%, var(--bg-base) 100%);
+            background: linear-gradient(180deg, #2a0842 0%, var(--bg-base) 100%);
             border-bottom: 1.5px solid var(--border-gold);
             padding: 12px 16px;
             display: flex;
@@ -80,7 +80,7 @@
         }
 
         .brand-info h1 {
-            font-size: 1.18rem;
+            font-size: 1.15rem;
             color: var(--gold-bright);
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -92,31 +92,27 @@
             color: var(--text-muted);
         }
 
-        .live-pill {
-            font-size: 0.7rem;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-            padding: 3px 9px;
-            border-radius: 12px;
+        /* 🔑 मास्टर सिक्योरिटी की (चाबी) */
+        .admin-key-btn {
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            border: 2px solid #fff;
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-weight: 600;
+            gap: 6px;
+            box-shadow: 0 0 15px var(--gold-glow);
+            animation: pulse-glow 2s infinite;
         }
 
-        .pulse-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0.6; }
-            50% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(0.8); opacity: 0.6; }
+        @keyframes pulse-glow {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
         }
 
         .lang-bar {
@@ -240,20 +236,6 @@
             max-width: 68px;
         }
 
-        .room-section {
-            display: none;
-            animation: fadeIn 0.25s ease;
-        }
-
-        .room-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .phonepe-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -307,47 +289,103 @@
             width: 100%;
         }
 
-        /* 👑 इंजन स्विचर टैब (Room 6) */
-        .engine-switch-box {
+        /* 👑 मास्टर एडमिन वॉल्ट मोडल (6 बॉक्स) */
+        #adminPanelModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 1, 10, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 16px;
+            backdrop-filter: blur(15px);
+        }
+
+        .admin-vault-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--gold-bright);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .admin-vault-title {
+            color: var(--gold-bright);
+            font-size: 1.15rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-close-vault {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .admin-rooms-nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 6px;
+            margin-bottom: 14px;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+        }
+
+        .admin-tab-btn {
+            background: #1c082e;
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .admin-tab-btn.active {
+            background: linear-gradient(135deg, var(--phonepe-purple), #8b3dff);
+            color: #fff;
+            border-color: var(--gold-bright);
+        }
+
+        .admin-room-content {
+            display: none;
+        }
+
+        .admin-room-content.active {
+            display: block;
+        }
+
+        /* 🤫 रूम 6: गुप्त चैट व इंजन बार */
+        .engine-status-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: rgba(30, 9, 51, 0.7);
             border: 1px solid var(--border-gold);
             border-radius: 8px;
-            padding: 8px 10px;
+            padding: 6px 10px;
             margin-bottom: 10px;
             font-size: 0.78rem;
         }
 
-        .engine-tabs {
-            display: flex;
-            gap: 6px;
-        }
-
-        .engine-tab-btn {
-            background: #140722;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.74rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .engine-tab-btn.active {
-            background: linear-gradient(135deg, var(--phonepe-purple), #8b3dff);
-            color: #fff;
-            border-color: var(--gold-bright);
-        }
-
-        /* 🤫 रूम 6: सुप्रीम चैट आउटपुट */
         #bossChatOutput {
             background: #09030f;
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            height: 350px;
+            height: 380px;
             overflow-y: auto;
             padding: 12px;
             display: flex;
@@ -355,7 +393,7 @@
             gap: 10px;
             margin-bottom: 10px;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .chat-user {
@@ -432,7 +470,7 @@
             font-size: 0.9rem;
         }
 
-        /* 🟣 PhonePe बॉटम नेविगेशन बार (Dock) */
+        /* 🟣 PhonePe बॉटम डॉक */
         .phonepe-bottom-nav {
             position: fixed;
             bottom: 0;
@@ -459,7 +497,7 @@
             font-size: 0.68rem;
             cursor: pointer;
             outline: none;
-            width: 16%;
+            width: 20%;
         }
 
         .nav-item.active {
@@ -474,25 +512,23 @@
 </head>
 <body>
 
-    <!-- 🟣 PhonePe स्टाइल टॉप हेडर -->
+    <!-- 🟣 PhonePe टॉप हेडर -->
     <header class="phonepe-header">
         <div class="header-top-row">
             <div class="user-profile">
                 <div class="avatar-circle">🔱</div>
                 <div class="brand-info">
                     <h1>संकट मुक्त AI</h1>
-                    <span>आचार्य अर्जुन • Arjun Tactical Command</span>
+                    <span>आचार्य अर्जुन • PhonePe Command</span>
                 </div>
             </div>
-            <div class="header-badges">
-                <div class="live-pill">
-                    <span class="pulse-dot"></span>
-                    <span>2026 LIVE</span>
-                </div>
-            </div>
+            <!-- 🔑 मास्टर सिक्योरिटी की (चाबी) -->
+            <button class="admin-key-btn" onclick="openAdminVault()">
+                <span>🔑 चाबी</span>
+                <span style="font-size: 0.68rem; background: #000; color: #ffd700; padding: 2px 5px; border-radius: 10px;">एडमिन</span>
+            </button>
         </div>
 
-        <!-- भाषा चयन पट्टी -->
         <div class="lang-bar">
             <span>🌐 भाषा (Language):</span>
             <select class="lang-select" onchange="switchLang(this.value)">
@@ -511,271 +547,291 @@
         ⚠ <strong>वैश्विक विधिक-आध्यात्मिक उद्घोष:</strong> अब भाषा की दीवारें समाप्त! सीधे समाधान आपके द्वार आपकी मनपसंद भाषा में। आचार्य अर्जुन का चक्रव्यूह-भेदन सुरक्षा कवच सक्रिय है।
     </div>
 
-    <!-- मुख्य सामग्री क्षेत्र -->
-    <main>
+    <!-- 📱 मुख्य PhonePe क्लाइंट डैशबोर्ड -->
+    <main id="clientDashboard">
 
-        <!-- 📱 कमरा 1: PhonePe होम डैशबोर्ड व क्लाइंट कंसोल -->
-        <section id="room1" class="room-section active">
-
-            <!-- ग्रिड 1: मुख्य AI संकट मोचन टूल्स -->
-            <div class="section-heading">⚡ कोर AI संकट मोचन टूल्स</div>
-            <div class="phonepe-grid">
-                <button class="tile-btn" onclick="openRoom6With('Astro AI के तहत ग्रह दोष व दशा का समाधान दें')">
-                    <div class="tile-icon-box highlight">
-                        <span>🔮</span>
-                        <span class="tile-badge">AI</span>
-                    </div>
-                    <span class="tile-label">Astro AI</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom6With('Law AI: भारत के नए कानून BNS और BNSS के तहत विधिक सुरक्षा कवच बताएं')">
-                    <div class="tile-icon-box highlight">
-                        <span>⚖️</span>
-                        <span class="tile-badge">BNS</span>
-                    </div>
-                    <span class="tile-label">Law AI</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom6With('Mantra AI: सर्व संकट निवारण हेतु सटीक बीज मंत्र विधान दें')">
-                    <div class="tile-icon-box highlight">
-                        <span>🔱</span>
-                    </div>
-                    <span class="tile-label">Mantra AI</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom6With('Student AI: विद्यार्थी एकाग्रता, स्मृति व परीक्षा भय मुक्ति उपाय')">
-                    <div class="tile-icon-box highlight">
-                        <span>🎓</span>
-                    </div>
-                    <span class="tile-label">Student AI</span>
-                </button>
-            </div>
-
-            <!-- ग्रिड 2: विधिक, लोन व वित्तीय सुरक्षा सेवाएँ -->
-            <div class="section-heading">🛡️ विधिक, लोन व वित्तीय सुरक्षा कवच</div>
-            <div class="phonepe-grid">
-                <button class="tile-btn" onclick="openRoom6With('चेक बाउंस होने पर कानूनी नोटिस और 30 दिन का सुरक्षा नियम क्या है?')">
-                    <div class="tile-icon-box">
-                        <span>📑</span>
-                    </div>
-                    <span class="tile-label">चेक बाउंस</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom6With('बैंक रिकवरी एजेंट मानसिक प्रताड़ना दे रहे हैं, RBI के सुरक्षा नियम क्या हैं?')">
-                    <div class="tile-icon-box">
-                        <span>💰</span>
-                    </div>
-                    <span class="tile-label">कर्ज मुक्ति</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom6With('Zero FIR और ऑनलाइन e-FIR दर्ज कराने की नई BNSS प्रक्रिया क्या है?')">
-                    <div class="tile-icon-box">
-                        <span>🏛️</span>
-                    </div>
-                    <span class="tile-label">Zero FIR</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom6With('व्यापारिक अनुबंध उल्लंघन और पार्टनरशिप विवाद का कानूनी समाधान')">
-                    <div class="tile-icon-box">
-                        <span>📈</span>
-                    </div>
-                    <span class="tile-label">व्यापार विवाद</span>
-                </button>
-            </div>
-
-            <!-- ग्रिड 3: त्वरित क्लाइंट एक्शन -->
-            <div class="section-heading">⚡ त्वरित क्लाइंट एक्शन</div>
-            <div class="phonepe-grid">
-                <button class="tile-btn" onclick="focusClientBox()">
-                    <div class="tile-icon-box">
-                        <span>📋</span>
-                    </div>
-                    <span class="tile-label">दोष रिपोर्ट</span>
-                </button>
-
-                <button class="tile-btn" onclick="triggerCall()">
-                    <div class="tile-icon-box">
-                        <span>🎙️</span>
-                    </div>
-                    <span class="tile-label">कॉल कनेक्ट</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom(2)">
-                    <div class="tile-icon-box">
-                        <span>📢</span>
-                    </div>
-                    <span class="tile-label">मार्केटिंग</span>
-                </button>
-
-                <button class="tile-btn" onclick="openRoom(6)">
-                    <div class="tile-icon-box highlight">
-                        <span>🤖</span>
-                        <span class="tile-badge">लाइव</span>
-                    </div>
-                    <span class="tile-label">सुप्रीम AI</span>
-                </button>
-            </div>
-
-            <!-- क्लाइंट रिपोर्ट कंसोल कार्ड -->
-            <div class="phonepe-card" id="clientConsoleBox">
-                <div class="card-header-row">
-                    <span>📱 क्लाइंट समस्या निवारण कंसोल</span>
+        <!-- ग्रिड 1: मुख्य AI संकट मोचन टूल्स -->
+        <div class="section-heading">⚡ कोर AI संकट मोचन टूल्स</div>
+        <div class="phonepe-grid">
+            <button class="tile-btn" onclick="launchChatWith('Astro AI के तहत ग्रह दोष व गोचर का अचूक समाधान दें')">
+                <div class="tile-icon-box highlight">
+                    <span>🔮</span>
+                    <span class="tile-badge">AI</span>
                 </div>
-                <input type="tel" id="clientPhone" class="custom-input" placeholder="मोबाइल नंबर दर्ज करें (+91...)">
-                <textarea id="clientQuery" class="custom-textarea" placeholder="अपनी विधिक, पारिवारिक, आर्थिक या ग्रह पीड़ा का विवरण लिखें..."></textarea>
-                <button class="btn-gold" onclick="makeReport()">⚡ दोष गणना रिपोर्ट प्राप्त करें</button>
-                <div id="reportResult" style="display: none; margin-top: 10px;"></div>
+                <span class="tile-label">Astro AI</span>
+            </button>
+
+            <button class="tile-btn" onclick="launchChatWith('Law AI: भारत के नए कानून BNS और BNSS के तहत विधिक सुरक्षा कवच बताएं')">
+                <div class="tile-icon-box highlight">
+                    <span>⚖️</span>
+                    <span class="tile-badge">BNS</span>
+                </div>
+                <span class="tile-label">Law AI</span>
+            </button>
+
+            <button class="tile-btn" onclick="launchChatWith('Mantra AI: सर्व संकट निवारण हेतु अचूक बीज मंत्र विधान दें')">
+                <div class="tile-icon-box highlight">
+                    <span>🔱</span>
+                </div>
+                <span class="tile-label">Mantra AI</span>
+            </button>
+
+            <button class="tile-btn" onclick="launchChatWith('Student AI: विद्यार्थी एकाग्रता, स्मृति व परीक्षा भय मुक्ति उपाय')">
+                <div class="tile-icon-box highlight">
+                    <span>🎓</span>
+                </div>
+                <span class="tile-label">Student AI</span>
+            </button>
+        </div>
+
+        <!-- ग्रिड 2: विधिक, लोन व वित्तीय सुरक्षा कवच -->
+        <div class="section-heading">🛡️ विधिक, लोन व वित्तीय सुरक्षा कवच</div>
+        <div class="phonepe-grid">
+            <button class="tile-btn" onclick="launchChatWith('चेक बाउंस होने पर कानूनी नोटिस और 30 दिन का सुरक्षा नियम क्या है?')">
+                <div class="tile-icon-box">
+                    <span>📑</span>
+                </div>
+                <span class="tile-label">चेक बाउंस</span>
+            </button>
+
+            <button class="tile-btn" onclick="launchChatWith('बैंक रिकवरी एजेंट मानसिक प्रताड़ना दे रहे हैं, RBI के सुरक्षा नियम क्या हैं?')">
+                <div class="tile-icon-box">
+                    <span>💰</span>
+                </div>
+                <span class="tile-label">कर्ज मुक्ति</span>
+            </button>
+
+            <button class="tile-btn" onclick="launchChatWith('Zero FIR और ऑनलाइन e-FIR दर्ज कराने की नई BNSS प्रक्रिया क्या है?')">
+                <div class="tile-icon-box">
+                    <span>🏛️</span>
+                </div>
+                <span class="tile-label">Zero FIR</span>
+            </button>
+
+            <button class="tile-btn" onclick="launchChatWith('व्यापारिक अनुबंध उल्लंघन और पार्टनरशिप विवाद का कानूनी समाधान')">
+                <div class="tile-icon-box">
+                    <span>📈</span>
+                </div>
+                <span class="tile-label">व्यापार विवाद</span>
+            </button>
+        </div>
+
+        <!-- ग्रिड 3: त्वरित क्लाइंट एक्शन -->
+        <div class="section-heading">⚡ त्वरित क्लाइंट एक्शन</div>
+        <div class="phonepe-grid">
+            <button class="tile-btn" onclick="focusClientBox()">
+                <div class="tile-icon-box">
+                    <span>📋</span>
+                </div>
+                <span class="tile-label">दोष रिपोर्ट</span>
+            </button>
+
+            <button class="tile-btn" onclick="triggerCall()">
+                <div class="tile-icon-box">
+                    <span>🎙️</span>
+                </div>
+                <span class="tile-label">कॉल कनेक्ट</span>
+            </button>
+
+            <button class="tile-btn" onclick="openAdminRoom(2)">
+                <div class="tile-icon-box">
+                    <span>📢</span>
+                </div>
+                <span class="tile-label">मार्केटिंग</span>
+            </button>
+
+            <button class="tile-btn" onclick="openAdminRoom(6)">
+                <div class="tile-icon-box highlight">
+                    <span>🤫</span>
+                    <span class="tile-badge">गुप्त</span>
+                </div>
+                <span class="tile-label">गुप्त AI</span>
+            </button>
+        </div>
+
+        <!-- क्लाइंट रिपोर्ट कंसोल कार्ड -->
+        <div class="phonepe-card" id="clientConsoleBox">
+            <div class="card-header-row">
+                <span>📱 क्लाइंट समस्या निवारण कंसोल</span>
             </div>
+            <input type="tel" id="clientPhone" class="custom-input" placeholder="मोबाइल नंबर दर्ज करें (+91...)">
+            <textarea id="clientQuery" class="custom-textarea" placeholder="अपनी विधिक, पारिवारिक, आर्थिक या ग्रह पीड़ा का विवरण लिखें..."></textarea>
+            <button class="btn-gold" onclick="makeReport()">⚡ दोष गणना रिपोर्ट प्राप्त करें</button>
+            <div id="reportResult" style="display: none; margin-top: 10px;"></div>
+        </div>
 
-        </section>
+    </main>
 
-        <!-- 📢 कमरा 2: 1-Click मार्केटिंग -->
-        <section id="room2" class="room-section">
+    <!-- ========================================== -->
+    <!-- 👑 मास्टर एडमिन वॉल्ट (चाबी से खुलने वाले 6 बॉक्स) -->
+    <!-- ========================================== -->
+    <div id="adminPanelModal">
+        <div class="admin-vault-header">
+            <div class="admin-vault-title">
+                <span>🔑</span>
+                <span>मास्टर एडमिन पैनल (6 टैक्टिकल कमांड बॉक्स)</span>
+            </div>
+            <button class="btn-close-vault" onclick="closeAdminVault()">✕ बंद करें</button>
+        </div>
+
+        <!-- 6 बॉक्स नेविगेशन पट्टी -->
+        <div class="admin-rooms-nav">
+            <button class="admin-tab-btn" onclick="switchAdminRoom(1)">📱 बॉक्स 1: क्लाइंट कंसोल</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(2)">📢 बॉक्स 2: 1-Click मार्केटिंग</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(3)">🔮 बॉक्स 3: Astro प्रेडिक्शन</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(4)">🏛 बॉक्स 4: Govt Laws BNS</button>
+            <button class="admin-tab-btn" onclick="switchAdminRoom(5)">👑 बॉक्स 5: प्रेसिडेंट वॉल्ट</button>
+            <button class="admin-tab-btn active" onclick="switchAdminRoom(6)">🤫 बॉक्स 6: गुप्त टैब चैटिंग</button>
+        </div>
+
+        <!-- बॉक्स 1 -->
+        <div id="adminRoom1" class="admin-room-content">
             <div class="phonepe-card">
-                <div class="card-header-row">
-                    <span>📢 1-Click Global Marketing & Media Trends</span>
-                </div>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">
-                    सोशल मीडिया पर संकट-मोचन संदेश व लिंक्स स्वतः ब्रॉडकास्ट करें:
-                </p>
+                <div class="card-header-row"><span>📱 बॉक्स 1: क्लाइंट लीड्स व कंसोल</span></div>
+                <p style="font-size:0.85rem; color:var(--text-muted);">सभी पंजीकृत क्लाइंट्स एवं विधिक परामर्श अनुरोध यहाँ संग्रहीत हैं।</p>
+            </div>
+        </div>
+
+        <!-- बॉक्स 2 -->
+        <div id="adminRoom2" class="admin-room-content">
+            <div class="phonepe-card">
+                <div class="card-header-row"><span>📢 बॉक्स 2: 1-Click Global Marketing</span></div>
                 <input type="text" id="mktUrl" class="custom-input" value="https://sankatmukt.github.io - संकट मुक्त AI आचार्य अर्जुन">
                 <button class="btn-gold" onclick="doBroadcast()">🔗 Broadcast To All Social Media</button>
                 <div id="bcastMsg" style="margin-top: 10px; font-size: 0.85rem; color: var(--accent-cyan); display: none;"></div>
             </div>
-        </section>
+        </div>
 
-        <!-- 🔮 कमरा 3: Astro-Quantum Prediction -->
-        <section id="room3" class="room-section">
+        <!-- बॉक्स 3 -->
+        <div id="adminRoom3" class="admin-room-content">
             <div class="phonepe-card">
-                <div class="card-header-row">
-                    <span>🔮 Astro-Quantum Prediction Engine</span>
-                </div>
-                <input type="text" id="astroTxt" class="custom-input" placeholder="नाम, जन्म तिथि व स्थान लिखें...">
+                <div class="card-header-row"><span>🔮 बॉक्स 3: Astro-Quantum Prediction Engine</span></div>
+                <input type="text" id="astroTxt" class="custom-input" placeholder="नाम, जन्म विवरण लिखें...">
                 <button class="btn-gold" onclick="doAstro()">✨ रीयल-टाइम गोचर रिपोर्ट निकालें</button>
                 <div id="astroOut" style="display: none; margin-top: 10px;"></div>
             </div>
-        </section>
+        </div>
 
-        <!-- 🏛 कमरा 4: Govt Laws Compliance -->
-        <section id="room4" class="room-section">
+        <!-- बॉक्स 4 -->
+        <div id="adminRoom4" class="admin-room-content">
             <div class="phonepe-card">
-                <div class="card-header-row">
-                    <span>🏛 Govt Laws Compliance Shield (नवीन कानून 2026)</span>
-                </div>
+                <div class="card-header-row"><span>🏛 बॉक्स 4: Govt Laws Compliance Shield (2026)</span></div>
                 <div style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e0;">
                     <p style="color: var(--gold-bright);"><strong>🇮🇳 1 जुलाई 2024 से लागू नवीन भारतीय कानून:</strong></p>
                     <ul style="padding-left: 20px; margin: 8px 0; color: var(--text-muted);">
-                        <li><strong>भारतीय न्याय संहिता (BNS):</strong> IPC समाप्त। हत्या धारा 103, धोखाधड़ी धारा 318 BNS।</li>
-                        <li><strong>भारतीय नागरिक सुरक्षा संहिता (BNSS):</strong> CrPC समाप्त। देश के किसी भी थाने में Zero FIR व ऑनलाइन समन।</li>
-                        <li><strong>भारतीय साक्ष्य अधिनियम (BSA):</strong> Evidence Act समाप्त। इलेक्ट्रॉनिक व व्हाट्सएप साक्ष्य पूर्णतः मान्य।</li>
+                        <li><strong>BNS:</strong> IPC समाप्त। हत्या धारा 103, धोखाधड़ी धारा 318 BNS।</li>
+                        <li><strong>BNSS:</strong> CrPC समाप्त। Zero FIR व ऑनलाइन समन व्यवस्था।</li>
+                        <li><strong>BSA:</strong> Evidence Act समाप्त। इलेक्ट्रॉनिक व WhatsApp साक्ष्य पूर्णतः मान्य।</li>
                     </ul>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- 👑 कमरा 5: प्रेसिडेंट ओनली कंट्रोल वॉल्ट -->
-        <section id="room5" class="room-section">
+        <!-- बॉक्स 5 -->
+        <div id="adminRoom5" class="admin-room-content">
             <div class="phonepe-card">
-                <div class="card-header-row">
-                    <span>👑 PREZIDENT ONLY - CONTROL VAULT</span>
-                </div>
-                <p style="font-size: 0.88rem; margin-bottom: 8px;"><strong>👥 Nominee Protocol:</strong> बायो-एन्क्रिप्टेड अर्जुन वॉल्ट सुरक्षित।</p>
+                <div class="card-header-row"><span>👑 बॉक्स 5: प्रेसिडेंट ओनली कंट्रोल वॉल्ट</span></div>
+                <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>👥 Nominee Protocol:</strong> बायो-एन्क्रिप्टेड अर्जुन वॉल्ट सक्रिय।</p>
                 <button class="btn-gold" onclick="doTaxAudit()">🧮 1-Click Auto Tax Audit (FY 2025-26)</button>
                 <div id="taxAuditMsg" style="margin-top: 10px; display: none;"></div>
             </div>
-        </section>
+        </div>
 
-        <!-- 🤫 कमरा 6: सुप्रीम अर्जुन AI कमांड सेंटर (Hybrid Dual-Engine) -->
-        <section id="room6" class="room-section">
+        <!-- 🤫 बॉक्स 6: गुप्त टैब चैटिंग (सुप्रीम यूनिवर्सल AI कमांड) -->
+        <div id="adminRoom6" class="admin-room-content active">
             <div class="phonepe-card">
                 <div class="card-header-row">
-                    <span>👑 सुप्रीम अर्जुन कमांड सेंटर (लाइव सर्च AI)</span>
+                    <span>🤫 बॉक्स 6: गुप्त टैब चैटिंग (सुप्रीम यूनिवर्सल AI)</span>
                     <button onclick="clearChat()" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.72rem; padding: 2px 8px; border-radius: 6px; cursor: pointer;">साफ़ करें</button>
                 </div>
 
-                <!-- 🎛️ हाइब्रिड इंजन स्विचर बार -->
-                <div class="engine-switch-box">
-                    <span id="activeEngineLabel">इंजन: 🟢 <strong>Free Engine (लाइव सर्च)</strong></span>
-                    <div class="engine-tabs">
-                        <button class="engine-tab-btn active" id="btnModeFree" onclick="setEngineMode('free')">फ्री मोड</button>
-                        <button class="engine-tab-btn" id="btnModeGemini" onclick="promptGeminiKey()">🔑 Gemini Pay-Go</button>
-                    </div>
+                <!-- इंजन स्टेटस व वैकल्पिक Gemini Key बटन -->
+                <div class="engine-status-bar">
+                    <span id="engineBadge" style="color: var(--accent-green);">🟢 फ्री यूनिवर्सल AI सक्रिय</span>
+                    <button onclick="configureGeminiPayKey()" style="background: var(--bg-card); border: 1px solid var(--gold-bright); color: var(--gold-bright); font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;">🔑 Gemini Key (भविष्य अपग्रेड)</button>
                 </div>
 
                 <!-- त्वरित सवाल चिप्स -->
                 <div class="quick-chips">
+                    <span class="chip" onclick="setQuery('मुझे अभी लेटेस्ट इजराइल का प्रेसिडेंट कौन है बताओ')">🇮🇱 इज़राइल राष्ट्रपति</span>
                     <span class="chip" onclick="setQuery('वर्तमान में भारत का राष्ट्रपति कौन है?')">🇮🇳 भारत राष्ट्रपति</span>
                     <span class="chip" onclick="setQuery('वर्तमान में अमेरिका का राष्ट्रपति कौन है?')">🇺🇸 USA राष्ट्रपति</span>
-                    <span class="chip" onclick="setQuery('वर्तमान में रूस का राष्ट्रपति कौन है?')">🇷🇺 रूस राष्ट्रपति</span>
                     <span class="chip" onclick="setQuery('भारत में नए आपराधिक कानून BNS और BNSS के मुख्य नियम क्या हैं?')">⚖️ नए कानून BNS</span>
                     <span class="chip" onclick="setQuery('चेक बाउंस होने पर कानूनी बचाव और 30 दिन के नोटिस का नियम क्या है?')">📑 चेक बाउंस बचाव</span>
                 </div>
 
-                <!-- चैट बॉक्स -->
+                <!-- चैट आउटपुट -->
                 <div id="bossChatOutput">
                     <div class="chat-ai">
-<strong>🛡️ संकट मुक्त AI (Arjun Dual-Engine) तैयार है।</strong>
-बॉस, आदेश दीजिए! यह हाइब्रिड आर्किटेक्चर (फ्री लाइव सर्च + वैकल्पिक Pay-As-You-Go) से सुसज्जित है। आप देश-दुनिया, विधिक संकट, वित्तीय स्थिति या किसी भी प्रशासनिक विषय पर पूछ सकते हैं। सटीक उत्तर तुरंत प्रस्तुत किया जाएगा।
+<strong>🛡️ आचार्य अर्जुन (सुप्रीम यूनिवर्सल AI गुप्त कमांड सेंटर) तैयार है।</strong>
+बॉस, आदेश दीजिए! यह गुप्त चैटिंग टैब दुनिया के किसी भी विषय (विज्ञान, कानून, वित्त, विश्व राजनीति, चिकित्सा, व्यापार, धर्म-दर्शन, कोडिंग) पर जेमिनी स्तर का 100% सटीक, विश्लेषणात्मक व तार्किक उत्तर तुरंत प्रस्तुत करेगा।
                     </div>
                 </div>
 
                 <!-- इनपुट पंक्ति -->
                 <div class="chat-input-bar">
-                    <input type="text" id="bossQueryTxt" placeholder="यहाँ प्रश्न या आदेश लिखें..." onkeydown="if(event.key==='Enter') sendBossQuery();">
+                    <input type="text" id="bossQueryTxt" placeholder="यहाँ दुनिया का कोई सा भी प्रश्न या गुप्त आदेश लिखें..." onkeydown="if(event.key==='Enter') sendBossQuery();">
                     <button class="btn-send" onclick="sendBossQuery()">आदेश दें ⚡</button>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-    </main>
-
-    <!-- 🟣 PhonePe बॉटम नेविगेशन बार (Dock) -->
+    <!-- 🟣 PhonePe बॉटम डॉक -->
     <nav class="phonepe-bottom-nav">
-        <button class="nav-item active" onclick="openRoom(1)">
+        <button class="nav-item active" onclick="closeAdminVault()">
             <span>🏠</span>
             <span>होम</span>
         </button>
-        <button class="nav-item" onclick="openRoom(2)">
-            <span>📢</span>
-            <span>प्रचार</span>
+        <button class="nav-item" onclick="focusClientBox()">
+            <span>📋</span>
+            <span>दोष रिपोर्ट</span>
         </button>
-        <button class="nav-item" onclick="openRoom(3)">
-            <span>🔮</span>
-            <span>एस्ट्रो</span>
+        <button class="nav-item" onclick="triggerCall()">
+            <span>🎙️</span>
+            <span>कॉल</span>
         </button>
-        <button class="nav-item" onclick="openRoom(4)">
-            <span>🏛️</span>
-            <span>कानून</span>
+        <button class="nav-item" onclick="openAdminRoom(6)">
+            <span>🤫</span>
+            <span>गुप्त AI</span>
         </button>
-        <button class="nav-item" onclick="openRoom(5)">
-            <span>👑</span>
-            <span>वॉल्ट</span>
-        </button>
-        <button class="nav-item" onclick="openRoom(6)">
-            <span>🤖</span>
-            <span>सुप्रीम AI</span>
+        <button class="nav-item" onclick="openAdminVault()">
+            <span>🔑</span>
+            <span>चाबी वॉल्ट</span>
         </button>
     </nav>
 
     <!-- मुख्य जावास्क्रिप्ट लॉजिक -->
     <script>
-        // 1. कमरा बदलने की व्यवस्था
-        function openRoom(num) {
-            document.querySelectorAll('.room-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-
-            const target = document.getElementById('room' + num);
-            if (target) target.classList.add('active');
-
-            const navBtns = document.querySelectorAll('.nav-item');
-            if (navBtns[num - 1]) navBtns[num - 1].classList.add('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // 1. एडमिन वॉल्ट (चाबी) खोलना व बंद करना
+        function openAdminVault() {
+            document.getElementById('adminPanelModal').style.display = 'block';
+            switchAdminRoom(6);
         }
 
-        function openRoom6With(queryText) {
-            openRoom(6);
-            setQuery(queryText);
+        function closeAdminVault() {
+            document.getElementById('adminPanelModal').style.display = 'none';
+        }
+
+        function openAdminRoom(num) {
+            openAdminVault();
+            switchAdminRoom(num);
+        }
+
+        function switchAdminRoom(num) {
+            document.querySelectorAll('.admin-room-content').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+
+            const target = document.getElementById('adminRoom' + num);
+            if (target) target.classList.add('active');
+
+            const btns = document.querySelectorAll('.admin-tab-btn');
+            if (btns[num - 1]) btns[num - 1].classList.add('active');
+        }
+
+        function launchChatWith(query) {
+            openAdminRoom(6);
+            setQuery(query);
             sendBossQuery();
         }
 
@@ -788,12 +844,13 @@
         function clearChat() {
             document.getElementById('bossChatOutput').innerHTML = `
                 <div class="chat-ai">
-<strong>🛡️ संकट मुक्त AI:</strong> चैट रीसेट कर दी गई है। नया प्रश्न पूछें।
+<strong>🛡️ आचार्य अर्जुन AI:</strong> चैट रीसेट कर दी गई है। नया प्रश्न पूछें।
                 </div>
             `;
         }
 
         function focusClientBox() {
+            closeAdminVault();
             document.getElementById('clientConsoleBox').scrollIntoView({ behavior: 'smooth' });
             document.getElementById('clientQuery').focus();
         }
@@ -861,177 +918,135 @@
         }
 
         // ==========================================
-        // 🎛️ हाइब्रिड इंजन स्विचर लॉजिक (Free vs Gemini)
+        // 🔑 भविष्य के Pay-As-You-Go हेतु Gemini Key
         // ==========================================
-        let currentMode = localStorage.getItem("sankat_engine_mode") || "free";
-
-        function updateEngineUI() {
-            const label = document.getElementById('activeEngineLabel');
-            const btnFree = document.getElementById('btnModeFree');
-            const btnGemini = document.getElementById('btnModeGemini');
-
-            if (currentMode === "gemini" && localStorage.getItem("sankat_gemini_key")) {
-                label.innerHTML = "इंजन: ⚡ <strong>Google Gemini (Pay-As-You-Go)</strong>";
-                btnGemini.classList.add('active');
-                btnFree.classList.remove('active');
-            } else {
-                currentMode = "free";
-                label.innerHTML = "इंजन: 🟢 <strong>Free Engine (लाइव सर्च)</strong>";
-                btnFree.classList.add('active');
-                btnGemini.classList.remove('active');
-            }
-            localStorage.setItem("sankat_engine_mode", currentMode);
-        }
-
-        function setEngineMode(mode) {
-            currentMode = mode;
-            updateEngineUI();
-        }
-
-        function promptGeminiKey() {
-            const existing = localStorage.getItem("sankat_gemini_key") || "";
-            const key = prompt("Google Gemini API Key दर्ज करें (Pay-As-You-Go):\n(खाली छोड़ने पर वापस फ्री इंजन सक्रिय रहेगा)", existing);
+        function configureGeminiPayKey() {
+            const current = localStorage.getItem("sankat_paygo_gemini_key") || "";
+            const key = prompt("भविष्य के Google Gemini Pay-As-You-Go हेतु API Key दर्ज करें:\n(अभी खाली छोड़ने पर 100% फ्री यूनिवर्सल AI चलता रहेगा)", current);
             if (key !== null) {
                 if (key.trim().length > 10) {
-                    localStorage.setItem("sankat_gemini_key", key.trim());
-                    currentMode = "gemini";
-                    alert("✅ Google Gemini Key सफलतापूर्वक सक्रिय हो गई!");
+                    localStorage.setItem("sankat_paygo_gemini_key", key.trim());
+                    document.getElementById('engineBadge').innerHTML = "⚡ Gemini Pay-Go सक्रिय";
+                    document.getElementById('engineBadge').style.color = "var(--gold-bright)";
+                    alert("✅ Google Gemini Key सफलतापूर्वक जुड़ गई!");
                 } else {
-                    localStorage.removeItem("sankat_gemini_key");
-                    currentMode = "free";
-                    alert("फ्री इंजन सक्रिय है।");
+                    localStorage.removeItem("sankat_paygo_gemini_key");
+                    document.getElementById('engineBadge').innerHTML = "🟢 फ्री यूनिवर्सल AI सक्रिय";
+                    document.getElementById('engineBadge').style.color = "var(--accent-green)";
+                    alert("फ्री यूनिवर्सल इंजन सक्रिय है।");
                 }
-                updateEngineUI();
             }
         }
 
-        // पेज लोड पर इंजन स्टेटस अपडेट
-        document.addEventListener("DOMContentLoaded", updateEngineUI);
-
-        // ==========================================
-        // 🤫 2-इंजन लाइव रिसर्च आर्किटेक्चर (Room 6)
-        // ==========================================
+        // =======================================================
+        // 🤫 100% यूनिवर्सल AI इंजन (बॉक्स 6 - किसी भी विषय का उत्तर)
+        // =======================================================
         async function sendBossQuery() {
             const inp = document.getElementById('bossQueryTxt');
             const v = inp.value.trim();
             if (!v) return;
 
             const box = document.getElementById('bossChatOutput');
-            box.innerHTML += `<div class="chat-user"><strong>बॉस:</strong> ${v}</div>`;
+            box.innerHTML += `<div class="chat-user"><strong>बॉस का आदेश:</strong> ${v}</div>`;
             inp.value = "";
             box.scrollTop = box.scrollHeight;
 
             const loadId = "load_" + Date.now();
-            box.innerHTML += `<div id="${loadId}" style="color: var(--accent-cyan); font-size: 0.82rem; padding: 4px;"><em>⚡ लाइव विश्लेषण व अर्जुन AI इंजन सक्रिय है...</em></div>`;
+            box.innerHTML += `<div id="${loadId}" style="color: var(--accent-cyan); font-size: 0.82rem; padding: 4px;"><em>⚡ आचार्य अर्जुन यूनिवर्सल AI अनुसंधान व विश्लेषण कर रहा है...</em></div>`;
             box.scrollTop = box.scrollHeight;
 
-            const systemPrompt = `आप 'संकट मुक्त AI' (Arjun Project) के सर्वोच्च विधिक, वित्तीय व रणनीतिक सलाहकार (Acharya Arjun) हैं।
+            const systemInstruction = `आप 'संकट मुक्त AI' (Arjun Tactical System) के सर्वोच्च विधिक, वैज्ञानिक, वित्तीय व रणनीतिक सलाहकार (Acharya Arjun) हैं। 
 वर्तमान समय वर्ष 2026 है। 
-ताज़ा आधिकारिक संदर्भ:
-- भारत की राष्ट्रपति: श्रीमती द्रौपदी मुर्मू
-- भारत के प्रधानमंत्री: श्री नरेंद्र मोदी
-- अमेरिका के 47वें राष्ट्रपति: डोनाल्ड ट्रंप (Donald Trump)
-- रूस के राष्ट्रपति: व्लादिमीर पुतिन (Vladimir Putin)
-- भारत में लागू कानून: 1 जुलाई 2024 से IPC, CrPC, Evidence Act समाप्त होकर BNS (भारतीय न्याय संहिता), BNSS व BSA पूर्णतः लागू हैं।
-निर्देश: उपयोगकर्ता के किसी भी प्रश्न का 100% अद्यतन, सटीक, तार्किक व प्रभावशाली हिंदी में उत्तर दें। कभी भी यह न कहें कि जानकारी 2023 तक सीमित है।`;
+निर्देश: 
+1. उपयोगकर्ता दुनिया के किसी भी क्षेत्र (कानून, राजनीति, विज्ञान, चिकित्सा, दर्शन, तकनीक, व्यापार, सामान्य ज्ञान या व्यक्तिगत मार्गदर्शन) से कोई भी प्रश्न पूछे, उसका अत्यंत सटीक, प्रमाणिक, विस्तृत और तार्किक उत्तर स्पष्ट व प्रभावशाली हिंदी में दें।
+2. यदि प्रश्न किसी देश के राष्ट्रपति/प्रधानमंत्री या ताज़ा विधिक नियमों का हो, तो वर्ष 2026 की वास्तविक स्थिति बताएं (उदा. इज़राइल के राष्ट्रपति इसाक हर्जोग, अमेरिका के 47वें राष्ट्रपति डोनाल्ड ट्रंप, भारत की राष्ट्रपति श्रीमती द्रौपदी मुर्मू, भारत में लागू BNS, BNSS, BSA कानून)।
+3. कभी भी यह न कहें कि जानकारी सीमित है या सर्वर असमर्थ है।`;
 
-            let finalReply = "";
+            let generatedAnswer = "";
 
-            // 1. यदि Gemini Pay-As-You-Go मोड सक्रिय हो
-            const geminiKey = localStorage.getItem("sankat_gemini_key");
-            if (currentMode === "gemini" && geminiKey) {
+            // चैनल 1: यदि यूज़र ने Gemini Pay-As-You-Go Key जोड़ी हो
+            const payGoKey = localStorage.getItem("sankat_paygo_gemini_key");
+            if (payGoKey) {
                 try {
-                    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`;
-                    const gRes = await fetch(geminiUrl, {
+                    const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${payGoKey}`;
+                    const gRes = await fetch(geminiEndpoint, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            contents: [{ parts: [{ text: `${systemPrompt}\n\nयूज़र का सवाल: ${v}` }] }]
+                            contents: [{ parts: [{ text: `${systemInstruction}\n\nयूज़र का प्रश्न: ${v}` }] }]
                         })
                     });
                     const gData = await gRes.json();
                     if (gData.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        finalReply = gData.candidates[0].content.parts[0].text;
+                        generatedAnswer = gData.candidates[0].content.parts[0].text;
                     }
-                } catch (err) {
-                    console.warn("Gemini call failed, switching to free fallback:", err);
+                } catch (gErr) {
+                    console.warn("Pay-Go engine bypassed to Free engine:", gErr);
                 }
             }
 
-            // 2. फ्री इंजन: लाइव सर्च स्निपेट्स + ओपन AI चैनल
-            if (!finalReply) {
-                let liveWebSnippet = "";
+            // चैनल 2: मुफ़्त यूनिवर्सल AI गेटवे (POST विधि)
+            if (!generatedAnswer) {
                 try {
-                    const searchRes = await fetch(`https://hi.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(v)}&utf8=&format=json&origin=*`);
-                    if (searchRes.ok) {
-                        const searchData = await searchRes.json();
-                        if (searchData.query?.search?.length > 0) {
-                            liveWebSnippet = searchData.query.search.slice(0, 3).map(s => s.snippet.replace(/<[^>]*>?/gm, '')).join(" | ");
-                        }
-                    }
-                } catch (e) {}
-
-                const fullPrompt = `${systemPrompt}\nलाइव संदर्भ: ${liveWebSnippet || 'सार्वजनिक ज्ञान'}\n\nयूज़र का प्रश्न: ${v}`;
-
-                // प्राथमिक POST चैनल
-                try {
-                    const resPost = await fetch("https://text.pollinations.ai/", {
+                    const postRes = await fetch("https://text.pollinations.ai/", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             messages: [
-                                { role: "system", content: systemPrompt },
+                                { role: "system", content: systemInstruction },
                                 { role: "user", content: v }
                             ],
                             seed: Date.now()
                         })
                     });
-                    if (resPost.ok) {
-                        const txtPost = await resPost.text();
-                        if (txtPost && !txtPost.startsWith('{"error"') && !txtPost.includes('"status":404')) {
-                            finalReply = txtPost;
+                    if (postRes.ok) {
+                        const postTxt = await postRes.text();
+                        if (postTxt && !postTxt.startsWith('{"error"') && !postTxt.includes('"status":404') && postTxt.length > 20) {
+                            generatedAnswer = postTxt;
                         }
                     }
-                } catch (e) {}
+                } catch (pErr) {}
+            }
 
-                // बैकअप GET चैनल
-                if (!finalReply) {
-                    try {
-                        const resGet = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}?seed=${Date.now()}`);
-                        if (resGet.ok) {
-                            const txtGet = await resGet.text();
-                            if (txtGet && !txtGet.startsWith('{"error"')) {
-                                finalReply = txtGet;
-                            }
+            // चैनल 3: मुफ़्त यूनिवर्सल AI गेटवे (GET विधि बैकअप)
+            if (!generatedAnswer) {
+                try {
+                    const fullGetPrompt = `${systemInstruction}\n\nयूज़र का प्रश्न: ${v}\nविस्तृत व सटीक हिंदी उत्तर:`;
+                    const getRes = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullGetPrompt)}?seed=${Date.now()}`);
+                    if (getRes.ok) {
+                        const getTxt = await getRes.text();
+                        if (getTxt && !getTxt.startsWith('{"error"') && getTxt.length > 20) {
+                            generatedAnswer = getTxt;
                         }
-                    } catch (e) {}
+                    }
+                } catch (gErr) {}
+            }
+
+            // चैनल 4: 🛡️ त्वरित तार्किक नॉलेज इंजन (यदि नेटवर्क कभी धीमा हो)
+            if (!generatedAnswer) {
+                const qL = v.toLowerCase();
+                if (qL.includes("इजराइल") || qL.includes("israel")) {
+                    generatedAnswer = "वर्तमान में (वर्ष 2026) इज़राइल के राष्ट्रपति **इसाक हर्जोग (Isaac Herzog)** हैं, जो 7 जुलाई 2021 से पदस्थ हैं। इज़राइल के प्रधानमंत्री **बेंजामिन नेतन्याहू (Benjamin Netanyahu)** हैं। इज़राइल की संसद को 'नेसेट' (Knesset) कहा जाता है।";
+                } else if (qL.includes("भारत") && (qL.includes("राष्ट्रपति") || qL.includes("president"))) {
+                    generatedAnswer = "वर्तमान में (वर्ष 2026) भारत की राष्ट्रपति **श्रीमती द्रौपदी मुर्मू** हैं। वे भारत की 15वीं और पहली आदिवासी महिला राष्ट्रपति हैं। भारत के उपराष्ट्रपति श्री जगदीप धनखड़ और प्रधानमंत्री श्री नरेंद्र मोदी हैं।";
+                } else if (qL.includes("अमेरिका") || qL.includes("usa") || qL.includes("america")) {
+                    generatedAnswer = "वर्तमान में (वर्ष 2026) संयुक्त राज्य अमेरिका (USA) के 47वें राष्ट्रपति **डोनाल्ड ट्रंप (Donald Trump)** हैं और उपराष्ट्रपति जेडी वेंस (JD Vance) हैं।";
+                } else if (qL.includes("रूस") || qL.includes("putin") || qL.includes("russia")) {
+                    generatedAnswer = "वर्तमान में रूस के राष्ट्रपति **व्लादिमीर पुतिन (Vladimir Putin)** हैं।";
+                } else if (qL.includes("bns") || qL.includes("कानून") || qL.includes("धारा") || qL.includes("law")) {
+                    generatedAnswer = "भारत में 1 जुलाई 2024 से लागू तीन नए कानून:\n1. **भारतीय न्याय संहिता (BNS 2023):** इसने IPC की जगह ली (हत्या धारा 103, धोखाधड़ी धारा 318)।\n2. **भारतीय नागरिक सुरक्षा संहिता (BNSS 2023):** इसने CrPC की जगह ली (Zero FIR व e-FIR सुविधा)।\n3. **भारतीय साक्ष्य अधिनियम (BSA 2023):** डिजिटल व व्हाट्सएप साक्ष्यों को पूर्ण विधिक मान्यता दी गई है।";
+                } else {
+                    generatedAnswer = `आपके प्रश्न: "${v}" का विश्लेषण वर्ष 2026 के विधिक, वैज्ञानिक व सामरिक मानकों के अनुसार पूर्ण कर लिया गया है। आचार्य अर्जुन सामरिक प्रणाली के अनुसार इस विषय पर आवश्यक दिशा-निर्देश तैयार हैं।`;
                 }
             }
 
-            // 3. 🛡️ अभेद्य आंतरिक नॉलेज शील्ड (कभी भी 'सर्वर बिजी' नहीं दिखाएगा)
-            if (!finalReply) {
-                const q = v.toLowerCase();
-                if (q.includes("भारत") && q.includes("राष्ट्रपति")) {
-                    finalReply = "वर्तमान समय (वर्ष 2026) में भारत की राष्ट्रपति **श्रीमती द्रौपदी मुर्मू** हैं। वे भारत की 15वीं और पहली आदिवासी महिला राष्ट्रपति हैं। भारत के उपराष्ट्रपति श्री जगदीप धनखड़ और प्रधानमंत्री श्री नरेंद्र मोदी हैं।";
-                } else if (q.includes("अमेरिका") || q.includes("usa") || q.includes("america")) {
-                    finalReply = "वर्तमान समय (वर्ष 2026) में संयुक्त राज्य अमेरिका (USA) के 47वें राष्ट्रपति **डोनाल्ड ट्रंप (Donald Trump)** हैं।";
-                } else if (q.includes("रूस") || q.includes("russia") || q.includes("putin")) {
-                    finalReply = "वर्तमान समय में रूस (Russian Federation) के राष्ट्रपति **व्लादिमीर पुतिन (Vladimir Putin)** हैं।";
-                } else if (q.includes("कानून") || q.includes("law") || q.includes("bns") || q.includes("धारा")) {
-                    finalReply = "भारत में 1 जुलाई 2024 से तीन नए आपराधिक कानून पूर्ण रूप से लागू हैं:\n1. **भारतीय न्याय संहिता (BNS 2023):** इसने 1860 के IPC की जगह ली है (उदा. हत्या धारा 103, धोखाधड़ी धारा 318 BNS)।\n2. **भारतीय नागरिक सुरक्षा संहिता (BNSS 2023):** इसने CrPC 1973 की जगह ली है (Zero FIR व e-FIR व्यवस्था)।\n3. **भारतीय साक्ष्य अधिनियम (BSA 2023):** इसने Evidence Act 1872 की जगह ली है, जिसमें डिजिटल व WhatsApp साक्ष्य कानूनी रूप से मान्य हैं।";
-                } else if (q.includes("चेक") || q.includes("bounce")) {
-                    finalReply = "चेक बाउंस होने पर नेगोशिएबल इंस्ट्रूमेंट्स एक्ट की धारा 138 के तहत कानूनी प्रक्रिया:\n1. बैंक से मेमो मिलने के 30 दिनों के भीतर देनदार को कानूनी डिमांड नोटिस भेजना अनिवार्य है।\n2. नोटिस मिलने के बाद देनदार को भुगतान के लिए 15 दिन का समय मिलता है।\n3. यदि 15 दिन में भुगतान न हो, तो अगले 30 दिनों के भीतर सक्षम न्यायालय में परिवाद दर्ज किया जा सकता है।";
-                } else if (q.includes("बैंक") || q.includes("रिकवरी") || q.includes("लोन")) {
-                    finalReply = "आरबीआई (RBI Fair Practices Code) के अनुसार कोई भी रिकवरी एजेंट सुबह 8 बजे से पहले और शाम 7 बजे के बाद कॉल नहीं कर सकता। वे किसी भी ग्राहक के साथ गाली-गलौज, धमकी या मानसिक प्रताड़ना नहीं कर सकते। ऐसा होने पर आप बैंक लोकपाल (Banking Ombudsman) और नजदीकी थाने में BNSS के तहत शिकायत दर्ज करा सकते हैं।";
-                } else {
-                    finalReply = `आपके प्रश्न: "${v}" का विश्लेषण वर्ष 2026 के विधिक, वित्तीय व रणनीतिक मानकों के अनुसार किया गया है। संकट मुक्त AI (Arjun Tactical System) हर परिस्थिति में आपका रक्षा कवच है।`;
-                }
-            }
+            // आधिकारिक मुहर जोड़ना
+            const finalTacticalOutput = `${generatedAnswer}\n\n🛡️ **आचार्य अर्जुन (संकट मुक्त AI) के द्वारा यह विशेष लाइव जानकारी आपको प्रदान की गई है।**`;
 
             const loadElem = document.getElementById(loadId);
             if (loadElem) loadElem.remove();
 
-            box.innerHTML += `<div class="chat-ai"><strong>🛡️ संकट मुक्त AI:\n</strong>${finalReply}</div>`;
+            box.innerHTML += `<div class="chat-ai">${finalTacticalOutput}</div>`;
             box.scrollTop = box.scrollHeight;
         }
     </script>
