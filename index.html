@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>संकट मुक्त AI | Arjun Tactical Command System</title>
-    <!-- Puter.js इंजन: बिना किसी Key और बिना किसी सीमा के लाइव AI कनेक्शन -->
-    <script src="https://js.puter.com/v2/"></script>
     <style>
         :root {
             --bg-base: #0a0c10;
@@ -36,7 +34,6 @@
             overflow-x: hidden;
         }
 
-        /* शीर्ष हेडर */
         header {
             background: linear-gradient(180deg, #161b22 0%, var(--bg-base) 100%);
             border-bottom: 2px solid var(--gold-primary);
@@ -85,7 +82,6 @@
             100% { transform: scale(0.9); opacity: 0.7; }
         }
 
-        /* कमरा नेविगेशन टैब्स */
         .room-nav {
             display: flex;
             overflow-x: auto;
@@ -122,7 +118,6 @@
             font-weight: 700;
         }
 
-        /* मुख्य कंटेनर */
         main {
             flex: 1;
             padding: 12px;
@@ -133,19 +128,12 @@
 
         .room-section {
             display: none;
-            animation: fadeIn 0.3s ease;
         }
 
         .room-section.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* कार्ड स्टाइल */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -167,7 +155,6 @@
             gap: 8px;
         }
 
-        /* रूम 6: चैट आउटपुट बॉक्स */
         #bossChatOutput {
             background: #0d1117;
             border: 1px solid var(--border-color);
@@ -181,14 +168,6 @@
             margin-bottom: 12px;
             font-size: 0.92rem;
             line-height: 1.5;
-        }
-
-        #bossChatOutput::-webkit-scrollbar {
-            width: 5px;
-        }
-        #bossChatOutput::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
         }
 
         .chat-bubble-user {
@@ -212,7 +191,6 @@
             line-height: 1.6;
         }
 
-        /* तुरंत सवाल पूछने वाले बटन */
         .quick-chips {
             display: flex;
             flex-wrap: wrap;
@@ -228,7 +206,6 @@
             padding: 5px 10px;
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .chip:hover {
@@ -236,7 +213,6 @@
             background: rgba(88, 166, 255, 0.1);
         }
 
-        /* इनपुट कंट्रोल */
         .chat-input-row {
             display: flex;
             gap: 8px;
@@ -251,7 +227,6 @@
             padding: 12px;
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         #bossQueryTxt:focus {
@@ -267,15 +242,9 @@
             padding: 0 18px;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: transform 0.1s, opacity 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
-        }
-
-        .btn-action:active {
-            transform: scale(0.97);
         }
 
         .btn-clear {
@@ -286,11 +255,6 @@
             padding: 0 10px;
             cursor: pointer;
             font-size: 0.8rem;
-        }
-
-        .btn-clear:hover {
-            color: var(--danger);
-            border-color: var(--danger);
         }
 
         footer {
@@ -305,7 +269,6 @@
 </head>
 <body>
 
-    <!-- हेडर -->
     <header>
         <div class="brand-title">
             <span>🛡️ संकट मुक्त AI</span>
@@ -313,100 +276,78 @@
         </div>
         <div class="status-badge">
             <span class="status-dot"></span>
-            <span>लाइव सुपर-इंजन सक्रिय (वर्ष 2026 अद्यतन)</span>
+            <span>लाइव Google Search ग्राउंडिंग सक्रिय</span>
         </div>
     </header>
 
-    <!-- कमरा नेविगेशन टैब्स -->
     <nav class="room-nav">
         <button class="room-btn" onclick="openRoom(1)">कमरा 1: विधिक सुरक्षा</button>
         <button class="room-btn" onclick="openRoom(2)">कमरा 2: वित्तीय संकट</button>
         <button class="room-btn" onclick="openRoom(3)">कमरा 3: व्यापारिक रणनीति</button>
         <button class="room-btn" onclick="openRoom(4)">कमरा 4: मानसिक संतुलन</button>
         <button class="room-btn" onclick="openRoom(5)">कमरा 5: ज्योतिष/मार्गदर्शन</button>
-        <button class="room-btn active" onclick="openRoom(6)">👑 कमra 6: सुप्रीम AI कमांड</button>
+        <button class="room-btn active" onclick="openRoom(6)">👑 कमरा 6: सुप्रीम AI कमांड</button>
     </nav>
 
-    <!-- मुख्य सामग्री -->
     <main>
-        <!-- कमरा 1 -->
         <section id="room1" class="room-section">
             <div class="card">
                 <div class="card-header">⚖️ विधिक सुरक्षा कवच (नवीन भारतीय कानून)</div>
-                <p style="margin-bottom: 8px; font-size: 0.9rem; color: #cbd5e0;">1 जुलाई 2024 से भारत में नवीन आपराधिक कानून लागू हैं:</p>
-                <ul style="padding-left: 20px; font-size: 0.88rem; line-height: 1.6; color: #a0aec0;">
-                    <li><strong>भारतीय न्याय संहिता (BNS):</strong> IPC 1860 का स्थान लिया।</li>
-                    <li><strong>भारतीय नागरिक सुरक्षा संहिता (BNSS):</strong> CrPC 1973 का स्थान लिया (Zero FIR व e-FIR व्यवस्था)।</li>
-                    <li><strong>भारतीय साक्ष्य अधिनियम (BSA):</strong> Evidence Act 1872 का स्थान लिया (डिजिटल साक्ष्य मान्य)।</li>
-                </ul>
+                <p style="font-size: 0.9rem; color: #cbd5e0; line-height: 1.6;">
+                    भारतीय न्याय संहिता (BNS), भारतीय नागरिक सुरक्षा संहिता (BNSS), और भारतीय साक्ष्य अधिनियम (BSA) के नवीनतम प्रावधान।
+                </p>
             </div>
         </section>
 
-        <!-- कमरा 2 -->
         <section id="room2" class="room-section">
             <div class="card">
                 <div class="card-header">💰 वित्तीय संकट मोचन</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
-                    अचानक ऋण संकट, बैंक रिकवरी कॉल या चेक बाउंस की स्थिति में शांत रहें। कानूनन कोई भी रिकवरी एजेंट अभद्रता नहीं कर सकता (RBI Fair Practices Code)। चेक बाउंस होने पर 30 दिन का विधिक नोटिस आवश्यक है।
-                </p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">ऋण संकट, बैंक रिकवरी कॉल व वित्तीय कानूनी सुरक्षा उपाय।</p>
             </div>
         </section>
 
-        <!-- कमरा 3 -->
         <section id="room3" class="room-section">
             <div class="card">
                 <div class="card-header">📈 व्यापारिक व प्रशासनिक रणनीति</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
-                    साझेदारी विवाद, अनुबंध उल्लंघन या व्यापारिक गतिरोध के समय अर्जुन-नीति: पहले लिखित दस्तावेज़ व डिजिटल साक्ष्य सुरक्षित करें, फिर मध्यस्थता (Arbitration) का विकल्प अपनाएं।
-                </p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">व्यापारिक गतिरोध, अनुबंध सुरक्षा व अर्जुन-नीति मार्गदर्शन।</p>
             </div>
         </section>
 
-        <!-- कमरा 4 -->
         <section id="room4" class="room-section">
             <div class="card">
                 <div class="card-header">🧘 मानसिक शांति व स्थिरता</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
-                    संकट के समय सबसे बड़ा हथियार शांत बुद्धि है। निर्णय हमेशा आवेश में नहीं, बल्कि परिणाम का 360-डिग्री विश्लेषण करके लें।
-                </p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">कठिन परिस्थितियों में धैर्य और निर्णय क्षमता।</p>
             </div>
         </section>
 
-        <!-- कमरा 5 -->
         <section id="room5" class="room-section">
             <div class="card">
                 <div class="card-header">🔮 आध्यात्मिक व रणनीतिक मार्गदर्शन</div>
-                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">
-                    कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। अपने पुरुषार्थ और धर्मसंगत रणनीति पर अडिग रहें, विजय सुनिश्चित होगी।
-                </p>
+                <p style="font-size: 0.88rem; color: #cbd5e0; line-height: 1.6;">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</p>
             </div>
         </section>
 
-        <!-- कमरा 6: सुप्रीम अर्जुन कमांड (AI लाइव सर्च व रणनीतिकार) -->
         <section id="room6" class="room-section active">
             <div class="card">
                 <div class="card-header" style="justify-content: space-between;">
-                    <span>👑 सुप्रीम अर्जुन कमांड सेंटर (लाइव AI)</span>
-                    <button class="btn-clear" onclick="clearChat()">साफ़ करें</button>
+                    <span>👑 सुप्रीम अर्जुन कमांड सेंटर (लाइव Google Search)</span>
+                    <button class="btn-clear" onclick="resetKey()">Key बदलें</button>
                 </div>
 
-                <!-- त्वरित सवाल चिप्स -->
                 <div class="quick-chips">
                     <span class="chip" onclick="setQuery('वर्तमान में अमेरिका का राष्ट्रपति कौन है?')">🇺🇸 USA राष्ट्रपति</span>
                     <span class="chip" onclick="setQuery('वर्तमान में रूस का राष्ट्रपति कौन है?')">🇷🇺 रूस राष्ट्रपति</span>
-                    <span class="chip" onclick="setQuery('भारत के नए कानून BNS, BNSS और BSA के मुख्य नियम क्या हैं?')">⚖️ नए आपराधिक कानून</span>
-                    <span class="chip" onclick="setQuery('चेक बाउंस होने पर कानूनी बचाव और तत्काल रणनीति क्या है?')">📑 चेक बाउंस बचाव</span>
+                    <span class="chip" onclick="setQuery('भारत में नए आपराधिक कानून BNS और BNSS के मुख्य नियम क्या हैं?')">⚖️ नए आपराधिक कानून</span>
+                    <span class="chip" onclick="setQuery('आज की ताज़ा राजनीतिक और विधिक स्थिति क्या है?')">🌐 आज का लाइव अपडेट</span>
                 </div>
 
-                <!-- चैट विंडो -->
                 <div id="bossChatOutput">
                     <div class="chat-bubble-ai">
-<strong>🛡️ संकट मुक्त AI (Arjun Tactical Engine) तैयार है।</strong>
-बॉस, आदेश दीजिए! आप देश-दुनिया, नए कानूनों (BNS), विधिक संकट, वित्तीय स्थिति या किसी भी प्रशासनिक विषय पर सवाल पूछ सकते हैं। सटीक उत्तर तुरंत प्रस्तुत किया जाएगा।
+<strong>🛡️ संकट मुक्त AI (Live Search Engine) तैयार है।</strong>
+यह सिस्टम सीधे Google के लाइव सर्च इंजन से जुड़ा है। आप दुनिया के किसी भी विषय पर आज की ताज़ा जानकारी पूछ सकते हैं।
                     </div>
                 </div>
 
-                <!-- इनपुट व बटन -->
                 <div class="chat-input-row">
                     <input type="text" id="bossQueryTxt" placeholder="अपना प्रश्न या संकट यहाँ लिखें..." onkeydown="if(event.key==='Enter') sendBossQuery();">
                     <button class="btn-action" onclick="sendBossQuery()">
@@ -422,9 +363,7 @@
         संकट मुक्त AI © 2026 | अर्जुन आर्किटेक्चर | सर्वाधिकार सुरक्षित
     </footer>
 
-    <!-- मुख्य जावास्क्रिप्ट लॉजिक -->
     <script>
-        // 1. कमरा बदलने की व्यवस्था
         function openRoom(roomNum) {
             document.querySelectorAll('.room-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.room-btn').forEach(btn => btn.classList.remove('active'));
@@ -436,118 +375,87 @@
             if (activeBtn) activeBtn.classList.add('active');
         }
 
-        // 2. त्वरित सवाल सेट करना
         function setQuery(text) {
             const input = document.getElementById('bossQueryTxt');
             input.value = text;
             input.focus();
         }
 
-        // 3. चैट साफ़ करना
-        function clearChat() {
-            document.getElementById('bossChatOutput').innerHTML = `
-                <div class="chat-bubble-ai">
-<strong>🛡️ संकट मुक्त AI:</strong> चैट रीसेट कर दी गई है। नया प्रश्न पूछें।
-                </div>
-            `;
+        function resetKey() {
+            localStorage.removeItem("gemini_live_key");
+            alert("Google API Key हटा दी गई है। अगला सवाल पूछने पर नई Key दर्ज करें।");
         }
 
-        // 4. मुख्य AI समाधान फ़ंक्शन (मल्टी-इंजन फ़ॉलबैक शील्ड)
         async function sendBossQuery() {
             const inp = document.getElementById('bossQueryTxt');
             const v = inp.value.trim();
             if (!v) return;
 
-            const box = document.getElementById('bossChatOutput');
+            // Google Gemini API Key की जांच
+            let apiKey = localStorage.getItem("gemini_live_key");
+            if (!apiKey || apiKey.length < 15) {
+                apiKey = prompt("कृपया अपनी Google Gemini API Key दर्ज करें:\n(यह केवल आपके ब्राउज़र में सुरक्षित रहेगी)");
+                if (!apiKey) return;
+                apiKey = apiKey.trim();
+                localStorage.setItem("gemini_live_key", apiKey);
+            }
 
-            // यूज़र का संदेश दिखाएं
+            const box = document.getElementById('bossChatOutput');
             box.innerHTML += `<div class="chat-bubble-user"><strong>बॉस:</strong> ${v}</div>`;
             inp.value = "";
             box.scrollTop = box.scrollHeight;
 
-            // लोडिंग इंडिकेटर
             const loadId = "load_" + Date.now();
-            box.innerHTML += `<div id="${loadId}" style="color: #00ffcc; font-size: 0.88rem; padding: 6px;"><em>⚡ लाइव AI विश्लेषण व रिसर्च जारी है...</em></div>`;
+            box.innerHTML += `<div id="${loadId}" style="color: #00ffcc; font-size: 0.88rem; padding: 6px;"><em>🌐 Google पर लाइव सर्च करके ताज़ा जानकारी खोजी जा रही है...</em></div>`;
             box.scrollTop = box.scrollHeight;
 
-            // संकट मुक्त AI का स्थायी ज्ञान आधार व वर्ष 2026 का संदर्भ
-            const systemPrompt = `आप 'संकट मुक्त AI' (Arjun Command System) के मुख्य विधिक, वित्तीय व रणनीतिक सलाहकार हैं।
-वर्तमान समय वर्ष 2026 है।
-ताज़ा वास्तविक तथ्य:
-- अमेरिका के 47वें राष्ट्रपति: डोनाल्ड ट्रंप (Donald Trump) हैं।
-- रूस के राष्ट्रपति: व्लादिमीर पुतिन (Vladimir Putin) हैं।
-- भारत की राष्ट्रपति: श्रीमती द्रौपदी मुर्मू, प्रधानमंत्री: श्री नरेंद्र मोदी।
-- भारत में कानून: 1 जुलाई 2024 से IPC, CrPC, Evidence Act समाप्त होकर BNS (भारतीय न्याय संहिता), BNSS और BSA पूर्णतः लागू हैं।
-उपयोगकर्ता के किसी भी क्षेत्र (कानून, वित्त, संकट, विश्व ज्ञान) के सवाल पर बिना किसी बहाने या पुराने डेटा के, प्रभावशाली, सटीक व स्पष्ट हिंदी में समाधान दें।`;
+            try {
+                // gemini-2.5-flash + Google Search Grounding टूल
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `निर्देश: आप 'संकट मुक्त AI' (Arjun Project) के रणनीतिक व विधिक सलाहकार हैं।\nयूज़र के प्रश्न पर Google Search के लाइव नतीजों का उपयोग करें और वर्तमान समय के अनुसार 100% सटीक, ताज़ा और प्रामाणिक हिंदी में उत्तर दें।\n\nयूज़र का प्रश्न: ${v}`
+                            }]
+                        }],
+                        // यह टूल AI को सीधे Google Search इंजन से लाइव डेटा निकालने का अधिकार देता है
+                        tools: [{
+                            google_search: {}
+                        }]
+                    })
+                });
 
-            const fullUserPrompt = `${systemPrompt}\n\nयूज़र का प्रश्न: ${v}`;
-            let replyText = "";
+                const data = await response.json();
+                const loadElem = document.getElementById(loadId);
+                if (loadElem) loadElem.remove();
 
-            // चैनल 1: Puter.js AI (सुपरफास्ट, कोई API Key नहीं, कोई CORS एरर नहीं)
-            if (typeof puter !== 'undefined' && puter.ai) {
-                try {
-                    const puterRes = await puter.ai.chat(fullUserPrompt, { model: 'gpt-4o-mini' });
-                    if (typeof puterRes === 'string') {
-                        replyText = puterRes;
-                    } else if (puterRes && puterRes.message && puterRes.message.content) {
-                        replyText = puterRes.message.content;
+                if (data.error) {
+                    if (data.error.message.includes("API key")) {
+                        localStorage.removeItem("gemini_live_key");
                     }
-                } catch (err) {
-                    console.warn("Puter engine error, switching to Channel 2:", err);
+                    box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ एरर: ${data.error.message}</div>`;
+                    box.scrollTop = box.scrollHeight;
+                    return;
                 }
-            }
 
-            // चैनल 2: सुरक्षित बैकअप चैनल (यदि चैनल 1 में विलंब हो)
-            if (!replyText) {
-                try {
-                    const resPost = await fetch("https://text.pollinations.ai/", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            messages: [
-                                { role: "system", content: systemPrompt },
-                                { role: "user", content: v }
-                            ],
-                            seed: Date.now()
-                        })
-                    });
-                    if (resPost.ok) {
-                        const txt = await resPost.text();
-                        if (txt && !txt.startsWith('{"error"') && !txt.includes('"status":404')) {
-                            replyText = txt;
-                        }
-                    }
-                } catch (err) {
-                    console.warn("Channel 2 fallback:", err);
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!reply) {
+                    throw new Error("उत्तर प्राप्त नहीं हुआ।");
                 }
-            }
 
-            // चैनल 3: सीधा GET चैनल (तृतीय सुरक्षा स्तर)
-            if (!replyText) {
-                try {
-                    const resGet = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullUserPrompt)}?seed=${Date.now()}`);
-                    if (resGet.ok) {
-                        const txtGet = await resGet.text();
-                        if (txtGet && !txtGet.startsWith('{"error"')) {
-                            replyText = txtGet;
-                        }
-                    }
-                } catch (err) {
-                    console.warn("Channel 3 fallback:", err);
-                }
-            }
+                box.innerHTML += `<div class="chat-bubble-ai"><strong>🛡️ संकट मुक्त AI (Google लाइव रिपोर्ट):\n</strong>${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
 
-            // लोडर हटाएं
-            const loadElem = document.getElementById(loadId);
-            if (loadElem) loadElem.remove();
-
-            // उत्तर स्क्रीन पर प्रस्तुत करें
-            if (replyText && replyText.trim().length > 0) {
-                box.innerHTML += `<div class="chat-bubble-ai"><strong>🛡️ संकट मुक्त AI:\n</strong>${replyText}</div>`;
-            } else {
-                box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ नेटवर्क सर्वर क्षणिक धीमा है। कृपया 2 सेकंड बाद पुनः 'आदेश दें' दबाएँ।</div>`;
+            } catch (err) {
+                const loadElem = document.getElementById(loadId);
+                if (loadElem) loadElem.remove();
+                box.innerHTML += `<div style="color: #f85149; margin-top: 4px; padding: 6px;">❌ नेटवर्क त्रुटि: ${err.message}</div>`;
+                box.scrollTop = box.scrollHeight;
             }
-            box.scrollTop = box.scrollHeight;
         }
     </script>
 </body>
