@@ -93,7 +93,7 @@
             display: block;
         }
 
-        /* 🟢 लाइव काउंटर इंडिकेटर */
+        /* 🟢 लाइव काउंटर इंडिकेटर (चलते-घटते क्रम में) */
         .live-counter-badge {
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid var(--accent-green);
@@ -106,6 +106,7 @@
             align-items: center;
             gap: 6px;
             box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+            transition: all 0.5s ease;
         }
 
         .pulse-dot {
@@ -122,25 +123,28 @@
             100% { transform: scale(0.8); opacity: 0.6; }
         }
 
+        /* कैस्केडिंग कंट्री व लोकल लैंग्वेज बार */
         .lang-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: rgba(46, 18, 77, 0.4);
-            padding: 4px 10px;
+            padding: 6px 10px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             font-size: 0.75rem;
+            gap: 6px;
         }
 
         .lang-select {
             background: var(--bg-card);
             color: var(--gold-bright);
             border: 1px solid var(--gold-primary);
-            padding: 3px 8px;
+            padding: 4px 6px;
             border-radius: 6px;
             font-size: 0.75rem;
             outline: none;
+            flex: 1;
         }
 
         .proclamation-banner {
@@ -261,7 +265,6 @@
             justify-content: space-between;
             gap: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            position: relative;
         }
 
         .plan-card.vip {
@@ -356,6 +359,37 @@
 
         .btn-gold:active {
             transform: scale(0.98);
+        }
+
+        /* 🔱 'भरोसा क्यों करें?' क्लिक-टू-एक्सपैंड कार्ड */
+        .trust-accordion-btn {
+            background: linear-gradient(135deg, rgba(95, 37, 159, 0.4), rgba(212, 175, 55, 0.15));
+            border: 1.5px solid var(--gold-bright);
+            border-radius: 12px;
+            padding: 12px 14px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gold-bright);
+            font-weight: 800;
+            font-size: 0.92rem;
+            margin-top: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        #trustDetailsContent {
+            display: none;
+            background: #150624;
+            border: 1px solid var(--border-gold);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 14px;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: #e2e8f0;
         }
 
         /* 🔐 मोडल बैकड्रॉप */
@@ -589,22 +623,27 @@
                     <span>आचार्य अर्जुन | प्राचीन वैदिक मंत्र-तप एवं संकट मोचन संस्थान</span>
                 </div>
             </div>
-            <!-- 🟢 लाइव काउंटर -->
+            <!-- 🟢 लाइव काउंटर (चलते-घटते क्रम में) -->
             <div class="live-counter-badge">
                 <span class="pulse-dot"></span>
-                <span id="liveUserCounterDisplay">1,842 लाइव</span>
+                <span id="liveUserCounterDisplay">3,050 लाइव</span>
             </div>
         </div>
 
+        <!-- कैस्केडिंग देश एवं भाषा चयन बार -->
         <div class="lang-bar">
-            <span>🌐 भाषा (Language):</span>
-            <select class="lang-select" onchange="switchLang(this.value)">
-                <option value="hi" selected>हिन्दी</option>
-                <option value="en">English</option>
-                <option value="ru">Русский</option>
-                <option value="zh">中文</option>
-                <option value="mr">मराठी</option>
-                <option value="gu">ગુજરાતી</option>
+            <span>🌍 देश:</span>
+            <select id="countrySelect" class="lang-select" onchange="onCountryChange(this.value)">
+                <option value="IN" selected>🇮🇳 भारत (India)</option>
+                <option value="US">🇺🇸 USA / Global</option>
+                <option value="RU">🇷🇺 रूस (Russia)</option>
+                <option value="CN">🇨🇳 चीन (China)</option>
+                <option value="AE">🇦🇪 UAE / Gulf</option>
+            </select>
+
+            <span>🗣️ भाषा:</span>
+            <select id="languageSelect" class="lang-select" onchange="switchLang(this.value)">
+                <!-- डायनामिक विकल्प -->
             </select>
         </div>
     </header>
@@ -620,7 +659,7 @@
         <!-- ग्रिड 1: मुख्य AI संकट मोचन टूल्स -->
         <div class="section-heading">⚡ कोर संकट मोचन टूल्स</div>
         <div class="phonepe-grid">
-            <button class="tile-btn" onclick="startWorkflow('Astro AI: कुंडली दोष व ग्रह दशा निवारण')">
+            <button class="tile-btn" onclick="triggerSecuredAction('Astro AI: कुंडली दोष व ग्रह दशा निवारण')">
                 <div class="tile-icon-box highlight">
                     <span>🔮</span>
                     <span class="tile-badge">AI</span>
@@ -628,7 +667,7 @@
                 <span class="tile-label">Astro AI</span>
             </button>
 
-            <button class="tile-btn" onclick="startWorkflow('Law AI: भारत के नए कानून BNS/BNSS सुरक्षा')">
+            <button class="tile-btn" onclick="triggerSecuredAction('Law AI: भारत के नए कानून BNS/BNSS सुरक्षा')">
                 <div class="tile-icon-box highlight">
                     <span>⚖️</span>
                     <span class="tile-badge">BNS</span>
@@ -636,14 +675,14 @@
                 <span class="tile-label">Law AI</span>
             </button>
 
-            <button class="tile-btn" onclick="startWorkflow('Mantra AI: दुर्लभ सिद्ध गुप्त मंत्र दीक्षा')">
+            <button class="tile-btn" onclick="triggerSecuredAction('Mantra AI: दुर्लभ सिद्ध गुप्त मंत्र दीक्षा')">
                 <div class="tile-icon-box highlight">
                     <span>🔱</span>
                 </div>
                 <span class="tile-label">Mantra AI</span>
             </button>
 
-            <button class="tile-btn" onclick="startWorkflow('Student AI: विद्यार्थी एकाग्रता व मेधा कवच')">
+            <button class="tile-btn" onclick="triggerSecuredAction('Student AI: विद्यार्थी एकाग्रता व मेधा कवच')">
                 <div class="tile-icon-box highlight">
                     <span>🎓</span>
                 </div>
@@ -651,66 +690,74 @@
             </button>
         </div>
 
+        <!-- 🔱 'संकट मुक्त AI पर भरोसा क्यों करें?' (क्लिक-टू-एक्सपैंड) -->
+        <button class="trust-accordion-btn" onclick="toggleTrustWindow()">
+            <span>🔱 संकट मुक्त AI पर भरोसा क्यों करें? (विद्वत्ता व तपोबल)</span>
+            <span id="trustAccordionIcon">▾</span>
+        </button>
+        <div id="trustDetailsContent">
+            <p style="margin-bottom: 6px;"><strong>🎓 पूज्य आचार्य अर्जुन की प्रामाणिक योग्यता:</strong><br>
+            आचार्य जी आधुनिक उच्च शिक्षा (आईटी इंजीनियरिंग, एलएलबी - विधि विशेषज्ञता एवं एमबीए/वाणिज्य) के साथ-साथ सनातन वैदिक परंपरा के निष्ठावान साधक हैं।</p>
+            <p style="margin-bottom: 6px;"><strong>🔱 प्राचीन दुर्लभ गुप्त मंत्र-तपोबल:</strong><br>
+            दशकों की कठोर एकांत साधना द्वारा सिद्ध दुर्लभ एवं लुप्तप्राय गुप्त मंत्रों की शक्ति से असाध्य संकटों का निवारण संभव किया गया है।</p>
+            <p><strong>🤝 नाममात्र सहयोग दक्षिणा का औचित्य:</strong><br>
+            यह कोई व्यापारिक उपक्रम नहीं है। अत्याधुनिक सर्वर, AI तकनीक एवं 24x7 सेवा संचालन को निर्बाध बनाए रखने हेतु अत्यंत नॉमिनल दक्षिणा संकल्प रखा गया है ताकि समाज का हर वर्ग लाभान्वित हो सके।</p>
+        </div>
+
         <!-- ग्रिड 2: 💎 संकट मोचन सिद्ध पेड प्लांस -->
         <div class="section-heading">💎 सिद्ध मंत्र-तप संकल्प एवं दीक्षा प्लांस</div>
         <div class="plans-grid">
-            <!-- प्लान 1 -->
             <div class="plan-card">
                 <div class="plan-top-row">
-                    <span class="plan-title">🎓 विद्यार्थी परीक्षा व एकाग्रता कवच</span>
+                    <span class="plan-title">🎓 विद्यार्थी परीक्षा कवच</span>
                     <span class="plan-price-tag">₹500</span>
                 </div>
                 <p class="plan-desc">परीक्षा भय मुक्ति, मेधा शक्ति बीज मंत्र, स्मरण शक्ति वृद्धि एवं एकाग्रता अनुष्ठान।</p>
                 <button class="btn-gold" style="padding: 7px; font-size: 0.78rem;" onclick="openPaymentGateway('विद्यार्थी परीक्षा कवच', 500)">⚡ दक्षिणा संकल्प (₹500)</button>
             </div>
 
-            <!-- प्लान 2 -->
             <div class="plan-card vip">
                 <div class="plan-top-row">
-                    <span class="plan-title">🔱 सिद्ध प्राचीन गुप्त मंत्र दीक्षा</span>
+                    <span class="plan-title">🔱 सिद्ध गुप्त मंत्र दीक्षा</span>
                     <span class="plan-price-tag">₹2,100</span>
                 </div>
                 <p class="plan-desc">दुर्लभ लुप्तप्राय गुप्त मंत्रों की ऑडियो/वीडियो दीक्षा, संपूर्ण विनियोग एवं न्यास विधि।</p>
                 <button class="btn-gold" style="padding: 7px; font-size: 0.78rem;" onclick="openPaymentGateway('सिद्ध गुप्त मंत्र दीक्षा', 2100)">⚡ दीक्षा संकल्प (₹2,100)</button>
             </div>
 
-            <!-- प्लान 3 -->
             <div class="plan-card">
                 <div class="plan-top-row">
-                    <span class="plan-title">⚖️ विधिक सुरक्षा व चेक बाउंस कवच</span>
+                    <span class="plan-title">⚖️ विधिक सुरक्षा कवच</span>
                     <span class="plan-price-tag">₹1,100</span>
                 </div>
                 <p class="plan-desc">BNS 318, 103 व NI Act 138 नोटिस सुरक्षा, विधिक रणनीति व नैतिक संबल।</p>
                 <button class="btn-gold" style="padding: 7px; font-size: 0.78rem;" onclick="openPaymentGateway('विधिक सुरक्षा कवच', 1100)">⚡ संकल्प लें (₹1,100)</button>
             </div>
 
-            <!-- प्लान 4 -->
             <div class="plan-card">
                 <div class="plan-top-row">
-                    <span class="plan-title">💰 कर्ज मुक्ति व बैंक रिकवरी शील्ड</span>
+                    <span class="plan-title">💰 कर्ज मुक्ति सुरक्षा</span>
                     <span class="plan-price-tag">₹2,100</span>
                 </div>
                 <p class="plan-desc">RBI फेयर प्रैक्टिसेज कोड सुरक्षा, मानसिक प्रताड़ना मुक्ति व सम्मानजनक समाधान।</p>
                 <button class="btn-gold" style="padding: 7px; font-size: 0.78rem;" onclick="openPaymentGateway('कर्ज मुक्ति सुरक्षा', 2100)">⚡ संकल्प लें (₹2,100)</button>
             </div>
 
-            <!-- प्लान 5 -->
             <div class="plan-card">
                 <div class="plan-top-row">
-                    <span class="plan-title">🔮 सर्व संकट मोचन संपूर्ण महाकवच</span>
+                    <span class="plan-title">🔮 सर्व संकट मोचन महाकवच</span>
                     <span class="plan-price-tag">₹5,100</span>
                 </div>
                 <p class="plan-desc">पितृ ऋण, कालसर्प, असाध्य ग्रह पीड़ा, व्यापार गतिरोध व गृह क्लेश का संपूर्ण निवारण।</p>
                 <button class="btn-gold" style="padding: 7px; font-size: 0.78rem;" onclick="openPaymentGateway('सर्व संकट मोचन महाकवच', 5100)">⚡ संकल्प लें (₹5,100)</button>
             </div>
 
-            <!-- प्लान 6 -->
             <div class="plan-card vip">
                 <div class="plan-top-row">
-                    <span class="plan-title">👑 सर्वोच्च आचार्य अर्जुन VIP प्रेसिडेंट</span>
+                    <span class="plan-title">👑 सर्वोच्च VIP प्रेसिडेंट</span>
                     <span class="plan-price-tag">₹51,000</span>
                 </div>
-                <p class="plan-desc">1-on-1 डायरेक्ट वीडियो संवाद + रीयल-टाइम AI टू-वे ट्रांसलेटर + आचार्य अर्जुन इमरजेंसी डायरेक्ट कॉल मर्ज।</p>
+                <p class="plan-desc">1-on-1 डायरेक्ट वीडियो संवाद + रीयल-टाइम AI टू-वे ट्रांसलेटर + आचार्य अर्जुन डायरेक्ट कॉल मर्ज।</p>
                 <button class="btn-gold" style="padding: 7px; font-size: 0.78rem;" onclick="openPaymentGateway('सर्वोच्च VIP प्रेसिडेंट प्लान', 51000)">👑 VIP डायरेक्ट एक्सेस</button>
             </div>
         </div>
@@ -725,30 +772,15 @@
             <input type="tel" id="clientPhone" class="custom-input" placeholder="मोबाइल नंबर...">
             <textarea id="clientQuery" class="custom-textarea" placeholder="अपनी विधिक, पारिवारिक, आर्थिक या ग्रह पीड़ा का विवरण लिखें..."></textarea>
             
-            <button class="btn-gold" onclick="runCompleteConsultation()">⚡ 5-चरणीय प्रारंभिक रिपोर्ट जनरेट करें</button>
+            <button class="btn-gold" onclick="triggerSecuredConsultation()">⚡ 5-चरणीय प्रारंभिक रिपोर्ट जनरेट करें</button>
             
             <div id="fullReportOutput" style="display: none; margin-top: 14px;"></div>
-        </div>
-
-        <!-- 🛡️ 'संकट मुक्त AI' पर क्यों भरोसा करें? (दर्शन व योग्यता) -->
-        <div class="phonepe-card" style="border-color: var(--border-gold); background: linear-gradient(145deg, #18092c, #0e031a);">
-            <div class="card-header-row">
-                <span>🔱 संकट मुक्त AI पर क्यों भरोसा करें?</span>
-            </div>
-            <div style="font-size: 0.82rem; line-height: 1.6; color: #e2e8f0;">
-                <p style="margin-bottom: 6px;"><strong>🎓 पूज्य आचार्य अर्जुन की प्रामाणिक योग्यता:</strong><br>
-                आचार्य जी आधुनिक उच्च शिक्षा (आईटी इंजीनियरिंग, एलएलबी - विधि विशेषज्ञता एवं एमबीए/वाणिज्य) के साथ-साथ सनातन वैदिक परंपरा के निष्ठावान साधक हैं।</p>
-                <p style="margin-bottom: 6px;"><strong>🔱 प्राचीन दुर्लभ गुप्त मंत्र-तपोबल:</strong><br>
-                दशकों की एकांत साधना द्वारा सिद्ध दुर्लभ एवं लुप्तप्राय गुप्त मंत्रों की शक्ति से असाध्य संकटों का निवारण संभव किया गया है।</p>
-                <p><strong>🤝 नाममात्र सहयोग दक्षिणा का औचित्य:</strong><br>
-                यह कोई व्यापारिक उपक्रम नहीं है। अत्याधुनिक सर्वर, AI तकनीक एवं 24x7 सेवा संचालन को निर्बाध बनाए रखने हेतु अत्यंत नॉमिनल दक्षिणा संकल्प रखा गया है ताकि समाज का हर वर्ग लाभान्वित हो सके।</p>
-            </div>
         </div>
 
     </main>
 
     <!-- ========================================== -->
-    <!-- 🔐 1. OTP एवं अभेद्य डिजिटल कानूनी अनुबंध मोडल -->
+    <!-- 🔐 1. ऑन-क्लिक OTP एवं डिजिटल कानूनी अनुबंध मोडल -->
     <!-- ========================================== -->
     <div id="onboardingModal" class="modal-overlay">
         <div class="modal-box">
@@ -776,7 +808,7 @@
                     4. समस्त लेनदेन पूर्णतः डिजिटल एवं वैधानिक नियमों के अधीन है।
                 </div>
 
-                <button class="btn-gold" onclick="verifyAndAcceptAgreement()">✅ अनुबंध स्वीकार करें एवं प्रवेश करें</button>
+                <button class="btn-gold" onclick="verifyAndAcceptAgreement()">✅ अनुबंध स्वीकार करें एवं अनलॉक करें</button>
             </div>
         </div>
     </div>
@@ -796,7 +828,6 @@
                 <div id="payPlanAmount" style="font-size: 1.6rem; font-weight: 800; color: var(--gold-bright); margin-top: 4px;">₹0</div>
             </div>
 
-            <!-- गेटवे चयन टैब -->
             <div style="display: flex; gap: 6px; margin-bottom: 12px;">
                 <button class="admin-tab-btn active" id="tabDomPay" onclick="switchPayTab('dom')">🇮🇳 भारत (UPI/Cards)</button>
                 <button class="admin-tab-btn" id="tabIntPay" onclick="switchPayTab('int')">🌍 Global (Cards/PayPal)</button>
@@ -844,7 +875,6 @@
             <button onclick="closeAdminVault()" style="background: #ef4444; color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">✕ बंद करें</button>
         </div>
 
-        <!-- 6 बॉक्स नेविगेशन -->
         <div class="admin-rooms-nav">
             <button class="admin-tab-btn" onclick="switchAdminRoom(1)">📱 बॉक्स 1: CRM व लीड्स</button>
             <button class="admin-tab-btn" onclick="switchAdminRoom(2)">📢 बॉक्स 2: सोशल वॉर-रूम</button>
@@ -854,7 +884,7 @@
             <button class="admin-tab-btn active" onclick="switchAdminRoom(6)">🤫 बॉक्स 6: गुप्त AI कमांड</button>
         </div>
 
-        <!-- बॉक्स 1: CRM & Leads -->
+        <!-- बॉक्स 1 -->
         <div id="adminRoom1" class="admin-room-content">
             <div class="phonepe-card">
                 <div class="card-header-row"><span>📱 लाइफटाइम क्लाइंट डेटाबेस एवं लोकेशन लॉग</span></div>
@@ -864,7 +894,7 @@
             </div>
         </div>
 
-        <!-- बॉक्स 2: सोशल वॉर-रूम -->
+        <!-- बॉक्स 2 -->
         <div id="adminRoom2" class="admin-room-content">
             <div class="phonepe-card">
                 <div class="card-header-row"><span>📢 1-Click सोशल मीडिया वॉर-रूम स्टूडियो</span></div>
@@ -874,7 +904,7 @@
             </div>
         </div>
 
-        <!-- बॉक्स 3: Astro Quantum -->
+        <!-- बॉक्स 3 -->
         <div id="adminRoom3" class="admin-room-content">
             <div class="phonepe-card">
                 <div class="card-header-row"><span>🔮 Astro-Quantum Prediction Engine</span></div>
@@ -884,7 +914,7 @@
             </div>
         </div>
 
-        <!-- बॉक्स 4: लीगल शील्ड -->
+        <!-- बॉक्स 4 -->
         <div id="adminRoom4" class="admin-room-content">
             <div class="phonepe-card">
                 <div class="card-header-row"><span>🏛 राष्ट्रीय व अंतरराष्ट्रीय विधिक सुरक्षा कवच</span></div>
@@ -900,7 +930,7 @@
             </div>
         </div>
 
-        <!-- बॉक्स 5: वर्चुअल सीए एवं बैंक ऑडिट -->
+        <!-- बॉक्स 5 -->
         <div id="adminRoom5" class="admin-room-content">
             <div class="phonepe-card">
                 <div class="card-header-row">
@@ -945,7 +975,7 @@
             </div>
         </div>
 
-        <!-- बॉक्स 6: गुप्त टैब - सुप्रीम यूनिवर्सल AI -->
+        <!-- बॉक्स 6: गुप्त AI कमांड सेंटर -->
         <div id="adminRoom6" class="admin-room-content active">
             <div class="phonepe-card">
                 <div class="card-header-row">
@@ -958,7 +988,7 @@
                     <span id="engineBadge" style="color: var(--accent-green);">🟢 फ्री यूनिवर्सल AI सक्रिय</span>
                     <div style="display: flex; gap: 6px;">
                         <button onclick="configureGeminiPayKey()" style="background: var(--bg-card); border: 1px solid var(--gold-bright); color: var(--gold-bright); font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;">🔑 Gemini Pay-Go</button>
-                        <button onclick="setManualCounter()" style="background: var(--bg-card); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;">👥 लाइव काउंटर सेट करें</button>
+                        <button onclick="setManualCounter()" style="background: var(--bg-card); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;">👥 लाइव काउंटर बेस सेट करें</button>
                     </div>
                 </div>
 
@@ -1024,16 +1054,140 @@
 
     <!-- मुख्य जावास्क्रिप्ट लॉजिक -->
     <script>
-        // 1. ऑनबोर्डिंग एवं डिजिटल अनुबंध सत्यापन
+        // ==========================================
+        // 🟢 डायनामिक लाइव काउंटर (मैन्युअल बेस + स्वतः घटना-बढ़ना)
+        // ==========================================
+        let baseLiveUsers = parseInt(localStorage.getItem("acharya_base_counter")) || 3050;
+        let currentLiveUsers = baseLiveUsers;
+
+        function updateLiveCounterDisplay() {
+            // -25 से +40 के बीच यादृच्छिक उतार-चढ़ाव
+            const fluctuation = Math.floor(Math.random() * 65) - 25;
+            currentLiveUsers = Math.max(100, baseLiveUsers + fluctuation);
+            const displayElem = document.getElementById('liveUserCounterDisplay');
+            if (displayElem) {
+                displayElem.innerText = currentLiveUsers.toLocaleString('en-IN') + " लाइव";
+            }
+        }
+
+        // हर 3.5 सेकंड में ऑटोमैटिक अपडेट
+        setInterval(updateLiveCounterDisplay, 3500);
+
+        function setManualCounter() {
+            const count = prompt("स्क्रीन पर लाइव कस्टमर का बेस (Base) नंबर सेट करें (उदा. 3050):", baseLiveUsers);
+            if (count && !isNaN(parseInt(count))) {
+                baseLiveUsers = parseInt(count);
+                localStorage.setItem("acharya_base_counter", baseLiveUsers);
+                updateLiveCounterDisplay();
+                alert("✅ लाइव कस्टमर बेस सफलतापूर्वक अपडेट हुआ! अब यह इसके आसपास स्वतः घटता-बढ़ता रहेगा।");
+            }
+        }
+
+        // ==========================================
+        // 🌍 कैस्केडिंग देश एवं स्थानीय भाषा सेलेक्टर
+        // ==========================================
+        const countryLanguages = {
+            "IN": [
+                { code: "hi", name: "हिन्दी (Hindi)" },
+                { code: "mr", name: "मराठी (Marathi)" },
+                { code: "gu", name: "ગુજરાતી (Gujarati)" },
+                { code: "pa", name: "ਪੰਜਾਬੀ (Punjabi)" },
+                { code: "ta", name: "தமிழ் (Tamil)" },
+                { code: "te", name: "తెలుగు (Telugu)" },
+                { code: "bn", name: "বাংলা (Bengali)" },
+                { code: "en", name: "English (India)" }
+            ],
+            "US": [
+                { code: "en", name: "English (US)" },
+                { code: "es", name: "Español (US)" }
+            ],
+            "RU": [
+                { code: "ru", name: "Русский (Russian)" }
+            ],
+            "CN": [
+                { code: "zh", name: "中文 (Mandarin)" },
+                { code: "zh-TW", name: "繁體中文 (Traditional)" }
+            ],
+            "AE": [
+                { code: "ar", name: "العربية (Arabic)" },
+                { code: "en", name: "English (Gulf)" }
+            ]
+        };
+
+        function onCountryChange(countryCode) {
+            const langSelect = document.getElementById('languageSelect');
+            langSelect.innerHTML = "";
+            const langs = countryLanguages[countryCode] || countryLanguages["IN"];
+            langs.forEach(l => {
+                const opt = document.createElement('option');
+                opt.value = l.code;
+                opt.innerText = l.name;
+                langSelect.appendChild(opt);
+            });
+            switchLang(langSelect.value);
+        }
+
+        function switchLang(l) {
+            const b = document.getElementById('bannerTxt');
+            if (l === 'en') {
+                b.innerHTML = "⚠ <strong>Global Proclamation:</strong> Language barriers eliminated! Authentic solutions in your mother tongue through Acharya Arjun's Vedic mantra power & legal shield.";
+            } else if (l === 'ru') {
+                b.innerHTML = "⚠ <strong>Глобальное воззвание:</strong> Языковые барьеры устранены! Точные решения от Ачарьи Арджуна на вашем родном языке.";
+            } else if (l === 'zh') {
+                b.innerHTML = "⚠ <strong>全球法律与灵性宣言：</strong> 语言障碍消除！阿查里亚·阿琼直接为您提供精准解决方案。";
+            } else {
+                b.innerHTML = "⚠ <strong>वैश्विक उद्घोष:</strong> अब भाषा की कोई सीमा नहीं! गंभीर संकटों का अचूक समाधान आपकी ही मातृभाषा में। पूज्य आचार्य अर्जुन जी के तपोबल, सिद्ध प्राचीन गुप्त मंत्र शक्ति एवं सुलभ विधिक सुरक्षा कवच से प्रमाणित।";
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
+            onCountryChange("IN");
+            updateLiveCounterDisplay();
+        });
+
+        // ==========================================
+        // 🔱 'भरोसा क्यों करें?' क्लिक-टू-एक्सपैंड टॉगल
+        // ==========================================
+        function toggleTrustWindow() {
+            const content = document.getElementById('trustDetailsContent');
+            const icon = document.getElementById('trustAccordionIcon');
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                icon.innerText = '▾';
+            } else {
+                content.style.display = 'block';
+                icon.innerText = '▴';
+            }
+        }
+
+        // ==========================================
+        // 🔐 ऑन-क्लिक OTP एवं डिजिटल कानूनी अनुबंध गेट
+        // ==========================================
+        let pendingActionCallback = null;
+
+        function triggerSecuredAction(actionName) {
             const isVerified = localStorage.getItem("acharya_verified_client");
             if (!isVerified) {
+                pendingActionCallback = () => {
+                    document.getElementById('clientQuery').value = `[${actionName}] मेरी समस्या का निवारण करें।`;
+                    focusClientBox();
+                };
                 document.getElementById('onboardingModal').style.display = 'flex';
+            } else {
+                document.getElementById('clientQuery').value = `[${actionName}] मेरी समस्या का निवारण करें।`;
+                focusClientBox();
             }
-            // लाइव काउंटर लोड
-            const savedCount = localStorage.getItem("acharya_live_count") || "1,842";
-            document.getElementById('liveUserCounterDisplay').innerText = savedCount + " लाइव";
-        });
+        }
+
+        function triggerSecuredConsultation() {
+            const isVerified = localStorage.getItem("acharya_verified_client");
+            if (!isVerified) {
+                pendingActionCallback = () => runCompleteConsultation();
+                document.getElementById('onboardingModal').style.display = 'flex';
+            } else {
+                runCompleteConsultation();
+            }
+        }
 
         function sendMockOTP() {
             const name = document.getElementById('obName').value.trim();
@@ -1051,13 +1205,19 @@
             if (otp.length >= 4) {
                 localStorage.setItem("acharya_verified_client", "true");
                 document.getElementById('onboardingModal').style.display = 'none';
-                alert("✅ सत्यापन पूर्ण! आचार्य अर्जुन संस्थान के सुरक्षित रक्षा कवच में आपका स्वागत है।");
+                alert("✅ सत्यापन पूर्ण! आचार्य अर्जुन संस्थान के सुरक्षा अनुबंध में आपका स्वागत है।");
+                if (pendingActionCallback) {
+                    pendingActionCallback();
+                    pendingActionCallback = null;
+                }
             } else {
                 alert("कृपया 4 अंकों का सही OTP दर्ज करें।");
             }
         }
 
-        // 2. पेमेंट गेटवे हैंडलिंग
+        // ==========================================
+        // 💳 पेमेंट गेटवे हैंडलिंग
+        // ==========================================
         let currentPlanPrice = 500;
         let currentPlanTitle = "सामान्य सहयोग संकल्प";
 
@@ -1091,7 +1251,6 @@
             closePaymentGateway();
             alert(`✅ भुगतान सफल!\nमाध्यम: ${method}\nराशि: ₹${currentPlanPrice}\n\nआचार्य अर्जुन संस्थान द्वारा आपकी संकल्प रसीद एवं विधिक रक्षा कवच सक्रिय कर दिया गया है।`);
             
-            // वर्चुअल सीए लेजर में स्वतः जोड़ना
             const ledger = document.getElementById('caBankLedger');
             const entry = document.createElement('div');
             entry.style.cssText = "display:flex; justify-content:space-between; padding: 4px 0; border-bottom: 1px solid #230d36;";
@@ -1099,7 +1258,9 @@
             ledger.prepend(entry);
         }
 
-        // 3. 1-Click शेयर ऐप
+        // ==========================================
+        // 📲 1-Click शेयर ऐप
+        // ==========================================
         function shareAppDirectly() {
             const shareText = `🔱 संकट मुक्त AI | पूज्य आचार्य अर्जुन संस्थान 🔱\nजब जीवन में चारों ओर से रास्ते बंद दिखने लगें—चाहे कर्ज हो, कोर्ट-कचहरी, पारिवारिक क्लेश या असाध्य ग्रह पीड़ा—तब निराश न हों। प्राचीन सिद्ध वैदिक मंत्र-तपोबल एवं ईश्वरीय कृपा से हर संकट का अचूक निवारण अब आपकी अपनी मातृभाषा में उपलब्ध है। अभी अपनी प्रारंभिक जांच निःशुल्क करें:\n👉 https://sankatmukt.github.io`;
             
@@ -1115,7 +1276,9 @@
             }
         }
 
-        // 4. 5-चरणीय प्रारंभिक रिपोर्ट
+        // ==========================================
+        // 📋 5-चरणीय प्रारंभिक रिपोर्ट
+        // ==========================================
         function runCompleteConsultation() {
             const name = document.getElementById('clientName').value.trim();
             const query = document.getElementById('clientQuery').value.trim();
@@ -1141,7 +1304,15 @@
             `;
         }
 
-        // 5. सुपर एडमिन पासवर्ड (PIN: ARJUN777)
+        function focusClientBox() {
+            closeAdminVault();
+            document.getElementById('clientConsoleBox').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('clientName').focus();
+        }
+
+        // ==========================================
+        // 🔐 सुपर एडमिन पासवर्ड (PIN: ARJUN777)
+        // ==========================================
         const MASTER_PIN = "ARJUN777";
 
         function askAdminPassword() {
@@ -1182,16 +1353,9 @@
             if (btns[num - 1]) btns[num - 1].classList.add('active');
         }
 
-        function setManualCounter() {
-            const count = prompt("स्क्रीन पर दिखने वाला लाइव यूजर काउंटर सेट करें (उदा. 2,450):", "2,450");
-            if (count) {
-                localStorage.setItem("acharya_live_count", count);
-                document.getElementById('liveUserCounterDisplay').innerText = count + " लाइव";
-                alert("✅ लाइव यूजर काउंटर सफलतापूर्वक अपडेट हो गया!");
-            }
-        }
-
-        // 6. वर्चुअल सीए ऑडिट रिपोर्ट डाउनलोड
+        // ==========================================
+        // 📊 वर्चुअल सीए ऑडिट डाउनलोड
+        // ==========================================
         function downloadCAAuditReport() {
             const reportData = `=====================================================
 आचार्य अर्जुन संस्थान - वार्षिक विधिक एवं वित्तीय टैक्स ऑडिट रिपोर्ट
@@ -1212,7 +1376,9 @@
             link.click();
         }
 
-        // 7. सोशल मीडिया वॉर-रूम जनरेटर
+        // ==========================================
+        // 📢 सोशल मीडिया वॉर-रूम
+        // ==========================================
         function generateSocialContent() {
             const topic = document.getElementById('socialTopic').value.trim() || "शनि साढ़ेसाती एवं कर्ज मुक्ति अचूक उपाय";
             const out = document.getElementById('socialOutput');
@@ -1225,7 +1391,9 @@
             `;
         }
 
-        // 8. गुप्त AI कमांड सेंटर (Universal AI)
+        // ==========================================
+        // 🤫 गुप्त AI कमांड सेंटर (Universal AI)
+        // ==========================================
         function setQuery(q) {
             document.getElementById('bossQueryTxt').value = q;
             sendBossQuery();
@@ -1269,20 +1437,18 @@
             const qLower = v.toLowerCase();
             let finalDetailedAnswer = "";
 
-            // रीयल-टाइम वैश्विक एवं विधिक ज्ञान आधार
             if (qLower.includes("युद्ध") || qLower.includes("war")) {
                 finalDetailedAnswer = `वर्तमान समय (वर्ष 2026) में विश्व स्तर पर चल रहे प्रमुख सक्रिय युद्ध एवं सैन्य टकराव:\n\n1. **रूस बनाम यूक्रेन युद्ध:** पूर्वी यूरोप में भीषण ड्रोन व मिसाइल हमलों के साथ सीमा पर गतिरोध जारी है।\n2. **मध्य पूर्व संघर्ष:** इजराइल बनाम हमास (गाजा पट्टी), हिज़्बुल्लाह (लेबनान), और लाल सागर में हूती विद्रोहियों का गतिरोध।\n3. **सूडान गृहयुद्ध:** सूडानी सेना (SAF) एवं RSF अर्धसैनिक बलों के बीच खार्तूम में भीषण टकराव।\n4. **म्यांमार संघर्ष:** सैन्य जुंटा एवं लोकतंत्र समर्थक पीपुल्स डिफेंस फोर्स (PDF) के बीच गृहयुद्ध।`;
             } else if (qLower.includes("वर्ल्ड कप") || qLower.includes("world cup")) {
-                finalDetailedAnswer = `**लेटेस्ट T20 वर्ल्ड कप (जून 2024):**\nभारतीय क्रिकेट टीम (Team India) ने रोहित शर्मा की कप्तानी में फाइनल में दक्षिण अफ्रीका को रोमांचक मुकाबले में हराकर **ICC Men's T20 World Cup 2024** का खिताब अपने नाम किया था। यह भारत का दूसरा T20 वर्ल्ड कप खिताब था।`;
+                finalDetailedAnswer = `**लेटेस्ट T20 वर्ल्ड कप (जून 2024):**\nभारतीय क्रिकेट टीम (Team India) ने रोहित शर्मा की कप्तानी में फाइनल में दक्षिण अफ्रीका को हराकर **ICC Men's T20 World Cup 2024** का खिताब जीता था।`;
             } else if (qLower.includes("इजराइल") || qLower.includes("israel")) {
                 finalDetailedAnswer = `वर्तमान में (वर्ष 2026) इज़राइल के राष्ट्रपति **इसाक हर्जोग (Isaac Herzog)** हैं और प्रधानमंत्री **बेंजामिन नेतन्याहू (Benjamin Netanyahu)** हैं।`;
             } else if (qLower.includes("भारत") && qLower.includes("राष्ट्रपति")) {
                 finalDetailedAnswer = `वर्तमान में (वर्ष 2026) भारत की राष्ट्रपति **श्रीमती द्रौपदी मुर्मू** हैं (15वीं राष्ट्रपति)।`;
             } else if (qLower.includes("bns") || qLower.includes("कानून")) {
-                finalDetailedAnswer = `भारत में 1 जुलाई 2024 से तीन नए आपराधिक कानून पूर्ण रूप से लागू हैं:\n1. **भारतीय न्याय संहिता (BNS 2023):** IPC 1860 का स्थान लिया (हत्या धारा 103, धोखाधड़ी धारा 318)।\n2. **भारतीय नागरिक सुरक्षा संहिता (BNSS 2023):** CrPC 1973 का स्थान लिया (Zero FIR व्यवस्था)।\n3. **भारतीय साक्ष्य अधिनियम (BSA 2023):** डिजिटल व इलेक्ट्रॉनिक साक्ष्य प्राथमिक रूप से मान्य।`;
+                finalDetailedAnswer = `भारत में 1 जुलाई 2024 से तीन नए आपराधिक कानून पूर्ण रूप से लागू हैं:\n1. **भारतीय न्याय संहिता (BNS 2023):** इसने IPC 1860 का स्थान लिया।\n2. **भारतीय नागरिक सुरक्षा संहिता (BNSS 2023):** इसने CrPC 1973 का स्थान लिया।\n3. **भारतीय साक्ष्य अधिनियम (BSA 2023):** डिजिटल व इलेक्ट्रॉनिक साक्ष्य प्राथमिक रूप से मान्य।`;
             }
 
-            // यदि अन्य कोई सवाल हो तो Gemini / AI चैनल
             if (!finalDetailedAnswer) {
                 const payKey = localStorage.getItem("sankat_paygo_gemini_key");
                 if (payKey) {
@@ -1319,7 +1485,9 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // 9. मल्टीमॉडल अपलोड व एक्सपोर्ट
+        // ==========================================
+        // 📎 मल्टीमॉडल अपलोड व एक्सपोर्ट
+        // ==========================================
         function handleFileUpload(e) {
             const file = e.target.files[0];
             if (file) {
@@ -1334,31 +1502,12 @@
             alert(`📥 Exporting ${fmt}...\nपूज्य आचार्य अर्जुन AI स्टूडियो द्वारा आपकी रिपोर्ट ${fmt} फॉर्मेट में सफलतापूर्वक प्रोसेस कर डाउनलोड कर दी गई है।`);
         }
 
-        function startWorkflow(name) {
-            document.getElementById('clientQuery').value = `[${name}] मेरी समस्या का निवारण करें।`;
-            focusClientBox();
-        }
-
-        function focusClientBox() {
-            document.getElementById('clientConsoleBox').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('clientName').focus();
-        }
-
         function doAstro() {
             const val = document.getElementById('astroTxt').value.trim();
             const out = document.getElementById('astroOut');
             if (!val) { alert("विवरण दर्ज करें।"); return; }
             out.style.display = 'block';
             out.innerHTML = `<div style="background: #1e0d30; border-left: 3px solid var(--accent-cyan); padding: 10px; border-radius: 8px; font-size: 0.85rem;"><strong style="color: var(--accent-cyan);">🔮 गोचर रिपोर्ट 2026:</strong> अनुकूल समय सक्रिय है। संकट मोचन कवच धारण करें।</div>`;
-        }
-
-        function switchLang(l) {
-            const b = document.getElementById('bannerTxt');
-            if (l === 'en') {
-                b.innerHTML = "⚠ <strong>Global Proclamation:</strong> No language barriers! Authentic solutions in your mother tongue through Acharya Arjun's Vedic mantra power & legal protection.";
-            } else {
-                b.innerHTML = "⚠ <strong>वैश्विक उद्घोष:</strong> अब भाषा की कोई सीमा नहीं! गंभीर संकटों का अचूक समाधान आपकी ही मातृभाषा में। पूज्य आचार्य अर्जुन जी के तपोबल, सिद्ध प्राचीन गुप्त मंत्र शक्ति एवं सुलभ विधिक सुरक्षा कवच से प्रमाणित।";
-            }
         }
     </script>
 </body>
